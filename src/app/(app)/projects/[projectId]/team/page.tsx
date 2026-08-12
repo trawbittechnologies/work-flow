@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Modal, ConfirmDialog } from "@/components/ui/Modal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useToast } from "@/components/ui/Toast";
-import { UserPlus, Trash2, Mail, Shield, CheckCircle2 } from "lucide-react";
+import { UserPlus, Trash2, Mail } from "lucide-react";
 import type { MemberWithUser } from "@/types";
 
 type PageProps = {
@@ -20,7 +20,9 @@ export default function ProjectTeamPage({ params }: PageProps) {
   const [members, setMembers] = useState<MemberWithUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [inviteName, setInviteName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
+  const [invitePassword, setInvitePassword] = useState("");
   const [inviting, setInviting] = useState(false);
   const [removeMemberId, setRemoveMemberId] = useState<string | null>(null);
   const [removing, setRemoving] = useState(false);
@@ -43,7 +45,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
     loadMembers();
   }, [projectId]);
 
-  async function handleInvite(e: React.FormEvent) {
+  async function handleAddMember(e: React.FormEvent) {
     e.preventDefault();
     if (!inviteEmail) return;
 
@@ -52,21 +54,27 @@ export default function ProjectTeamPage({ params }: PageProps) {
       const res = await fetch(`/api/projects/${projectId}/members`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: inviteEmail }),
+        body: JSON.stringify({
+          name: inviteName || undefined,
+          email: inviteEmail,
+          password: invitePassword || undefined,
+        }),
       });
 
       const body = await res.json();
       if (!res.ok) {
-        showError("Invitation failed", body.error);
+        showError("Failed to add member", body.error);
         return;
       }
 
-      success("Member added!", `${inviteEmail} was added to the project.`);
+      success("Member added!", `${inviteEmail} is now part of this project.`);
+      setInviteName("");
       setInviteEmail("");
+      setInvitePassword("");
       setIsInviteOpen(false);
       loadMembers();
     } catch {
-      showError("Error", "Failed to send invitation.");
+      showError("Error", "Failed to add member.");
     } finally {
       setInviting(false);
     }
@@ -174,15 +182,23 @@ export default function ProjectTeamPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* Invite Modal */}
+      {/* Add Teammate Modal */}
       <Modal
         isOpen={isInviteOpen}
         onClose={() => setIsInviteOpen(false)}
-        title="Add Teammate"
-        description="Enter the email address of an existing Flowdesk user to add them to this project."
-        size="sm"
+        title="Add Teammate to Project"
+        description="Enter user details. If the account does not exist, Flowdesk will create it for them automatically."
+        size="md"
       >
-        <form onSubmit={handleInvite} className="space-y-4">
+        <form onSubmit={handleAddMember} className="space-y-4">
+          <Input
+            label="Full Name (optional)"
+            type="text"
+            placeholder="e.g. John Doe"
+            value={inviteName}
+            onChange={(e) => setInviteName(e.target.value)}
+          />
+
           <Input
             label="User Email"
             type="email"
@@ -192,12 +208,21 @@ export default function ProjectTeamPage({ params }: PageProps) {
             required
           />
 
+          <Input
+            label="Initial Password (optional, default: password123)"
+            type="password"
+            placeholder="password123"
+            value={invitePassword}
+            onChange={(e) => setInvitePassword(e.target.value)}
+            helperText="Provide a password for new users to log in with."
+          />
+
           <div className="flex gap-3 pt-2 justify-end">
             <Button type="button" variant="ghost" onClick={() => setIsInviteOpen(false)}>
               Cancel
             </Button>
             <Button type="submit" variant="primary" isLoading={inviting}>
-              Add to Project
+              Add Teammate
             </Button>
           </div>
         </form>

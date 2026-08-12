@@ -5,8 +5,13 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
 
+  // Redirect public registration attempt to login
+  if (pathname === "/register") {
+    return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
+  }
+
   // Public paths that don't require authentication
-  const publicPaths = ["/login", "/register", "/forgot-password"];
+  const publicPaths = ["/login", "/forgot-password"];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
 
   // Allow API routes to handle their own auth

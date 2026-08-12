@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/prisma";
+import type { ActivityType } from "@prisma/client";
 
 interface LogActivityInput {
   projectId: string;
   userId: string;
-  type: string;
+  type: ActivityType;
   metadata?: Record<string, unknown>;
 }
 
@@ -14,7 +15,7 @@ export async function logActivity(input: LogActivityInput) {
         projectId: input.projectId,
         userId: input.userId,
         type: input.type,
-        metadata: JSON.stringify(input.metadata ?? {}),
+        metadata: (input.metadata ?? {}) as any,
       },
     });
   } catch (error) {

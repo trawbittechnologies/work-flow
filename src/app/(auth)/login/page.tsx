@@ -46,7 +46,7 @@ function LoginForm() {
   return (
     <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[14px] p-6 shadow-sm">
       <h2 className="text-base font-semibold text-[var(--text-primary)] mb-0.5">Welcome back</h2>
-      <p className="text-sm text-[var(--text-secondary)] mb-5">Sign in to your account</p>
+      <p className="text-sm text-[var(--text-secondary)] mb-5">Sign in to your Flowdesk workspace</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
@@ -96,19 +96,8 @@ function LoginForm() {
         </Button>
       </form>
 
-      <div className="mt-5 flex items-center justify-between text-sm">
-        <Link
-          href="/forgot-password"
-          className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
-        >
-          Forgot password?
-        </Link>
-        <span className="text-[var(--text-muted)]">
-          No account?{" "}
-          <Link href="/register" className="text-[var(--primary)] hover:text-[var(--primary-hover)] font-medium transition-colors">
-            Sign up
-          </Link>
-        </span>
+      <div className="mt-5 pt-4 border-t border-[var(--border-subtle)] text-center text-xs text-[var(--text-muted)]">
+        Need access? Ask your project owner or workspace admin to add your account.
       </div>
     </div>
   );

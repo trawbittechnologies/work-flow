@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import type { NotificationType } from "@prisma/client";
 
 interface CreateNotificationInput {
   userId: string;
-  type: string;
+  type: NotificationType;
   title: string;
   message: string;
   projectId?: string;

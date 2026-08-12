@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, ProjectStatus, TaskStatus, TaskPriority, MemberRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.log("🌱 Seeding Neon PostgreSQL database...");
 
   // Clean existing data
   await prisma.activity.deleteMany();
@@ -56,15 +56,15 @@ async function main() {
       name: "Flowdesk Web Platform",
       description: "Modernizing the Next.js frontend with Linear-inspired UI polish and real-time kanban tracking.",
       icon: "🚀",
-      status: "IN_PROGRESS",
+      status: ProjectStatus.IN_PROGRESS,
       ownerId: alex.id,
       startDate: new Date("2026-08-01"),
       deadline: new Date("2026-09-15"),
       members: {
         create: [
-          { userId: alex.id, role: "OWNER" },
-          { userId: sarah.id, role: "MEMBER" },
-          { userId: marcus.id, role: "MEMBER" },
+          { userId: alex.id, role: MemberRole.OWNER },
+          { userId: sarah.id, role: MemberRole.MEMBER },
+          { userId: marcus.id, role: MemberRole.MEMBER },
         ],
       },
     },
@@ -76,14 +76,14 @@ async function main() {
       name: "Mobile App Companion",
       description: "React Native mobile workspace client for fast task tracking on iOS & Android.",
       icon: "📱",
-      status: "PLANNING",
+      status: ProjectStatus.PLANNING,
       ownerId: sarah.id,
       startDate: new Date("2026-08-10"),
       deadline: new Date("2026-10-01"),
       members: {
         create: [
-          { userId: sarah.id, role: "OWNER" },
-          { userId: alex.id, role: "MEMBER" },
+          { userId: sarah.id, role: MemberRole.OWNER },
+          { userId: alex.id, role: MemberRole.MEMBER },
         ],
       },
     },
@@ -97,8 +97,8 @@ async function main() {
       projectId: project1.id,
       title: "Design Linear-inspired Kanban Board UI",
       description: "Implement dnd-kit drag and drop with smooth status column transitions.",
-      status: "DONE",
-      priority: "HIGH",
+      status: TaskStatus.DONE,
+      priority: TaskPriority.HIGH,
       assigneeId: alex.id,
       createdById: alex.id,
       dueDate: new Date("2026-08-10"),
@@ -110,8 +110,8 @@ async function main() {
       projectId: project1.id,
       title: "Auth.js v5 Middleware Integration",
       description: "Set up server-side auth checking for all protected project routes.",
-      status: "DONE",
-      priority: "URGENT",
+      status: TaskStatus.DONE,
+      priority: TaskPriority.URGENT,
       assigneeId: sarah.id,
       createdById: alex.id,
       dueDate: new Date("2026-08-12"),
@@ -123,8 +123,8 @@ async function main() {
       projectId: project1.id,
       title: "Implement Real-time Project Chat",
       description: "Build project-scoped messaging panel with instant composer and notification alerts.",
-      status: "IN_PROGRESS",
-      priority: "HIGH",
+      status: TaskStatus.IN_PROGRESS,
+      priority: TaskPriority.HIGH,
       assigneeId: marcus.id,
       createdById: alex.id,
       dueDate: new Date("2026-08-18"),
@@ -136,8 +136,8 @@ async function main() {
       projectId: project1.id,
       title: "Global Search with Cmd+K Keyboard Shortcut",
       description: "Index projects, tasks, and users for instant modal search execution.",
-      status: "REVIEW",
-      priority: "MEDIUM",
+      status: TaskStatus.REVIEW,
+      priority: TaskPriority.MEDIUM,
       assigneeId: alex.id,
       createdById: alex.id,
       dueDate: new Date("2026-08-15"),
@@ -149,8 +149,8 @@ async function main() {
       projectId: project1.id,
       title: "Dark Mode & Glassmorphism Design Tokens",
       description: "Refine CSS custom properties for vibrant light and dark theme contrast.",
-      status: "TODO",
-      priority: "LOW",
+      status: TaskStatus.TODO,
+      priority: TaskPriority.LOW,
       assigneeId: sarah.id,
       createdById: marcus.id,
       dueDate: new Date("2026-08-22"),
@@ -212,7 +212,7 @@ async function main() {
     },
   });
 
-  console.log("🎉 Seeding complete!");
+  console.log("🎉 Neon PostgreSQL seeding complete!");
 }
 
 main()
