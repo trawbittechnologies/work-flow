@@ -1,3 +1,4 @@
+// Force TS Refresh
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -23,6 +24,7 @@ async function getOrCreateProjectConversation(projectId: string) {
         projectId: project.id,
         name: project.name,
         members: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           create: project.members.map((m: any) => ({ userId: m.userId }))
         }
       }
