@@ -42,28 +42,28 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
 
   return (
     <aside
-      className="fixed left-0 top-0 h-full w-[240px] bg-[var(--surface)] border-r border-[var(--border)] flex flex-col z-30 hidden md:flex"
+      className="fixed left-0 top-0 h-full w-[var(--sidebar-width)] bg-surface border-r border-border flex flex-col z-30 hidden md:flex"
       aria-label="Main navigation"
     >
       {/* Logo */}
-      <div className="px-4 py-4 flex-shrink-0">
-        <Link href="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="h-7 w-7 bg-[var(--primary)] rounded-[8px] flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary-hover)] transition-colors">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <div className="px-5 py-5 flex-shrink-0">
+        <Link href="/dashboard" className="flex items-center gap-3 group">
+          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary-dark transition-colors shadow-sm">
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <rect x="1" y="1" width="5" height="5" rx="1.5" fill="white" />
               <rect x="8" y="1" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.7" />
               <rect x="1" y="8" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.7" />
               <rect x="8" y="8" width="5" height="5" rx="1.5" fill="white" />
             </svg>
           </div>
-          <span className="text-sm font-bold text-[var(--text-primary)] tracking-tight">
+          <span className="text-base font-bold text-text-primary tracking-tight">
             Flowdesk
           </span>
         </Link>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const active = isActive(item.href);
           return (
@@ -71,16 +71,16 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-sm font-medium transition-all duration-150",
+                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150",
                 active
-                  ? "bg-[var(--primary-subtle)] text-[var(--text-primary)] font-semibold"
-                  : "text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--text-primary)]"
+                  ? "bg-primary-subtle text-primary font-semibold"
+                  : "text-text-secondary hover:bg-surface-alt hover:text-text-primary"
               )}
             >
               <item.icon
                 className={cn(
                   "h-4 w-4 flex-shrink-0",
-                  active ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"
+                  active ? "text-primary" : "text-text-muted group-hover:text-text-secondary"
                 )}
               />
               {item.label}
@@ -92,21 +92,21 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
         <Link
           href="/notifications"
           className={cn(
-            "flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-sm font-medium transition-all duration-150",
+            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150",
             isActive("/notifications")
-              ? "bg-[var(--primary-subtle)] text-[var(--text-primary)] font-semibold"
-              : "text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--text-primary)]"
+              ? "bg-primary-subtle text-primary font-semibold"
+              : "text-text-secondary hover:bg-surface-alt hover:text-text-primary"
           )}
         >
           <Bell
             className={cn(
               "h-4 w-4 flex-shrink-0",
-              isActive("/notifications") ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"
+              isActive("/notifications") ? "text-primary" : "text-text-muted"
             )}
           />
           <span className="flex-1">Notifications</span>
           {unreadNotifications > 0 && (
-            <span className="ml-auto h-4 min-w-[16px] px-1 bg-[var(--primary)] text-[var(--text-primary)] text-[10px] font-bold rounded-full flex items-center justify-center">
+            <span className="ml-auto h-5 min-w-[20px] px-1.5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
               {unreadNotifications > 99 ? "99+" : unreadNotifications}
             </span>
           )}
@@ -114,33 +114,33 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
       </nav>
 
       {/* Bottom */}
-      <div className="px-2 py-3 border-t border-[var(--border)] space-y-0.5 flex-shrink-0">
+      <div className="px-3 py-4 border-t border-border space-y-1 flex-shrink-0">
         <Link
           href="/settings"
-          className="flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--text-primary)] transition-all duration-150"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-text-secondary hover:bg-surface-alt hover:text-text-primary transition-all duration-150"
         >
-          <Settings className="h-4 w-4 flex-shrink-0 text-[var(--text-muted)]" />
+          <Settings className="h-4 w-4 flex-shrink-0 text-text-muted" />
           Settings
         </Link>
 
         {/* Profile */}
         <Link
           href="/profile"
-          className="flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] transition-all duration-150 hover:bg-[var(--background)] group"
+          className="flex items-center gap-3 px-3 py-2 mt-1 rounded-lg transition-all duration-150 hover:bg-surface-alt group border border-transparent hover:border-border-subtle"
         >
           <Avatar name={user.name} src={user.avatar} size="xs" className="flex-shrink-0 ring-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-[var(--text-primary)] truncate">{user.name}</p>
-            <p className="text-[10px] text-[var(--text-muted)] truncate">{user.email}</p>
+            <p className="text-xs font-semibold text-text-primary truncate">{user.name}</p>
+            <p className="text-[10px] text-text-muted truncate">{user.email}</p>
           </div>
-          <ChevronRight className="h-3 w-3 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+          <ChevronRight className="h-4 w-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
         </Link>
 
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-sm font-medium text-[var(--text-secondary)] hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950 transition-all duration-150"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-text-secondary hover:bg-danger-subtle hover:text-danger transition-all duration-150 mt-1"
         >
-          <LogOut className="h-4 w-4 flex-shrink-0 text-[var(--text-muted)]" />
+          <LogOut className="h-4 w-4 flex-shrink-0 text-danger/70" />
           Sign out
         </button>
       </div>

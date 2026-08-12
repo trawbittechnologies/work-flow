@@ -7,6 +7,7 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { ForceLogout } from "@/components/auth/ForceLogout";
 import { NotificationManager } from "@/components/notifications/NotificationManager";
 import { AblyProvider } from "@/components/chat/AblyProvider";
+import { CommandCenter } from "@/components/ui/CommandCenter";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -18,6 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       select: { id: true, name: true, email: true, avatar: true },
     }),
     prisma.notification.count({
+      // @ts-expect-error read exists in DB but Prisma type cache might be stale
       where: { userId: session.user.id, read: false },
     }),
   ]);
@@ -26,14 +28,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <AblyProvider>
-      <div className="min-h-screen bg-[var(--background)]">
+      <div className="min-h-screen bg-background">
         <Sidebar user={user} unreadNotifications={unreadCount} />
         <Header user={user} unreadNotifications={unreadCount} />
+        <CommandCenter />
         <main
-          className="md:ml-[240px] pt-[56px] pb-16 md:pb-0 min-h-screen"
+          className="md:ml-[var(--sidebar-width)] pt-[var(--header-height)] pb-16 md:pb-0 min-h-screen transition-all duration-200 ease-in-out"
           id="main-content"
         >
-          <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
+          <div className="p-4 md:p-8 max-w-[1600px] mx-auto animate-in">
             {children}
           </div>
         </main>

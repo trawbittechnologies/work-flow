@@ -16,41 +16,41 @@ interface DashboardTaskListProps {
 export function DashboardTaskList({ tasks }: DashboardTaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[12px] px-6 py-8 text-center">
-        <p className="text-sm text-[var(--text-muted)]">No pending tasks. You're all caught up! 🎉</p>
+      <div className="bg-surface border border-border rounded-xl px-6 py-10 text-center shadow-sm">
+        <p className="text-sm font-medium text-text-muted">No pending tasks. You're all caught up! 🎉</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[12px] overflow-hidden">
+    <div className="bg-surface border border-border rounded-xl shadow-sm overflow-hidden divide-y divide-border-subtle">
       {tasks.map((task, i) => {
         const overdue = task.dueDate ? isOverdue(task.dueDate) : false;
         return (
           <Link
             key={task.id}
             href={`/tasks/${task.id}`}
-            className={cn(
-              "flex items-center gap-3 px-4 py-3 hover:bg-[var(--background)] transition-colors",
-              i > 0 && "border-t border-[var(--border-subtle)]"
-            )}
+            className="flex items-center gap-3 px-4 py-3 hover:bg-surface-alt transition-colors group"
           >
             {/* Priority indicator */}
             <div
               className={cn(
-                "w-1 h-8 rounded-full flex-shrink-0",
-                task.priority === "URGENT" && "bg-red-500",
-                task.priority === "HIGH" && "bg-orange-500",
-                task.priority === "MEDIUM" && "bg-amber-500",
-                task.priority === "LOW" && "bg-slate-300"
+                "w-1 h-8 rounded-full flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity",
+                task.priority === "URGENT" && "bg-danger",
+                task.priority === "HIGH" && "bg-warning",
+                task.priority === "MEDIUM" && "bg-primary",
+                task.priority === "LOW" && "bg-text-muted"
               )}
             />
 
             {/* Title + project */}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-[var(--text-primary)] truncate">{task.title}</p>
-              <p className="text-xs text-[var(--text-muted)] truncate">
-                {task.project.icon} {task.project.name}
+              <p className="text-sm font-semibold text-text-primary truncate group-hover:text-primary transition-colors">{task.title}</p>
+              <p className="text-xs text-text-muted truncate mt-0.5 flex items-center gap-1.5">
+                <span className="inline-flex items-center justify-center h-4 w-4 rounded bg-surface-alt border border-border text-[8px]">
+                  {task.project.icon}
+                </span>
+                {task.project.name}
               </p>
             </div>
 
@@ -58,8 +58,8 @@ export function DashboardTaskList({ tasks }: DashboardTaskListProps) {
             {task.dueDate && (
               <span
                 className={cn(
-                  "flex items-center gap-1 text-[11px] flex-shrink-0",
-                  overdue ? "text-red-500 font-medium" : "text-[var(--text-muted)]"
+                  "flex items-center gap-1.5 text-[11px] font-medium px-2 py-1 rounded",
+                  overdue ? "text-danger bg-danger-subtle" : "text-text-muted bg-surface-alt"
                 )}
               >
                 {overdue ? <AlertCircle className="h-3 w-3" /> : <CalendarDays className="h-3 w-3" />}

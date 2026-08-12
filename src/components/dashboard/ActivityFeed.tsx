@@ -37,23 +37,23 @@ interface ActivityFeedProps {
 export function ActivityFeed({ activities }: ActivityFeedProps) {
   if (activities.length === 0) {
     return (
-      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[12px] px-4 py-8 text-center">
-        <p className="text-sm text-[var(--text-muted)]">No recent activity.</p>
+      <div className="bg-surface border border-border rounded-xl px-4 py-10 text-center shadow-sm">
+        <p className="text-sm font-medium text-text-muted">No recent activity.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[12px] divide-y divide-[var(--border-subtle)]">
+    <div className="bg-surface border border-border rounded-xl shadow-sm divide-y divide-border-subtle overflow-hidden">
       {activities.map((activity) => (
-        <div key={activity.id} className="flex gap-2.5 p-3">
+        <div key={activity.id} className="flex gap-3 p-3 hover:bg-surface-alt/50 transition-colors">
           <Avatar name={activity.user.name} src={activity.user.avatar} size="xs" className="mt-0.5 flex-shrink-0 ring-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-[var(--text-primary)] leading-snug">
-              <span className="font-medium">{activity.user.name}</span>{" "}
-              <span className="text-[var(--text-secondary)]">{getActivityDescription(activity)}</span>
+            <p className="text-sm text-text-primary leading-snug">
+              <span className="font-semibold text-text-primary">{activity.user.name}</span>{" "}
+              <span className="text-text-secondary">{getActivityDescription(activity)}</span>
             </p>
-            <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
+            <p className="text-[11px] font-medium text-text-muted mt-1">
               {formatRelative(activity.createdAt)}
             </p>
           </div>

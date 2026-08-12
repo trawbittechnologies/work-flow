@@ -35,7 +35,7 @@ export function ProjectNav({ projectId, userRole }: ProjectNavProps) {
   ];
 
   return (
-    <nav className="flex items-center gap-1 overflow-x-auto pt-2 scrollbar-none border-t border-[var(--border)]">
+    <nav className="flex items-center gap-1.5 overflow-x-auto pt-4 scrollbar-none border-t border-border-subtle">
       {tabs.map((tab) => {
         const isActive = tab.exact
           ? pathname === tab.href
@@ -46,13 +46,13 @@ export function ProjectNav({ projectId, userRole }: ProjectNavProps) {
             key={tab.href}
             href={tab.href}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-[8px] text-xs font-medium whitespace-nowrap transition-colors",
+              "flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors",
               isActive
-                ? "bg-[var(--primary-subtle)] text-[var(--primary)] font-semibold"
-                : "text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--text-primary)]"
+                ? "bg-primary-subtle text-primary font-bold shadow-sm"
+                : "text-text-secondary hover:bg-surface-alt hover:text-text-primary"
             )}
           >
-            <tab.icon className={cn("h-3.5 w-3.5", isActive ? "text-[var(--primary)]" : "text-[var(--text-muted)]")} />
+            <tab.icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-text-muted")} />
             {tab.label}
           </Link>
         );

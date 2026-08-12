@@ -8,7 +8,7 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { DashboardTaskList } from "@/components/dashboard/DashboardTaskList";
 import Link from "next/link";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight, Plus, FolderKanban } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -95,49 +95,53 @@ export default async function DashboardPage() {
   };
 
   return (
-    <div className="space-y-6">
+  return (
+    <div className="space-y-8 pb-8">
       {/* Greeting */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-bold text-[var(--text-primary)]">
+          <h1 className="text-2xl font-bold tracking-tight text-text-primary">
             {greeting()}, {user?.name?.split(" ")[0]} 👋
           </h1>
-          <p className="text-sm text-[var(--text-secondary)] mt-0.5">
+          <p className="text-sm font-medium text-text-secondary mt-1">
             {format(now, "EEEE, MMMM d, yyyy")}
           </p>
         </div>
         <Link
           href="/projects/new"
-          className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs rounded-[8px] bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-medium transition-colors"
+          className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm"
         >
-          <Plus className="h-3.5 w-3.5" />
+          <Plus className="h-4 w-4" />
           New Project
         </Link>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <StatCard label="Total Projects" value={totalProjects} color="indigo" />
-        <StatCard label="Active Projects" value={activeProjects} color="blue" />
-        <StatCard label="Pending Tasks" value={pendingTasks} color="amber" />
-        <StatCard label="Overdue Tasks" value={overdueTasks} color="red" />
-      </div>
+      <section aria-label="Your focus">
+        <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">Your focus</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard label="Overdue Tasks" value={overdueTasks} color="red" />
+          <StatCard label="Due Today" value={pendingTasks} color="amber" />
+          <StatCard label="Active Projects" value={activeProjects} color="indigo" />
+          <StatCard label="Completed Projects" value={completedProjects} color="emerald" />
+        </div>
+      </section>
 
       {/* Projects */}
       <section aria-labelledby="projects-heading">
-        <div className="flex items-center justify-between mb-3">
-          <h2 id="projects-heading" className="text-sm font-semibold text-[var(--text-primary)]">
+        <div className="flex items-center justify-between mb-4">
+          <h2 id="projects-heading" className="text-lg font-bold tracking-tight text-text-primary">
             Active Projects
           </h2>
           <Link
             href="/projects"
-            className="flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+            className="flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors"
           >
-            View all <ArrowRight className="h-3 w-3" />
+            View all <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         {projects.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {projects.map((project) => {
               const completedTasks = project.tasks.filter((t) => t.status === "DONE").length;
               const totalTasks = project.tasks.length;
@@ -156,13 +160,17 @@ export default async function DashboardPage() {
             })}
           </div>
         ) : (
-          <div className="bg-[var(--surface)] border border-[var(--border)] border-dashed rounded-[12px] px-6 py-10 text-center">
-            <p className="text-sm text-[var(--text-muted)] mb-3">No projects yet. Create your first project.</p>
+          <div className="bg-surface border border-border border-dashed rounded-xl px-6 py-12 text-center">
+            <div className="h-12 w-12 bg-surface-alt rounded-full flex items-center justify-center mx-auto mb-4 border border-border">
+              <FolderKanban className="h-6 w-6 text-text-muted" />
+            </div>
+            <h3 className="text-base font-semibold text-text-primary mb-1">No projects yet</h3>
+            <p className="text-sm text-text-muted mb-4 max-w-sm mx-auto">Create your first project and start organizing your work.</p>
             <Link
               href="/projects/new"
-              className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs rounded-[8px] bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-medium transition-colors"
+              className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm"
             >
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className="h-4 w-4" />
               Create project
             </Link>
           </div>
@@ -170,26 +178,28 @@ export default async function DashboardPage() {
       </section>
 
       {/* My Tasks + Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-8">
         <section aria-labelledby="tasks-heading">
-          <div className="flex items-center justify-between mb-3">
-            <h2 id="tasks-heading" className="text-sm font-semibold text-[var(--text-primary)]">
+          <div className="flex items-center justify-between mb-4">
+            <h2 id="tasks-heading" className="text-lg font-bold tracking-tight text-text-primary">
               My Tasks
             </h2>
             <Link
               href="/tasks"
-              className="flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+              className="flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors"
             >
-              View all <ArrowRight className="h-3 w-3" />
+              View all <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           <DashboardTaskList tasks={myTasks} />
         </section>
 
         <section aria-labelledby="activity-heading">
-          <h2 id="activity-heading" className="text-sm font-semibold text-[var(--text-primary)] mb-3">
-            Recent Activity
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 id="activity-heading" className="text-lg font-bold tracking-tight text-text-primary">
+              Recent Activity
+            </h2>
+          </div>
           <ActivityFeed activities={activities} />
         </section>
       </div>

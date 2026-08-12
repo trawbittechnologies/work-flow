@@ -22,12 +22,12 @@ export function StatCard({ label, value, color = "indigo", trend }: StatCardProp
   const colors = colorMap[color];
 
   return (
-    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[12px] p-4">
-      <p className="text-xs text-[var(--text-muted)] mb-1.5">{label}</p>
+    <div className="bg-surface border border-border rounded-xl p-3.5 shadow-sm hover:border-border-subtle hover:shadow-md transition-all duration-200">
+      <p className="text-[11px] font-medium text-text-muted uppercase tracking-wider mb-1.5">{label}</p>
       <div className="flex items-end justify-between">
-        <p className={cn("text-2xl font-bold", colors.text)}>{value}</p>
+        <p className={cn("text-xl font-bold", colors.text)}>{value}</p>
         {trend !== undefined && (
-          <div className={cn("flex items-center gap-0.5 text-[11px]", colors.text)}>
+          <div className={cn("flex items-center gap-0.5 text-[10px] font-semibold bg-surface-alt px-1.5 py-0.5 rounded", colors.text)}>
             <TrendingUp className="h-3 w-3" />
             <span>{trend > 0 ? "+" : ""}{trend}%</span>
           </div>

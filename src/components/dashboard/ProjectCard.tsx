@@ -24,37 +24,37 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <Link
       href={`/projects/${project.id}`}
       className={cn(
-        "group block bg-[var(--surface)] border border-[var(--border)] rounded-[12px] p-4",
-        "hover:border-[var(--primary)] hover:shadow-md transition-all duration-200"
+        "group block bg-surface border border-border rounded-xl p-4",
+        "hover:border-primary/50 hover:shadow-md transition-all duration-200"
       )}
     >
       {/* Header */}
-      <div className="flex items-start gap-3 mb-3">
-        <div className="h-9 w-9 rounded-[8px] bg-[var(--background)] border border-[var(--border)] flex items-center justify-center text-lg flex-shrink-0">
+      <div className="flex items-start gap-3 mb-4">
+        <div className="h-10 w-10 rounded-lg bg-surface-alt border border-border flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-primary-subtle group-hover:border-primary/20 transition-colors">
           {project.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] truncate group-hover:text-[var(--primary)] transition-colors">
+          <h3 className="text-sm font-semibold text-text-primary truncate group-hover:text-primary transition-colors">
             {project.name}
           </h3>
           {project.description && (
-            <p className="text-xs text-[var(--text-muted)] truncate mt-0.5">{project.description}</p>
+            <p className="text-xs text-text-muted truncate mt-0.5">{project.description}</p>
           )}
         </div>
         <StatusBadge status={project.status} className="flex-shrink-0 text-[10px] px-1.5 py-0.5" />
       </div>
 
       {/* Progress */}
-      <div className="mb-3">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[11px] text-[var(--text-muted)]">
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[11px] font-medium text-text-muted">
             {project.completedTasks}/{project.totalTasks} tasks
           </span>
-          <span className="text-[11px] font-medium text-[var(--text-secondary)]">
+          <span className="text-[11px] font-bold text-text-secondary">
             {project.progress}%
           </span>
         </div>
-        <div className="progress-bar">
+        <div className="progress-bar bg-surface-alt h-1.5">
           <div
             className="progress-fill"
             style={{ width: `${project.progress}%` }}
@@ -67,7 +67,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-auto">
         <AvatarGroup
           users={project.members.map((m) => ({ name: m.user.name, avatar: m.user.avatar }))}
           max={4}
@@ -76,8 +76,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {project.deadline && (
           <span
             className={cn(
-              "flex items-center gap-1 text-[11px]",
-              isDeadlineOverdue ? "text-red-500" : "text-[var(--text-muted)]"
+              "flex items-center gap-1.5 text-[11px] font-medium px-2 py-1 rounded bg-surface-alt",
+              isDeadlineOverdue ? "text-danger bg-danger-subtle" : "text-text-muted"
             )}
           >
             <CalendarDays className="h-3 w-3" />

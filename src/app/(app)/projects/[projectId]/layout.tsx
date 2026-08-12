@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
-import { calculateProgress, formatDate, isOverdue } from "@/lib/utils";
+import { calculateProgress, formatDate, isOverdue, cn } from "@/lib/utils";
 import { StatusBadge } from "@/components/ui/Badge";
 import { AvatarGroup } from "@/components/ui/Avatar";
 import { ProjectNav } from "@/components/projects/ProjectNav";
@@ -46,32 +46,35 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
   return (
     <div className="space-y-6">
       {/* Project Header */}
-      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[14px] p-5 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-start gap-3.5">
-            <div className="h-12 w-12 rounded-[10px] bg-[var(--background)] border border-[var(--border)] flex items-center justify-center text-2xl flex-shrink-0 shadow-xs">
+      <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm space-y-5 relative overflow-hidden">
+        {/* Subtle accent gradient at the top edge */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent opacity-70" />
+        
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 relative z-10">
+          <div className="flex items-start gap-4">
+            <div className="h-14 w-14 rounded-xl bg-surface-alt border border-border flex items-center justify-center text-3xl flex-shrink-0 shadow-sm">
               {project.icon}
             </div>
             <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-text-primary tracking-tight">
                   {project.name}
                 </h1>
                 <StatusBadge status={project.status} />
               </div>
               {project.description && (
-                <p className="text-sm text-[var(--text-secondary)] mt-1 max-w-2xl line-clamp-2">
+                <p className="text-sm font-medium text-text-secondary mt-1.5 max-w-2xl line-clamp-2">
                   {project.description}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex items-center gap-6 flex-shrink-0">
             <div className="text-right hidden sm:block">
-              <span className="text-xs text-[var(--text-muted)] block">Progress</span>
-              <span className="text-sm font-semibold text-[var(--text-primary)]">
-                {progress}% ({completedTasks}/{totalTasks} tasks)
+              <span className="text-xs font-semibold uppercase tracking-wider text-text-muted block mb-0.5">Progress</span>
+              <span className="text-sm font-bold text-text-primary">
+                {progress}% <span className="text-text-muted font-medium">({completedTasks}/{totalTasks})</span>
               </span>
             </div>
             <AvatarGroup
@@ -83,35 +86,37 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
         </div>
 
         {/* Metadata Bar */}
-        <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+        <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs font-medium text-text-muted pt-3 border-t border-border-subtle relative z-10">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5 text-[var(--primary)]" />
-            <span>Owner: <strong className="text-[var(--text-primary)] font-medium">{project.owner.name}</strong></span>
+            <ShieldCheck className="h-4 w-4 text-primary" />
+            <span>Owner: <strong className="text-text-primary font-semibold">{project.owner.name}</strong></span>
           </div>
 
           {project.startDate && (
             <div className="flex items-center gap-1.5">
-              <CalendarDays className="h-3.5 w-3.5" />
+              <CalendarDays className="h-4 w-4" />
               <span>Started: {formatDate(project.startDate)}</span>
             </div>
           )}
 
           {project.deadline && (
-            <div className="flex items-center gap-1.5">
-              <CalendarDays className={`h-3.5 w-3.5 ${overdueDeadline ? "text-red-500" : ""}`} />
-              <span className={overdueDeadline ? "text-red-500 font-medium" : ""}>
+            <div className={cn("flex items-center gap-1.5", overdueDeadline ? "text-danger bg-danger-subtle px-1.5 py-0.5 rounded" : "")}>
+              <CalendarDays className="h-4 w-4" />
+              <span>
                 Deadline: {formatDate(project.deadline)} {overdueDeadline && "(Overdue)"}
               </span>
             </div>
           )}
 
           <div className="sm:hidden ml-auto">
-            <span className="font-semibold text-[var(--text-primary)]">{progress}%</span> complete
+            <span className="font-bold text-text-primary">{progress}%</span> complete
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <ProjectNav projectId={projectId} userRole={member.role as "OWNER" | "MEMBER"} />
+        <div className="relative z-10">
+          <ProjectNav projectId={projectId} userRole={member.role as "OWNER" | "MEMBER"} />
+        </div>
       </div>
 
       {/* Main Content View */}
