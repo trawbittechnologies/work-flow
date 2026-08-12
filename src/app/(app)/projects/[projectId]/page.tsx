@@ -106,7 +106,7 @@ export default async function ProjectOverviewPage({ params }: PageProps) {
             <div className="flex items-center gap-3 flex-wrap">
               {project.members.map((m) => (
                 <div key={m.id} className="flex items-center gap-2 bg-[var(--background)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-[8px]">
-                  <span className="text-xs font-medium text-[var(--text-primary)]">{m.user.name}</span>
+                  <span className="text-xs font-medium text-[var(--text-primary)]">{m.user?.name || "Unknown"}</span>
                   <span className="text-[10px] text-[var(--text-muted)] uppercase bg-[var(--surface)] px-1.5 py-0.5 rounded border border-[var(--border)] font-semibold">
                     {m.role}
                   </span>

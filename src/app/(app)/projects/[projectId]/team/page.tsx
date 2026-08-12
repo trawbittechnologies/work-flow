@@ -139,11 +139,11 @@ export default function ProjectTeamPage({ params }: PageProps) {
               className="bg-[var(--surface)] border border-[var(--border)] rounded-[14px] p-4 flex flex-col justify-between shadow-xs relative group"
             >
               <div className="flex items-start gap-3">
-                <Avatar name={member.user.name} src={member.user.avatar} size="lg" />
+                <Avatar name={member.user?.name || "Unknown"} src={member.user?.avatar} size="lg" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
                     <h3 className="text-sm font-semibold text-[var(--text-primary)] truncate">
-                      {member.user.name}
+                      {member.user?.name || "Unknown User"}
                     </h3>
                     {member.role === "OWNER" && (
                       <span className="text-[9px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 px-1.5 py-0.2 rounded uppercase">
@@ -153,7 +153,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
                   </div>
                   <p className="text-xs text-[var(--text-muted)] truncate flex items-center gap-1 mt-0.5">
                     <Mail className="h-3 w-3" />
-                    {member.user.email}
+                    {member.user?.email || "No email"}
                   </p>
                 </div>
               </div>

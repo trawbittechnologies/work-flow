@@ -80,7 +80,7 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
             </div>
             <div className="flex items-center gap-2">
               <AvatarGroup
-                users={project.members.map((m: { user: { name: string; avatar?: string | null } }) => ({ name: m.user.name, avatar: m.user.avatar }))}
+                users={project.members.map((m: { user?: { name?: string; avatar?: string | null } }) => ({ name: m.user?.name || "Unknown", avatar: m.user?.avatar }))}
                 max={5}
                 size="sm"
               />
