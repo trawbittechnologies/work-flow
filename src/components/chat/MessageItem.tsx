@@ -65,6 +65,7 @@ export function MessageItem({ message, isOwn }: { message: any, isOwn: boolean }
           
           {content && <p className="whitespace-pre-wrap leading-relaxed text-sm">{content}</p>}
           
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {message.attachments?.map((att: any) => (
              <div key={att.id} className="mt-2">
                {att.mimeType?.startsWith("image/") ? (
