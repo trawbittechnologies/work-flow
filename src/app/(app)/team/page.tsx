@@ -29,6 +29,8 @@ interface TeamMember {
   assignedTasks: MemberTask[];
 }
 
+import { AddMemberButton } from "./AddMemberButton";
+
 export default async function GlobalTeamPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
@@ -67,11 +69,14 @@ export default async function GlobalTeamPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-bold text-[var(--text-primary)]">Workspace Team</h1>
-        <p className="text-xs text-[var(--text-muted)] mt-0.5">
-          Teammates working across your shared projects ({teamMembers.length})
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-[var(--text-primary)]">Workspace Team</h1>
+          <p className="text-xs text-[var(--text-muted)] mt-0.5">
+            Teammates working across your shared projects ({teamMembers.length})
+          </p>
+        </div>
+        <AddMemberButton />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
