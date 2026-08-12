@@ -20,7 +20,17 @@ export default async function DashboardPage() {
   const userId = session.user.id;
   const now = new Date();
 
-  const [user, projects, myTasks, overdueTasks, activities] = await Promise.all([
+  const [
+    user,
+    projects,
+    myTasks,
+    overdueTasks,
+    activities,
+    totalProjects,
+    activeProjects,
+    completedProjects,
+    pendingTasks,
+  ] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: { name: true },
@@ -65,6 +75,16 @@ export default async function DashboardPage() {
       orderBy: { createdAt: "desc" },
       take: 10,
     }),
+    prisma.project.count({ where: { members: { some: { userId } } } }),
+    prisma.project.count({
+      where: { members: { some: { userId } }, status: "IN_PROGRESS" },
+    }),
+    prisma.project.count({
+      where: { members: { some: { userId } }, status: "COMPLETED" },
+    }),
+    prisma.task.count({
+      where: { assigneeId: userId, status: { not: "DONE" } },
+    }),
   ]);
 
   const greeting = () => {
@@ -73,17 +93,6 @@ export default async function DashboardPage() {
     if (hour < 17) return "Good afternoon";
     return "Good evening";
   };
-
-  const totalProjects = await prisma.project.count({ where: { members: { some: { userId } } } });
-  const activeProjects = await prisma.project.count({
-    where: { members: { some: { userId } }, status: "IN_PROGRESS" },
-  });
-  const completedProjects = await prisma.project.count({
-    where: { members: { some: { userId } }, status: "COMPLETED" },
-  });
-  const pendingTasks = await prisma.task.count({
-    where: { assigneeId: userId, status: { not: "DONE" } },
-  });
 
   return (
     <div className="space-y-6">
