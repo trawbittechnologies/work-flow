@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { publishEvent } from "@/lib/ably";
 
-export async function GET(request: Request, { params }: { params: { conversationId: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ conversationId: string }> }) {
   try {
     const session = await auth();
     if (!session || !session.user || !session.user.id) {
@@ -72,7 +72,7 @@ export async function GET(request: Request, { params }: { params: { conversation
   }
 }
 
-export async function POST(request: Request, { params }: { params: { conversationId: string } }) {
+export async function POST(request: Request, { params }: { params: Promise<{ conversationId: string }> }) {
   try {
     const session = await auth();
     if (!session || !session.user || !session.user.id) {

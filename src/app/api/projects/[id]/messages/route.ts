@@ -3,8 +3,33 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendMessageSchema } from "@/lib/validations/message";
 import { createNotificationsForProjectMembers } from "@/lib/notifications";
+import { publishEvent } from "@/lib/ably";
 
 type RouteParams = { params: Promise<{ id: string }> };
+
+async function getOrCreateProjectConversation(projectId: string) {
+  let conv = await prisma.conversation.findFirst({
+    where: { projectId, type: "PROJECT" }
+  });
+  if (!conv) {
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      include: { members: true }
+    });
+    if (!project) return null;
+    conv = await prisma.conversation.create({
+      data: {
+        type: "PROJECT",
+        projectId: project.id,
+        name: project.name,
+        members: {
+          create: project.members.map((m: any) => ({ userId: m.userId }))
+        }
+      }
+    });
+  }
+  return conv;
+}
 
 // GET /api/projects/[id]/messages
 export async function GET(req: Request, { params }: RouteParams) {
@@ -22,9 +47,12 @@ export async function GET(req: Request, { params }: RouteParams) {
     });
     if (!isMember) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+    const conv = await getOrCreateProjectConversation(id);
+    if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     const messages = await prisma.message.findMany({
-      where: { projectId: id },
-      include: { user: { select: { id: true, name: true, avatar: true } } },
+      where: { conversationId: conv.id },
+      include: { sender: { select: { id: true, name: true, avatar: true } } },
       orderBy: { createdAt: "desc" },
       take: limit,
       ...(cursor && {
@@ -63,13 +91,17 @@ export async function POST(req: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Invalid message" }, { status: 400 });
     }
 
+    const conv = await getOrCreateProjectConversation(id);
+    if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     const message = await prisma.message.create({
       data: {
-        projectId: id,
-        userId: session.user.id,
+        conversationId: conv.id,
+        senderId: session.user.id,
         content: parsed.data.content.trim(),
+        projectId: id,
       },
-      include: { user: { select: { id: true, name: true, avatar: true } } },
+      include: { sender: { select: { id: true, name: true, avatar: true } } },
     });
 
     const project = await prisma.project.findUnique({ where: { id }, select: { name: true } });
@@ -77,9 +109,11 @@ export async function POST(req: Request, { params }: RouteParams) {
     await createNotificationsForProjectMembers(id, session.user.id, {
       type: "NEW_PROJECT_MESSAGE",
       title: `New message in ${project?.name}`,
-      message: `${message.user.name}: ${message.content.slice(0, 80)}`,
+      message: `${message.sender.name}: ${message.content.slice(0, 80)}`,
       taskId: undefined,
     });
+    
+    await publishEvent(`conversation:${conv.id}`, "message.created", message);
 
     return NextResponse.json({ success: true, data: message }, { status: 201 });
   } catch (error) {

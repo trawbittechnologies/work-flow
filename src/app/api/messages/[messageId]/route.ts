@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { publishEvent } from "@/lib/ably";
 
-export async function PATCH(request: Request, { params }: { params: { messageId: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ messageId: string }> }) {
   try {
     const session = await auth();
     if (!session || !session.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -35,7 +35,7 @@ export async function PATCH(request: Request, { params }: { params: { messageId:
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { messageId: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ messageId: string }> }) {
   try {
     const session = await auth();
     if (!session || !session.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
