@@ -10,7 +10,13 @@ async function main() {
   // Clean existing data
   await prisma.activity.deleteMany();
   await prisma.notification.deleteMany();
+  await prisma.messageReaction?.deleteMany();
+  await prisma.messageMention?.deleteMany();
+  await prisma.messageAttachment?.deleteMany();
+  await prisma.messageRead?.deleteMany();
   await prisma.message.deleteMany();
+  await prisma.conversationMember?.deleteMany();
+  await prisma.conversation?.deleteMany();
   await prisma.taskComment.deleteMany();
   await prisma.taskLabel.deleteMany();
   await prisma.label.deleteMany();
@@ -199,20 +205,34 @@ async function main() {
     },
   });
 
-  // Create Project Messages
+  // Create Project Conversation & Messages
+  const project1Conv = await prisma.conversation.create({
+    data: {
+      type: "PROJECT" as any,
+      projectId: project1.id,
+      members: {
+        create: [
+          { userId: admin.id },
+          { userId: sarah.id },
+          { userId: marcus.id },
+          { userId: alex.id },
+        ]
+      }
+    }
+  });
+
   await prisma.message.create({
     data: {
-      projectId: project1.id,
-      userId: admin.id,
-      content:
-        "Welcome to Flowdesk! All core project views are configured and ready.",
+      conversationId: project1Conv.id,
+      senderId: admin.id,
+      content: "Welcome to Flowdesk! All core project views are configured and ready.",
     },
   });
 
   await prisma.message.create({
     data: {
-      projectId: project1.id,
-      userId: sarah.id,
+      conversationId: project1Conv.id,
+      senderId: sarah.id,
       content: "Awesome! The Kanban board drag and drop feels super fast.",
     },
   });
