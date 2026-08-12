@@ -73,14 +73,14 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
               className={cn(
                 "flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-sm font-medium transition-all duration-150",
                 active
-                  ? "bg-[var(--primary-subtle)] text-[var(--primary)]"
+                  ? "bg-[var(--primary-subtle)] text-[var(--text-primary)] font-semibold"
                   : "text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--text-primary)]"
               )}
             >
               <item.icon
                 className={cn(
                   "h-4 w-4 flex-shrink-0",
-                  active ? "text-[var(--primary)]" : "text-[var(--text-muted)]"
+                  active ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"
                 )}
               />
               {item.label}
@@ -94,19 +94,19 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
           className={cn(
             "flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-sm font-medium transition-all duration-150",
             isActive("/notifications")
-              ? "bg-[var(--primary-subtle)] text-[var(--primary)]"
+              ? "bg-[var(--primary-subtle)] text-[var(--text-primary)] font-semibold"
               : "text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--text-primary)]"
           )}
         >
           <Bell
             className={cn(
               "h-4 w-4 flex-shrink-0",
-              isActive("/notifications") ? "text-[var(--primary)]" : "text-[var(--text-muted)]"
+              isActive("/notifications") ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"
             )}
           />
           <span className="flex-1">Notifications</span>
           {unreadNotifications > 0 && (
-            <span className="ml-auto h-4 min-w-[16px] px-1 bg-[var(--primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+            <span className="ml-auto h-4 min-w-[16px] px-1 bg-[var(--primary)] text-[var(--text-primary)] text-[10px] font-bold rounded-full flex items-center justify-center">
               {unreadNotifications > 99 ? "99+" : unreadNotifications}
             </span>
           )}

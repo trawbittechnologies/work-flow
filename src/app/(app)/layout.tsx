@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { ForceLogout } from "@/components/auth/ForceLogout";
 import { NotificationManager } from "@/components/notifications/NotificationManager";
+import { AblyProvider } from "@/components/chat/AblyProvider";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -24,22 +25,24 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!user) return <ForceLogout />;
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      <Sidebar user={user} unreadNotifications={unreadCount} />
-      <Header user={user} unreadNotifications={unreadCount} />
-      <main
-        className="md:ml-[240px] pt-[56px] pb-16 md:pb-0 min-h-screen"
-        id="main-content"
-      >
-        <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
-          {children}
-        </div>
-      </main>
-      <MobileNav unreadNotifications={unreadCount} />
-      <NotificationManager 
-        userId={user.id} 
-        vapidPublicKey={process.env.VAPID_PUBLIC_KEY || ""} 
-      />
-    </div>
+    <AblyProvider>
+      <div className="min-h-screen bg-[var(--background)]">
+        <Sidebar user={user} unreadNotifications={unreadCount} />
+        <Header user={user} unreadNotifications={unreadCount} />
+        <main
+          className="md:ml-[240px] pt-[56px] pb-16 md:pb-0 min-h-screen"
+          id="main-content"
+        >
+          <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
+            {children}
+          </div>
+        </main>
+        <MobileNav unreadNotifications={unreadCount} />
+        <NotificationManager 
+          userId={user.id} 
+          vapidPublicKey={process.env.VAPID_PUBLIC_KEY || ""} 
+        />
+      </div>
+    </AblyProvider>
   );
 }

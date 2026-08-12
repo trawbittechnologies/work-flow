@@ -28,7 +28,7 @@ export function NotificationManager({ userId, vapidPublicKey }: NotificationMana
   // Subscribe to realtime Ably channel
   const client = useAbly();
   useEffect(() => {
-    if (!client) return;
+    if (!client || !client.channels) return;
     const channel = client.channels.get(`user:${userId}`);
     channel.subscribe("notification.created", (message) => {
       const data = message.data;

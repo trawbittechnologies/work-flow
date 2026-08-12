@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useChatStore } from "./useChatStore";
 import { MessageList } from "./MessageList";
 import { MessageComposer } from "./MessageComposer";
-import { AblyProvider } from "./AblyProvider";
 import { Users, Hash } from "lucide-react";
 
 export function ChatLayout({ currentUserId }: { currentUserId: string }) {
@@ -27,7 +26,6 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
   const activeConversation = conversations.find(c => c.id === activeConversationId);
 
   return (
-    <AblyProvider>
       <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800">
         {/* Sidebar */}
         <div className="w-80 border-r border-gray-200 dark:border-gray-800 flex flex-col">
@@ -78,6 +76,5 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
           )}
         </div>
       </div>
-    </AblyProvider>
   );
 }
