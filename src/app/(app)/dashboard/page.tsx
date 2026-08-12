@@ -95,7 +95,6 @@ export default async function DashboardPage() {
   };
 
   return (
-  return (
     <div className="space-y-8 pb-8">
       {/* Greeting */}
       <div className="flex items-start justify-between">
