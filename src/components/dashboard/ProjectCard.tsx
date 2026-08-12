@@ -69,7 +69,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {/* Footer */}
       <div className="flex items-center justify-between mt-auto">
         <AvatarGroup
-          users={project.members.map((m) => ({ name: m.user.name, avatar: m.user.avatar }))}
+          users={project.members.map((m) => ({ name: m.user?.name || "Unknown", avatar: m.user?.avatar }))}
           max={4}
           size="xs"
         />

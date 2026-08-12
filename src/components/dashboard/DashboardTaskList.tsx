@@ -46,12 +46,25 @@ export function DashboardTaskList({ tasks }: DashboardTaskListProps) {
             {/* Title + project */}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-text-primary truncate group-hover:text-primary transition-colors">{task.title}</p>
-              <p className="text-xs text-text-muted truncate mt-0.5 flex items-center gap-1.5">
-                <span className="inline-flex items-center justify-center h-4 w-4 rounded bg-surface-alt border border-border text-[8px]">
-                  {task.project.icon}
-                </span>
-                {task.project.name}
-              </p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <p className="text-xs text-text-muted truncate flex items-center gap-1.5">
+                  <span className="inline-flex items-center justify-center h-4 w-4 rounded bg-surface-alt border border-border text-[8px]">
+                    {task.project.icon}
+                  </span>
+                  {task.project.name}
+                </p>
+                {task.assignee && (
+                  <>
+                    <span className="text-border-subtle">•</span>
+                    <div className="flex items-center gap-1">
+                      <div className="h-4 w-4 rounded-full overflow-hidden bg-surface-alt border border-border text-[8px] flex items-center justify-center text-text-muted font-bold">
+                        {task.assignee.name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-xs text-text-secondary truncate max-w-[80px]">{task.assignee.name}</span>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Due date */}
