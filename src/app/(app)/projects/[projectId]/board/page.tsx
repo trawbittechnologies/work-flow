@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { TaskModal } from "@/components/tasks/TaskModal";
+import { TaskDrawer } from "@/components/tasks/TaskDrawer";
 import { Button } from "@/components/ui/Button";
 import { Plus } from "lucide-react";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -21,6 +22,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalDefaultStatus, setModalDefaultStatus] = useState<"TODO" | "IN_PROGRESS" | "REVIEW" | "DONE">("TODO");
+  const [drawerTaskId, setDrawerTaskId] = useState<string | null>(null);
 
   async function loadData() {
     try {
@@ -83,6 +85,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
           initialTasks={tasks}
           projectId={projectId}
           onAddTask={handleOpenModalWithStatus}
+          onTaskClick={(task) => setDrawerTaskId(task.id)}
         />
       )}
 
@@ -94,6 +97,14 @@ export default function ProjectBoardPage({ params }: PageProps) {
         members={members}
         defaultStatus={modalDefaultStatus}
         onTaskCreated={loadData}
+      />
+
+      <TaskDrawer
+        taskId={drawerTaskId}
+        isOpen={!!drawerTaskId}
+        onClose={() => setDrawerTaskId(null)}
+        onTaskUpdated={loadData}
+        onTaskDeleted={loadData}
       />
     </div>
   );

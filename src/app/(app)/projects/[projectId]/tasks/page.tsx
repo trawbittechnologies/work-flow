@@ -22,6 +22,7 @@ export default function ProjectTasksPage({ params }: PageProps) {
   const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [drawerTaskId, setDrawerTaskId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
 
@@ -140,6 +141,15 @@ export default function ProjectTasksPage({ params }: PageProps) {
         projectId={projectId}
         members={members}
         onTaskCreated={loadData}
+      />
+
+      {/* Task Details Drawer */}
+      <TaskDrawer
+        taskId={drawerTaskId}
+        isOpen={!!drawerTaskId}
+        onClose={() => setDrawerTaskId(null)}
+        onTaskUpdated={loadData}
+        onTaskDeleted={loadData}
       />
     </div>
   );
