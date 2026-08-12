@@ -36,8 +36,8 @@ export default function RootLayout({
       <body className="font-sans antialiased text-primary bg-background selection:bg-primary-subtle selection:text-text-primary">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
         >
           <ToastProvider>
