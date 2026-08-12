@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import { TaskTable } from "@/components/tasks/TaskTable";
 import { TaskModal } from "@/components/tasks/TaskModal";
+import { TaskDrawer } from "@/components/tasks/TaskDrawer";
 import { Button } from "@/components/ui/Button";
 import { Plus, Search, Filter } from "lucide-react";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -120,6 +121,7 @@ export default function ProjectTasksPage({ params }: PageProps) {
         <TaskTable
           tasks={filteredTasks}
           onStatusChange={handleStatusChange}
+          onTaskClick={(task) => setDrawerTaskId(task.id)}
         />
       ) : (
         <EmptyState
