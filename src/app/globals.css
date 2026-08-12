@@ -2,20 +2,20 @@
 
 @layer base {
   :root {
-    --background: #F8FAFC;
+    --background: #F7F8F2;
     --surface: #FFFFFF;
-    --surface-alt: #F1F5F9;
-    --border: #E2E8F0;
-    --border-subtle: #F1F5F9;
+    --surface-alt: #F2F4EC;
+    --border: #E5EAD7;
+    --border-subtle: #F2F4EC;
     
-    --text-primary: #0F172A;
-    --text-secondary: #64748B;
-    --text-muted: #94A3B8;
+    --text-primary: #182018;
+    --text-secondary: #4A564A;
+    --text-muted: #7E8C7E;
     
-    --primary: #5B5CE2;
-    --primary-dark: #4748C7;
-    --primary-subtle: #EEF2FF;
-    --accent: #7C3AED;
+    --primary: #BDCE4A;
+    --primary-dark: #A6B836;
+    --primary-subtle: #F6F8E8;
+    --accent: #BDCE4A;
     
     --success: #16A34A;
     --success-subtle: #F0FDF4;
