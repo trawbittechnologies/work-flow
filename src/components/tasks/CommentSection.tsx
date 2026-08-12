@@ -47,9 +47,9 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
   }
 
   return (
-    <div className="space-y-4 pt-4 border-t border-[var(--border)]">
-      <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-1.5">
-        <MessageSquare className="h-4 w-4" />
+    <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle">
+      <h3 className="text-sm font-bold text-text-primary flex items-center gap-1.5">
+        <MessageSquare className="h-4 w-4 text-text-muted" />
         Comments ({comments.length})
       </h3>
 
@@ -60,7 +60,7 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
           placeholder="Add a comment to this task..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="flex-1 h-9 px-3 text-xs rounded-[10px] border border-[var(--border)] bg-[var(--surface)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-[var(--text-primary)]"
+          className="flex-1 h-9 px-3.5 text-sm rounded-lg border border-border bg-surface-alt focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-text-primary placeholder:text-text-muted transition-all"
         />
         <Button
           type="submit"
@@ -77,20 +77,20 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
       {/* List */}
       <div className="space-y-3 pt-2">
         {comments.map((comment) => (
-          <div key={comment.id} className="flex items-start gap-3 bg-[var(--background)] p-3 rounded-[10px] border border-[var(--border-subtle)]">
-            <Avatar name={comment.user.name} src={comment.user.avatar} size="xs" />
+          <div key={comment.id} className="flex items-start gap-3 bg-surface p-3.5 rounded-xl border border-border shadow-sm">
+            <Avatar name={comment.user.name} src={comment.user.avatar} size="sm" />
             <div className="flex-1 min-w-0">
-              <div className="flex items-baseline justify-between">
-                <span className="text-xs font-semibold text-[var(--text-primary)]">{comment.user.name}</span>
-                <span className="text-[10px] text-[var(--text-muted)]">{formatRelative(comment.createdAt)}</span>
+              <div className="flex items-baseline justify-between mb-0.5">
+                <span className="text-sm font-bold text-text-primary">{comment.user.name}</span>
+                <span className="text-[11px] font-medium text-text-muted">{formatRelative(comment.createdAt)}</span>
               </div>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 whitespace-pre-wrap">{comment.content}</p>
+              <p className="text-sm text-text-secondary mt-1 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
             </div>
           </div>
         ))}
 
         {comments.length === 0 && (
-          <p className="text-xs text-[var(--text-muted)] text-center py-4">No comments yet.</p>
+          <p className="text-sm text-text-muted text-center py-6 bg-surface-alt rounded-xl border border-dashed border-border">No comments yet. Be the first to start the conversation.</p>
         )}
       </div>
     </div>
