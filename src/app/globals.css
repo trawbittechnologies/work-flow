@@ -2,17 +2,17 @@
 
 @layer base {
   :root {
-    --background: #F8FAFC;
+    --background: #F4F5F7;
     --surface: #FFFFFF;
     --surface-elevated: #FFFFFF;
-    --border: #E2E8F0;
-    --border-subtle: #F1F5F9;
-    --text-primary: #0F172A;
-    --text-secondary: #64748B;
-    --text-muted: #94A3B8;
-    --primary: #6366F1;
-    --primary-hover: #4F46E5;
-    --primary-subtle: #EEF2FF;
+    --border: #DFE1E6;
+    --border-subtle: #EBECF0;
+    --text-primary: #172B4D;
+    --text-secondary: #42526E;
+    --text-muted: #6B778C;
+    --primary: #C3D946;
+    --primary-hover: #b0c43f;
+    --primary-subtle: #f5f9e1;
     --success: #16A34A;
     --success-subtle: #F0FDF4;
     --warning: #F59E0B;
@@ -21,11 +21,11 @@
     --danger-subtle: #FEF2F2;
     --sidebar-width: 240px;
     --header-height: 56px;
-    --radius: 10px;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+    --radius: 6px;
+    --shadow-sm: 0 1px 2px 0 rgb(9 30 66 / 0.15);
+    --shadow: 0 1px 3px 0 rgb(9 30 66 / 0.1), 0 1px 2px -1px rgb(9 30 66 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(9 30 66 / 0.07), 0 2px 4px -2px rgb(9 30 66 / 0.07);
+    --shadow-lg: 0 8px 12px -3px rgb(9 30 66 / 0.08), 0 4px 6px -4px rgb(9 30 66 / 0.08);
   }
 
   .dark {
@@ -90,8 +90,8 @@
 
   /* Selection */
   ::selection {
-    background-color: #EEF2FF;
-    color: #4F46E5;
+    background-color: #f5f9e1;
+    color: #172B4D;
   }
 
   .dark ::selection {
