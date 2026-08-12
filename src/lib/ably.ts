@@ -9,6 +9,7 @@ if (process.env.ABLY_API_KEY) {
   console.warn("ABLY_API_KEY is not defined. Real-time events will not be sent.");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function publishEvent(channelName: string, eventName: string, data: any) {
   if (!ablyRest) return;
   

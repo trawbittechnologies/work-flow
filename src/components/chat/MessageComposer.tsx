@@ -10,7 +10,7 @@ export function MessageComposer({ conversationId, currentUserId }: { conversatio
   const { replyingTo, setReplyingTo } = useChatStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { channel } = useChannel(`conversation:${conversationId}`, (message) => {
+  const { channel } = useChannel(`conversation:${conversationId}`, () => {
     // we use the channel to publish typing events here
   });
 

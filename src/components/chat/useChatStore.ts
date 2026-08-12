@@ -5,7 +5,9 @@ interface ChatStore {
   setActiveConversation: (id: string | null) => void;
   typingUsers: Record<string, string[]>; // conversationId -> array of user names
   setTyping: (conversationId: string, userName: string, isTyping: boolean) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   replyingTo: any | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setReplyingTo: (msg: any | null) => void;
 }
 

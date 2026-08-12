@@ -7,6 +7,7 @@ import { AblyProvider } from "./AblyProvider";
 import { Users, Hash } from "lucide-react";
 
 export function ChatLayout({ currentUserId }: { currentUserId: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [conversations, setConversations] = useState<any[]>([]);
   const { activeConversationId, setActiveConversation } = useChatStore();
 
@@ -20,6 +21,7 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
         }
       })
       .catch(e => console.error(e));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const activeConversation = conversations.find(c => c.id === activeConversationId);

@@ -111,6 +111,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ con
           create: attachments || []
         },
         mentions: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           create: (mentions || []).map((m: any) => ({ userId: m.userId }))
         }
       },

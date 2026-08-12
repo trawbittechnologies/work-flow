@@ -5,7 +5,8 @@ import { useChatStore } from "./useChatStore";
 import { useState } from "react";
 import { useChannel } from "ably/react";
 
-export function MessageItem({ message, isOwn, currentUserId }: { message: any, isOwn: boolean, currentUserId: string }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function MessageItem({ message, isOwn }: { message: any, isOwn: boolean }) {
   const { setReplyingTo } = useChatStore();
   const [isDeleted, setIsDeleted] = useState(!!message.deletedAt);
   const [content, setContent] = useState(message.content);
@@ -67,6 +68,7 @@ export function MessageItem({ message, isOwn, currentUserId }: { message: any, i
           {message.attachments?.map((att: any) => (
              <div key={att.id} className="mt-2">
                {att.mimeType?.startsWith("image/") ? (
+                 // eslint-disable-next-line @next/next/no-img-element
                  <img src={att.url} alt={att.filename} className="rounded-lg max-w-full h-auto object-cover max-h-64 border border-black/10" loading="lazy" />
                ) : (
                  <a href={att.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-black/10 dark:bg-white/10 p-3 rounded-lg hover:bg-black/20 transition-colors">

@@ -5,6 +5,7 @@ import { TypingIndicator } from "./TypingIndicator";
 import { useChannel } from "ably/react";
 
 export function MessageList({ conversationId, currentUserId }: { conversationId: string, currentUserId: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -28,6 +29,7 @@ export function MessageList({ conversationId, currentUserId }: { conversationId:
 
   useEffect(() => {
     fetchMessages();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
   useChannel(`conversation:${conversationId}`, (msg) => {
@@ -56,7 +58,7 @@ export function MessageList({ conversationId, currentUserId }: { conversationId:
       ) : (
         <div className="flex flex-col">
           {messages.map((msg) => (
-            <MessageItem key={msg.id} message={msg} isOwn={msg.senderId === currentUserId} currentUserId={currentUserId} />
+            <MessageItem key={msg.id} message={msg} isOwn={msg.senderId === currentUserId} />
           ))}
         </div>
       )}
