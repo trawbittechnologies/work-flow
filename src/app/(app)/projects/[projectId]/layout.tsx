@@ -5,7 +5,8 @@ import { calculateProgress, formatDate, isOverdue, cn } from "@/lib/utils";
 import { StatusBadge } from "@/components/ui/Badge";
 import { AvatarGroup } from "@/components/ui/Avatar";
 import { ProjectNav } from "@/components/projects/ProjectNav";
-import { CalendarDays, ShieldCheck } from "lucide-react";
+import { CalendarDays, ShieldCheck, Plus } from "lucide-react";
+import Link from "next/link";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -77,11 +78,20 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
                 {progress}% <span className="text-text-muted font-medium">({completedTasks}/{totalTasks})</span>
               </span>
             </div>
-            <AvatarGroup
-              users={project.members.map((m: { user: { name: string; avatar?: string | null } }) => ({ name: m.user.name, avatar: m.user.avatar }))}
-              max={5}
-              size="sm"
-            />
+            <div className="flex items-center gap-2">
+              <AvatarGroup
+                users={project.members.map((m: { user: { name: string; avatar?: string | null } }) => ({ name: m.user.name, avatar: m.user.avatar }))}
+                max={5}
+                size="sm"
+              />
+              <Link 
+                href={`/projects/${projectId}/team`}
+                className="h-8 w-8 rounded-full border border-dashed border-border-subtle flex items-center justify-center text-text-muted hover:text-text-primary hover:border-border transition-colors bg-surface-alt hover:bg-surface"
+                title="Add team member"
+              >
+                <Plus className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
 

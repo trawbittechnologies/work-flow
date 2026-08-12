@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
@@ -30,6 +31,7 @@ const navItems = [
   { label: "Projects", href: "/projects", icon: FolderKanban },
   { label: "My Tasks", href: "/tasks", icon: CheckSquare },
   { label: "Team", href: "/team", icon: Users },
+  { label: "Chat", href: "/chat", icon: MessageSquare },
 ];
 
 export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
