@@ -3,13 +3,14 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import { sendEmailNotification } from "@/lib/email";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const addMemberSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email format"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export async function addTeamMember(formData: FormData) {
@@ -26,7 +27,7 @@ export async function addTeamMember(formData: FormData) {
       return { error: parsed.error.errors[0].message };
     }
 
-    const { name, email, password } = parsed.data;
+    const { name, email } = parsed.data;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -37,8 +38,9 @@ export async function addTeamMember(formData: FormData) {
       return { error: "A user with this email already exists." };
     }
 
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
+    // Generate automatic password
+    const generatedPassword = crypto.randomBytes(6).toString('hex'); // 12 chars
+    const passwordHash = await bcrypt.hash(generatedPassword, 10);
 
     // Create user
     await prisma.user.create({
@@ -50,6 +52,22 @@ export async function addTeamMember(formData: FormData) {
           name
         )}&backgroundColor=e0e7ff`,
       },
+    });
+
+    // Send email with password
+    await sendEmailNotification({
+      to: email.toLowerCase(),
+      subject: "Welcome to Flowdesk",
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #172B4D;">
+          <h2 style="color: #C3D946; background: #172B4D; padding: 16px; border-radius: 8px;">Welcome to Flowdesk!</h2>
+          <p>Hi <strong>${name}</strong>,</p>
+          <p>You have been added to the workspace.</p>
+          <p>Your temporary password is: <strong style="background: #F4F5F7; padding: 4px 8px; border-radius: 4px; letter-spacing: 1px;">${generatedPassword}</strong></p>
+          <p>Please log in and change your password as soon as possible.</p>
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/login" style="display: inline-block; padding: 10px 20px; background-color: #C3D946; color: #172B4D; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px;">Log in to Flowdesk</a>
+        </div>
+      `
     });
 
     revalidatePath("/team");
