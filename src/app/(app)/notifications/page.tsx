@@ -46,7 +46,7 @@ export default function NotificationsPage() {
     try {
       const res = await fetch("/api/notifications/read-all", { method: "POST" });
       if (res.ok) {
-        setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
         success("All marked read", "Your notification inbox is clean.");
       }
     } catch {
@@ -55,11 +55,11 @@ export default function NotificationsPage() {
   }
 
   async function handleMarkSingleRead(id: string) {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
     await fetch(`/api/notifications/${id}`, { method: "PATCH" });
   }
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -94,9 +94,9 @@ export default function NotificationsPage() {
           {notifications.map((n) => (
             <div
               key={n.id}
-              onClick={() => !n.isRead && handleMarkSingleRead(n.id)}
+              onClick={() => !n.read && handleMarkSingleRead(n.id)}
               className={`p-4 flex items-start gap-3.5 transition-colors cursor-pointer ${
-                !n.isRead ? "bg-[var(--primary-subtle)]/20" : "hover:bg-[var(--background)]"
+                !n.read ? "bg-[var(--primary-subtle)]/20" : "hover:bg-[var(--background)]"
               }`}
             >
               <div className="h-8 w-8 rounded-full bg-[var(--background)] border border-[var(--border)] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -105,7 +105,7 @@ export default function NotificationsPage() {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline justify-between gap-2">
-                  <h3 className={`text-xs font-semibold ${!n.isRead ? "text-[var(--primary)]" : "text-[var(--text-primary)]"}`}>
+                  <h3 className={`text-xs font-semibold ${!n.read ? "text-[var(--primary)]" : "text-[var(--text-primary)]"}`}>
                     {n.title}
                   </h3>
                   <span className="text-[10px] text-[var(--text-muted)] flex-shrink-0">
@@ -115,7 +115,7 @@ export default function NotificationsPage() {
                 <p className="text-xs text-[var(--text-secondary)] mt-0.5">{n.message}</p>
               </div>
 
-              {!n.isRead && (
+              {!n.read && (
                 <span className="h-2 w-2 rounded-full bg-[var(--primary)] flex-shrink-0 mt-2" />
               )}
             </div>

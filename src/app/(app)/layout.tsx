@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { ForceLogout } from "@/components/auth/ForceLogout";
+import { NotificationManager } from "@/components/notifications/NotificationManager";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -16,7 +17,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       select: { id: true, name: true, email: true, avatar: true },
     }),
     prisma.notification.count({
-      where: { userId: session.user.id, isRead: false },
+      where: { userId: session.user.id, read: false },
     }),
   ]);
 
@@ -35,6 +36,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </div>
       </main>
       <MobileNav unreadNotifications={unreadCount} />
+      <NotificationManager 
+        userId={user.id} 
+        vapidPublicKey={process.env.VAPID_PUBLIC_KEY || ""} 
+      />
     </div>
   );
 }

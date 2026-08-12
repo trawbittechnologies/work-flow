@@ -11,7 +11,7 @@ export function AblyProvider({ children }: { children: ReactNode }) {
     // Only initialize if we're in the browser to avoid SSR issues
     if (typeof window !== 'undefined') {
       const ablyClient = new Realtime({
-        authUrl: '/api/ably/auth',
+        authUrl: '/api/ably/token',
         // Optional: you can add recovery mechanism or other config here
       });
       setClient(ablyClient);

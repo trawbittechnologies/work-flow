@@ -106,6 +106,7 @@ model User {
   mentions              MessageMention[]     @relation("MentionedUser")
   messageReactions      MessageReaction[]
   messageReads          MessageRead[]
+  pushSubscriptions     PushSubscription[]
 
   @@map("users")
 }
@@ -350,9 +351,10 @@ model Notification {
   type      NotificationType
   title     String
   message   String
+  link      String?
   projectId String?
   taskId    String?
-  isRead    Boolean          @default(false)
+  read      Boolean          @default(false)
   createdAt DateTime         @default(now())
 
   // Relations
@@ -361,8 +363,24 @@ model Notification {
   task    Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([userId, isRead])
+  @@index([userId, read])
   @@map("notifications")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
 }
 
 model Activity {

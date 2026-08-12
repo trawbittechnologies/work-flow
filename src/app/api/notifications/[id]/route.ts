@@ -17,7 +17,7 @@ export async function PATCH(_req: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    await prisma.notification.update({ where: { id }, data: { isRead: true } });
+    await prisma.notification.update({ where: { id }, data: { read: true } });
 
     return NextResponse.json({ success: true });
   } catch (error) {
