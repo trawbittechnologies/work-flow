@@ -13,7 +13,7 @@ interface DrawerProps {
   width?: string;
 }
 
-export function Drawer({ isOpen, onClose, title, children, width = "w-[480px]" }: DrawerProps) {
+export function Drawer({ isOpen, onClose, title, children, width = "w-[500px]" }: DrawerProps) {
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
@@ -33,23 +33,23 @@ export function Drawer({ isOpen, onClose, title, children, width = "w-[480px]" }
     <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/30 backdrop-blur-sm animate-in"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in"
         onClick={onClose}
       />
       {/* Panel */}
       <div
         className={cn(
-          "relative ml-auto h-full bg-[var(--surface)] border-l border-[var(--border)] shadow-xl",
+          "relative ml-auto h-full bg-surface border-l border-border shadow-2xl",
           "flex flex-col overflow-hidden slide-in-right",
           width,
-          "max-w-full"
+          "max-w-[100vw]"
         )}
       >
         {title && (
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] flex-shrink-0">
-            <h2 className="text-base font-semibold text-[var(--text-primary)]">{title}</h2>
-            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close panel">
-              <X className="h-4 w-4" />
+          <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-surface-alt/50 flex-shrink-0">
+            <h2 className="text-lg font-bold text-text-primary tracking-tight">{title}</h2>
+            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close panel" className="hover:bg-surface text-text-muted hover:text-text-primary">
+              <X className="h-5 w-5" />
             </Button>
           </div>
         )}
