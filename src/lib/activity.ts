@@ -1,5 +1,17 @@
 import { prisma } from "@/lib/prisma";
-import type { ActivityType } from "@prisma/client";
+
+export type ActivityType =
+  | "PROJECT_CREATED"
+  | "PROJECT_STATUS_CHANGED"
+  | "MEMBER_ADDED"
+  | "MEMBER_REMOVED"
+  | "TASK_CREATED"
+  | "TASK_ASSIGNED"
+  | "TASK_STATUS_CHANGED"
+  | "TASK_PRIORITY_CHANGED"
+  | "TASK_COMPLETED"
+  | "COMMENT_ADDED"
+  | "FILE_UPLOADED";
 
 interface LogActivityInput {
   projectId: string;
@@ -14,7 +26,7 @@ export async function logActivity(input: LogActivityInput) {
       data: {
         projectId: input.projectId,
         userId: input.userId,
-        type: input.type,
+        type: input.type as any,
         metadata: (input.metadata ?? {}) as any,
       },
     });

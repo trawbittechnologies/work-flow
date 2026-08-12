@@ -1,5 +1,14 @@
 import { prisma } from "@/lib/prisma";
-import type { NotificationType } from "@prisma/client";
+
+export type NotificationType =
+  | "TASK_ASSIGNED"
+  | "TASK_COMPLETED"
+  | "TASK_STATUS_CHANGED"
+  | "TASK_DUE_SOON"
+  | "TASK_OVERDUE"
+  | "PROJECT_INVITE"
+  | "MENTION"
+  | "NEW_PROJECT_MESSAGE";
 
 interface CreateNotificationInput {
   userId: string;
@@ -15,7 +24,7 @@ export async function createNotification(input: CreateNotificationInput) {
     await prisma.notification.create({
       data: {
         userId: input.userId,
-        type: input.type,
+        type: input.type as any,
         title: input.title,
         message: input.message,
         projectId: input.projectId,
@@ -43,6 +52,7 @@ export async function createNotificationsForProjectMembers(
         userId: m.userId,
         projectId,
         ...input,
+        type: input.type as any,
       })),
     });
   } catch (error) {
