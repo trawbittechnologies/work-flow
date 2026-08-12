@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { ForceLogout } from "@/components/auth/ForceLogout";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -19,7 +20,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     }),
   ]);
 
-  if (!user) redirect("/login");
+  if (!user) return <ForceLogout />;
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
