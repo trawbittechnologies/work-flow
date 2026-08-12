@@ -19,7 +19,6 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       select: { id: true, name: true, email: true, avatar: true },
     }),
     prisma.notification.count({
-      // @ts-expect-error read exists in DB but Prisma type cache might be stale
       where: { userId: session.user.id, read: false },
     }),
   ]);
