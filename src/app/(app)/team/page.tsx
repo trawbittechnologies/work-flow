@@ -45,13 +45,8 @@ export default async function GlobalTeamPage() {
 
   const projectIds = myProjects.map((p: { id: string }) => p.id);
 
-  // Find all members in those projects
+  // Find all members in the workspace
   const teamMembers = await prisma.user.findMany({
-    where: {
-      projectMembships: {
-        some: { projectId: { in: projectIds } },
-      },
-    },
     include: {
       projectMembships: {
         where: { projectId: { in: projectIds } },
@@ -73,7 +68,7 @@ export default async function GlobalTeamPage() {
         <div>
           <h1 className="text-xl font-bold text-[var(--text-primary)]">Workspace Team</h1>
           <p className="text-xs text-[var(--text-muted)] mt-0.5">
-            Teammates working across your shared projects ({teamMembers.length})
+            All members in your workspace ({teamMembers.length})
           </p>
         </div>
         <AddMemberButton />
