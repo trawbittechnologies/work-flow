@@ -27,7 +27,34 @@ export default function ProjectTasksPage({ params }: PageProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
 
-  async function loadData() {
+  useEffect(() => {
+    let ignore = false;
+    async function fetchData() {
+      try {
+        const [tasksRes, membersRes] = await Promise.all([
+          fetch(`/api/tasks?projectId=${projectId}`),
+          fetch(`/api/projects/${projectId}/members`),
+        ]);
+
+        if (tasksRes.ok) {
+          const data = await tasksRes.json();
+          if (!ignore) setTasks(data.data || []);
+        }
+        if (membersRes.ok) {
+          const data = await membersRes.json();
+          if (!ignore) setMembers(data.data || []);
+        }
+      } catch {
+        if (!ignore) showError("Error loading tasks", "Could not fetch project tasks.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => { ignore = true; };
+  }, [projectId, showError]);
+
+  async function reloadData() {
     try {
       const [tasksRes, membersRes] = await Promise.all([
         fetch(`/api/tasks?projectId=${projectId}`),
@@ -44,18 +71,12 @@ export default function ProjectTasksPage({ params }: PageProps) {
       }
     } catch {
       showError("Error loading tasks", "Could not fetch project tasks.");
-    } finally {
-      setLoading(false);
     }
   }
 
-  useEffect(() => {
-    loadData();
-  }, [projectId]);
-
   async function handleStatusChange(taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") {
     setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
+      prev.map((t) => (t.id === taskId ? ({ ...t, status: newStatus as TaskWithDetails["status"] }) : t))
     );
 
     await fetch(`/api/tasks/${taskId}`, {
@@ -142,7 +163,7 @@ export default function ProjectTasksPage({ params }: PageProps) {
         onClose={() => setIsModalOpen(false)}
         projectId={projectId}
         members={members}
-        onTaskCreated={loadData}
+        onTaskCreated={reloadData}
       />
 
       {/* Task Details Drawer */}
@@ -150,8 +171,8 @@ export default function ProjectTasksPage({ params }: PageProps) {
         taskId={drawerTaskId}
         isOpen={!!drawerTaskId}
         onClose={() => setDrawerTaskId(null)}
-        onTaskUpdated={loadData}
-        onTaskDeleted={loadData}
+        onTaskUpdated={reloadData}
+        onTaskDeleted={reloadData}
       />
     </div>
   );
