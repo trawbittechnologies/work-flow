@@ -10,14 +10,16 @@ import {
   ChevronDown, 
   ChevronUp, 
   ExternalLink,
-  CheckCircle2
+  CheckCircle2,
+  LayoutGrid
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export type FlowdeskNotificationType = 
   | "MEMBER_ACTIVITY"  // 👤 Project/member activity
   | "TASK_ACTIVITY"    // 📋 Task activity
-  | "COMMENT"          // 💬 Comment
+  | "COMMENT"          // 💬 Comment / Chat
   | "MENTION"          // @ Mention
   | "GENERAL";         // 🔔 General notification
 
@@ -28,7 +30,7 @@ export interface FlowdeskNotificationProps {
   actionText: string;
   targetName: string;
   targetLink?: string;
-  contextTag?: string; // e.g., "Project · Developer" or "Task · High Priority"
+  contextTag?: string;
   timestamp: string;
   read?: boolean;
   onMarkRead?: (id: string) => void;
@@ -36,43 +38,31 @@ export interface FlowdeskNotificationProps {
 }
 
 /**
- * Minimal Geometric FlowDesk Brand Mark
- * White symbol on #BFD437 rounded-square icon container
+ * Modern FlowDesk Brand Mark Header Icon
+ * Deep Midnight Navy (#0A1237) container with Electric Lime (#C3D946) logo icon
  */
 export function FlowdeskBrandMark({ className }: { className?: string }) {
   return (
     <div 
       className={cn(
-        "w-7 h-7 rounded-lg bg-[#BFD437] flex items-center justify-center shadow-xs flex-shrink-0",
+        "w-8 h-8 rounded-xl bg-[#0A1237] text-[#C3D946] flex items-center justify-center shadow-xs flex-shrink-0 border border border-[#0A1237]",
         className
       )}
     >
-      <svg 
-        width="16" 
-        height="16" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Geometric interlocking FlowDesk marks */}
-        <rect x="4" y="4" width="7" height="7" rx="1.5" fill="#FFFFFF" />
-        <rect x="13" y="4" width="7" height="7" rx="1.5" fill="#FFFFFF" fillOpacity="0.85" />
-        <rect x="4" y="13" width="7" height="7" rx="1.5" fill="#FFFFFF" fillOpacity="0.85" />
-        <rect x="13" y="13" width="7" height="7" rx="1.5" fill="#FFFFFF" />
-      </svg>
+      <LayoutGrid className="h-4 w-4" />
     </div>
   );
 }
 
 /**
  * Contextual Badge Icon (👤, 📋, 💬, @, 🔔)
- * Background: #F1F5D6
+ * Accent: Electric Lime (#C3D946) & Midnight Navy (#0A1237)
  */
 function ContextualIcon({ type }: { type: FlowdeskNotificationType }) {
-  const iconProps = { className: "h-3.5 w-3.5 text-[#111827]" };
+  const iconProps = { className: "h-3.5 w-3.5 text-[#0A1237] dark:text-[#C3D946]" };
 
   return (
-    <div className="w-6 h-6 rounded-md bg-[#F1F5D6] border border-[#BFD437]/40 flex items-center justify-center flex-shrink-0">
+    <div className="w-6 h-6 rounded-lg bg-[#C3D946]/20 border border-[#C3D946]/50 flex items-center justify-center flex-shrink-0">
       {type === "MEMBER_ACTIVITY" && <UserPlus {...iconProps} />}
       {type === "TASK_ACTIVITY" && <ClipboardList {...iconProps} />}
       {type === "COMMENT" && <MessageSquare {...iconProps} />}
@@ -100,37 +90,36 @@ export function FlowdeskNotificationCard({
   return (
     <div
       className={cn(
-        "group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-4 shadow-xs transition-all duration-200 hover:shadow-md hover:border-[#BFD437]/60",
-        !read && "bg-[#F8FAFC] border-l-4 border-l-[#BFD437]"
+        "group relative bg-surface border border-border rounded-2xl p-4 card-shadow transition-all duration-200 hover:border-[#C3D946]",
+        !read && "bg-surface border-l-4 border-l-[#C3D946]"
       )}
     >
       {/* Top Identity & Timestamp Bar */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          {/* FlowDesk App Identity Icon */}
-          <FlowdeskBrandMark />
-          <span className="text-xs font-semibold text-[#64748B] tracking-tight">
-            Trawbit FlowDesk
+          <FlowdeskBrandMark className="w-7 h-7 rounded-lg" />
+          <span className="text-xs font-black text-[#0A1237] dark:text-white tracking-tight">
+            Flowdesk
           </span>
           <ContextualIcon type={type} />
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-medium text-[#94A3B8]">
+          <span className="text-[11px] font-bold text-text-muted">
             {timestamp}
           </span>
           {!read && (
             <button
               onClick={() => onMarkRead?.(id)}
               title="Mark as read"
-              className="text-[#94A3B8] hover:text-[#16A34A] transition-colors p-1"
+              className="text-text-muted hover:text-emerald-600 transition-colors p-1 cursor-pointer"
             >
-              <span className="h-2 w-2 rounded-full bg-[#BFD437] block" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#C3D946] block glow-lime animate-pulse" />
             </button>
           )}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-[#94A3B8] hover:text-[#111827] transition-colors p-1 rounded-md hover:bg-[#F8FAFC]"
+            className="text-text-muted hover:text-[#0A1237] dark:hover:text-white transition-colors p-1 rounded-lg hover:bg-surface-alt cursor-pointer"
             aria-label={isExpanded ? "Collapse notification" : "Expand notification"}
           >
             {isExpanded ? (
@@ -143,39 +132,39 @@ export function FlowdeskNotificationCard({
       </div>
 
       {/* Primary Notification Message: Sender -> Action -> Target */}
-      <div className="text-sm leading-snug text-[#111827]">
-        <strong className="font-semibold text-[#111827]">{senderName}</strong>{" "}
-        <span className="text-[#64748B]">{actionText}</span>{" "}
-        <strong className="font-semibold text-[#111827]">{targetName}</strong>
+      <div className="text-xs md:text-sm leading-relaxed text-text-primary pl-0.5">
+        <strong className="font-extrabold text-[#0A1237] dark:text-white">{senderName}</strong>{" "}
+        <span className="text-text-secondary font-medium">{actionText}</span>{" "}
+        <strong className="font-extrabold text-[#0A1237] dark:text-white">{targetName}</strong>
       </div>
 
       {/* Expanded Hierarchy View */}
       {isExpanded && (
-        <div className="mt-3 pt-3 border-t border-[#E2E8F0] space-y-3 animate-in fade-in slide-in-from-top-1 duration-150">
+        <div className="mt-3 pt-3 border-t border-border-subtle space-y-3 animate-in fade-in slide-in-from-top-1 duration-150">
           {/* Context Tag Pill */}
           {contextTag && (
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] font-medium text-[#64748B]">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-alt border border-border text-[10px] font-extrabold text-text-secondary">
               <span>{contextTag}</span>
             </div>
           )}
 
-          {/* Expanded Action Button */}
+          {/* Expanded Action Buttons */}
           <div className="flex items-center justify-between pt-1">
-            <a
+            <Link
               href={targetLink}
               onClick={() => onMarkRead?.(id)}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#BFD437] hover:bg-[#AFC62F] text-[#111827] text-xs font-semibold rounded-lg shadow-2xs transition-colors focus:outline-none focus:ring-2 focus:ring-[#BFD437]/50"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#C3D946] hover:bg-[#A8BD2F] text-[#0A1237] text-xs font-black rounded-xl shadow-xs transition-transform active:scale-98"
             >
               <span>Open {targetName.includes("App") ? "Project" : "Item"}</span>
               <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            </Link>
 
             {!read && (
               <button
                 onClick={() => onMarkRead?.(id)}
-                className="inline-flex items-center gap-1 text-xs font-medium text-[#64748B] hover:text-[#16A34A] transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-emerald-600 transition-colors cursor-pointer"
               >
-                <CheckCircle2 className="h-3.5 w-3.5" />
+                <CheckCircle2 className="h-4 w-4" />
                 <span>Mark read</span>
               </button>
             )}

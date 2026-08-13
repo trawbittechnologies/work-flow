@@ -10,7 +10,6 @@ import {
   AtSign, 
   Sparkles,
   Layers,
-  Filter
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { formatRelative } from "@/lib/utils";
@@ -39,7 +38,6 @@ export default function NotificationsPage() {
   const [activeTab, setActiveTab] = useState<"ALL" | "UNREAD" | "MENTION" | "TASK" | "PROJECT">("ALL");
   const [loading, setLoading] = useState(true);
   
-  // Real DB notifications transformed or static interactive demo notifications
   const [notifications, setNotifications] = useState<DemoNotification[]>([]);
 
   useEffect(() => {
@@ -53,9 +51,9 @@ export default function NotificationsPage() {
             // Map DB notifications to FlowDesk Visual Hierarchy model
             const mapped: DemoNotification[] = body.data.map((n: { id: string; type: string; title: string; message: string; read: boolean; createdAt: string; link?: string }) => {
               let type: FlowdeskNotificationType = "GENERAL";
-              let senderName = "FlowDesk System";
+              let senderName = "Flowdesk System";
               let actionText = "notified you regarding";
-              let targetName = "Trawbit Web App";
+              let targetName = "Workspace";
               let contextTag = "System Notification";
 
               if (n.type.includes("TASK") || n.type.includes("DUE")) {
@@ -66,17 +64,17 @@ export default function NotificationsPage() {
               } else if (n.type.includes("PROJECT") || n.type.includes("MEMBER")) {
                 type = "MEMBER_ACTIVITY";
                 actionText = "added you to project";
-                targetName = "Trawbit Web App";
-                contextTag = "Project · Developer";
+                targetName = "Workspace Project";
+                contextTag = "Project · Collaboration";
               } else if (n.type.includes("COMMENT") || n.type.includes("MESSAGE")) {
                 type = "COMMENT";
-                actionText = "commented on";
-                targetName = "Task Discussion";
-                contextTag = "Comment · Realtime";
+                actionText = "posted a message in";
+                targetName = "Chat Discussion";
+                contextTag = "Chat · Realtime";
               } else if (n.type.includes("MENTION")) {
                 type = "MENTION";
                 actionText = "mentioned you in";
-                targetName = "Trawbit Web App";
+                targetName = "Discussion";
                 contextTag = "Mention · Direct";
               }
 
@@ -100,13 +98,12 @@ export default function NotificationsPage() {
               };
             });
 
-            // If DB yields fewer than 3, inject structured sample notifications matching prompt specification
             if (mapped.length < 3) {
               const defaultDemo: DemoNotification[] = [
                 {
                   id: "demo-1",
                   type: "MEMBER_ACTIVITY",
-                  senderName: "Athul",
+                  senderName: "Athul Krishna",
                   actionText: "added you to",
                   targetName: "Trawbit Web App",
                   targetLink: "/projects",
@@ -119,9 +116,9 @@ export default function NotificationsPage() {
                   type: "TASK_ACTIVITY",
                   senderName: "Sarah Chen",
                   actionText: "assigned you to task",
-                  targetName: "[TRAW-4] Interactive Task Board",
+                  targetName: "[FD-42] Interactive Jira Kanban Board",
                   targetLink: "/tasks",
-                  contextTag: "Task · High Priority",
+                  contextTag: "Task · Urgent Priority",
                   timestamp: "1h ago",
                   read: false,
                 },
@@ -130,7 +127,7 @@ export default function NotificationsPage() {
                   type: "MENTION",
                   senderName: "Alex Rivera",
                   actionText: "mentioned you in a comment on",
-                  targetName: "[TRAW-1] Implement OAuth2 & JWT System",
+                  targetName: "[FD-12] Real-time Push Notifications",
                   targetLink: "/tasks",
                   contextTag: "Mention · Code Review",
                   timestamp: "3h ago",
@@ -140,10 +137,10 @@ export default function NotificationsPage() {
                   id: "demo-4",
                   type: "COMMENT",
                   senderName: "David Kim",
-                  actionText: "posted a new message in",
-                  targetName: "#general channel",
+                  actionText: "sent a direct message in",
+                  targetName: "Direct Messages",
                   targetLink: "/chat",
-                  contextTag: "Comment · Realtime Chat",
+                  contextTag: "Direct Message · Realtime",
                   timestamp: "Yesterday",
                   read: true,
                 },
@@ -201,99 +198,99 @@ export default function NotificationsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 pb-12">
       {/* Brand Header & Action Toolbar */}
-      <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <FlowdeskBrandMark className="w-9 h-9" />
+      <div className="bg-surface border border-border rounded-2xl p-6 card-shadow flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <FlowdeskBrandMark className="w-10 h-10 rounded-2xl" />
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-[#111827] tracking-tight">
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-xl font-black text-[#0A1237] dark:text-white tracking-tight">
                 Notifications
               </h1>
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-[#BFD437] text-[#111827] text-xs font-bold">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#C3D946] text-[#0A1237] text-xs font-black glow-lime">
                   {unreadCount} new
                 </span>
               )}
             </div>
-            <p className="text-xs font-medium text-[#64748B] mt-0.5">
-              Light theme SaaS notification feed for Trawbit FlowDesk
+            <p className="text-xs font-semibold text-text-muted mt-0.5">
+              Real-time activity stream & updates for Flowdesk Workspace
             </p>
           </div>
         </div>
 
         {unreadCount > 0 && (
           <Button
-            variant="outline"
+            variant="primary"
             size="sm"
             onClick={handleMarkAllRead}
-            className="border-[#E2E8F0] text-[#111827] hover:bg-[#F1F5D6] hover:border-[#BFD437] transition-colors self-start md:self-auto"
+            className="self-start md:self-auto shadow-xs"
           >
-            <CheckCheck className="h-4 w-4 text-[#16A34A] mr-1.5" />
+            <CheckCheck className="h-4 w-4 mr-1.5" />
             <span>Mark all read</span>
           </Button>
         )}
       </div>
 
       {/* Filter Tabs Toolbar */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#E2E8F0]">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-border">
         <button
           onClick={() => setActiveTab("ALL")}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "ALL"
-              ? "bg-[#BFD437] text-[#111827] shadow-2xs"
-              : "text-[#64748B] hover:text-[#111827] hover:bg-[#F8FAFC]"
+              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
           }`}
         >
-          <Layers className="h-3.5 w-3.5" />
+          <Layers className="h-4 w-4" />
           <span>All ({notifications.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab("UNREAD")}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "UNREAD"
-              ? "bg-[#BFD437] text-[#111827] shadow-2xs"
-              : "text-[#64748B] hover:text-[#111827] hover:bg-[#F8FAFC]"
+              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
           }`}
         >
-          <Bell className="h-3.5 w-3.5" />
+          <Bell className="h-4 w-4" />
           <span>Unread ({unreadCount})</span>
         </button>
 
         <button
           onClick={() => setActiveTab("PROJECT")}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "PROJECT"
-              ? "bg-[#BFD437] text-[#111827] shadow-2xs"
-              : "text-[#64748B] hover:text-[#111827] hover:bg-[#F8FAFC]"
+              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
           }`}
         >
-          <UserPlus className="h-3.5 w-3.5" />
+          <UserPlus className="h-4 w-4" />
           <span>Projects</span>
         </button>
 
         <button
           onClick={() => setActiveTab("TASK")}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "TASK"
-              ? "bg-[#BFD437] text-[#111827] shadow-2xs"
-              : "text-[#64748B] hover:text-[#111827] hover:bg-[#F8FAFC]"
+              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
           }`}
         >
-          <ClipboardList className="h-3.5 w-3.5" />
+          <ClipboardList className="h-4 w-4" />
           <span>Tasks</span>
         </button>
 
         <button
           onClick={() => setActiveTab("MENTION")}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
             activeTab === "MENTION"
-              ? "bg-[#BFD437] text-[#111827] shadow-2xs"
-              : "text-[#64748B] hover:text-[#111827] hover:bg-[#F8FAFC]"
+              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
+              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
           }`}
         >
-          <AtSign className="h-3.5 w-3.5" />
-          <span>Mentions & Comments</span>
+          <AtSign className="h-4 w-4" />
+          <span>Mentions & Chat</span>
         </button>
       </div>
 
@@ -301,7 +298,7 @@ export default function NotificationsPage() {
       {loading ? (
         <div className="space-y-3">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-20 w-full rounded-xl bg-[#F8FAFC]" />
+            <Skeleton key={i} className="h-20 w-full rounded-2xl bg-surface-alt" />
           ))}
         </div>
       ) : filteredNotifications.length > 0 ? (
@@ -319,19 +316,19 @@ export default function NotificationsPage() {
               timestamp={n.timestamp}
               read={n.read}
               onMarkRead={handleMarkSingleRead}
-              defaultExpanded={index === 0} // Expand first card for immediate visual hierarchy demonstration
+              defaultExpanded={index === 0}
             />
           ))}
         </div>
       ) : (
-        <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-12 h-12 rounded-xl bg-[#F1F5D6] border border-[#BFD437]/40 flex items-center justify-center mx-auto mb-3 text-[#111827]">
-            <Sparkles className="h-6 w-6 text-[#BFD437]" />
+        <div className="bg-surface border border-border rounded-2xl p-12 text-center card-shadow">
+          <div className="w-12 h-12 rounded-2xl bg-[#0A1237] text-[#C3D946] flex items-center justify-center mx-auto mb-3 shadow-md">
+            <Sparkles className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-semibold text-[#111827]">
-            Inbox is clear
+          <h3 className="text-base font-extrabold text-[#0A1237] dark:text-white">
+            Inbox is clean
           </h3>
-          <p className="text-xs text-[#64748B] mt-1 max-w-sm mx-auto">
+          <p className="text-xs font-medium text-text-muted mt-1 max-w-sm mx-auto">
             No notifications match your selected filter tab.
           </p>
         </div>
