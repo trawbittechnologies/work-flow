@@ -42,7 +42,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <MobileNav unreadNotifications={unreadCount} />
         <NotificationManager 
           userId={user.id} 
-          vapidPublicKey={process.env.VAPID_PUBLIC_KEY || ""} 
+          vapidPublicKey={process.env.VAPID_PUBLIC_KEY || process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BBmlN8JNRmRGplWVsYDDZpMyBtKbGUzSbYw-hXeZohNcnxbhSJbm4scyz7n6vDp89fdT_QaoHOqY4C-f-kwP8aQ"} 
         />
       </div>
     </AblyProvider>
