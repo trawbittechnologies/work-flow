@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -34,10 +34,11 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
   const [activeTask, setActiveTask] = useState<TaskWithDetails | null>(null);
   const { error: showError } = useToast();
 
-  // Sync tasks state whenever initialTasks prop changes (e.g. filter/search/updates)
-  useEffect(() => {
+  const [prevInitialTasks, setPrevInitialTasks] = useState(initialTasks);
+  if (prevInitialTasks !== initialTasks) {
+    setPrevInitialTasks(initialTasks);
     setTasks(initialTasks);
-  }, [initialTasks]);
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
