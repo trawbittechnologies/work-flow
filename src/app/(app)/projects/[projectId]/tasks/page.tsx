@@ -5,7 +5,7 @@ import { TaskTable } from "@/components/tasks/TaskTable";
 import { TaskModal } from "@/components/tasks/TaskModal";
 import { TaskDrawer } from "@/components/tasks/TaskDrawer";
 import { Button } from "@/components/ui/Button";
-import { Plus, Search, Filter } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { CheckSquare } from "lucide-react";

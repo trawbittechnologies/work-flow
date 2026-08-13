@@ -30,7 +30,6 @@ export default async function DashboardPage() {
     myTasks,
     overdueTasks,
     activities,
-    totalProjects,
     activeProjects,
     completedProjects,
     pendingTasks,
@@ -78,7 +77,6 @@ export default async function DashboardPage() {
       orderBy: { createdAt: "desc" },
       take: 10,
     }),
-    prisma.project.count({ where: admin ? undefined : { members: { some: { userId } } } }),
     prisma.project.count({
       where: admin ? { status: "IN_PROGRESS" } : { members: { some: { userId } }, status: "IN_PROGRESS" },
     }),

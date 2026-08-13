@@ -1,7 +1,6 @@
 "use client";
 
 import { useDroppable } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { TaskCard } from "@/components/tasks/TaskCard";
 import { Button } from "@/components/ui/Button";
 import { Plus } from "lucide-react";
