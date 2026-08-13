@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cn, getInitials, getAvatarColor } from "@/lib/utils";
 import Image from "next/image";
 
@@ -18,10 +19,14 @@ const sizeMap = {
 
 export function Avatar({ name, src, size = "md", className }: AvatarProps) {
   const { container, text, img } = sizeMap[size];
-  const initials = getInitials(name);
-  const bgColor = getAvatarColor(name);
+  const displayName = name || "User";
+  const initials = getInitials(displayName);
+  const bgColor = getAvatarColor(displayName);
+  const [imageError, setImageError] = useState(false);
 
-  if (src) {
+  const isSvg = src ? (src.includes(".svg") || src.includes("dicebear") || src.startsWith("data:image/svg+xml")) : false;
+
+  if (src && !imageError) {
     return (
       <div
         className={cn(
@@ -32,9 +37,11 @@ export function Avatar({ name, src, size = "md", className }: AvatarProps) {
       >
         <Image
           src={src}
-          alt={name}
+          alt={displayName}
           width={img}
           height={img}
+          unoptimized={isSvg}
+          onError={() => setImageError(true)}
           className="object-cover w-full h-full"
         />
       </div>
@@ -50,8 +57,8 @@ export function Avatar({ name, src, size = "md", className }: AvatarProps) {
         bgColor,
         className
       )}
-      title={name}
-      aria-label={name}
+      title={displayName}
+      aria-label={displayName}
     >
       {initials}
     </div>

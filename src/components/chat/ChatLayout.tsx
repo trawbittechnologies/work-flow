@@ -14,16 +14,36 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
     fetch("/api/conversations")
       .then(r => r.json())
       .then(data => {
-        setConversations(data);
-        if (data.length > 0 && !activeConversationId) {
-          setActiveConversation(data[0].id);
+        if (Array.isArray(data)) {
+          setConversations(data);
+          if (data.length > 0 && !activeConversationId) {
+            setActiveConversation(data[0].id);
+          }
+        } else {
+          setConversations([]);
         }
       })
-      .catch(e => console.error(e));
+      .catch(e => {
+        console.error(e);
+        setConversations([]);
+      });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const activeConversation = conversations.find(c => c.id === activeConversationId);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function getConversationName(conv: any) {
+    if (!conv) return "Conversation";
+    if (conv.name) return conv.name;
+    if (conv.project?.name) return conv.project.name;
+    if (conv.type === "DIRECT" && Array.isArray(conv.members)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const otherMember = conv.members.find((m: any) => m.userId !== currentUserId && m.user?.id !== currentUserId);
+      if (otherMember?.user?.name) return otherMember.user.name;
+    }
+    return "Direct Message";
+  }
+
+  const activeConversation = Array.isArray(conversations) ? conversations.find(c => c?.id === activeConversationId) : null;
 
   return (
       <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800">
@@ -33,27 +53,33 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
             <h2 className="font-semibold text-gray-900 dark:text-white">Conversations</h2>
           </div>
           <div className="flex-1 overflow-y-auto p-2 space-y-1">
-            {conversations.map(conv => (
-              <button
-                key={conv.id}
-                onClick={() => setActiveConversation(conv.id)}
-                className={`w-full text-left flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                  activeConversationId === conv.id ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-medium" : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0">
-                  {conv.type === "PROJECT" ? <Hash size={18} /> : <Users size={18} />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="truncate text-sm font-medium">{conv.name || (conv.project?.name || "Direct Message")}</p>
-                  {conv.messages?.[0] && (
-                    <p className="text-xs text-gray-500 truncate mt-0.5">
-                      {conv.messages[0].sender?.name}: {conv.messages[0].content || "Attachment"}
-                    </p>
-                  )}
-                </div>
-              </button>
-            ))}
+            {Array.isArray(conversations) && conversations.map(conv => {
+              if (!conv) return null;
+              const convTitle = getConversationName(conv);
+              const lastMsg = conv.messages?.[0];
+              const lastSenderName = lastMsg?.sender?.name || "Member";
+              return (
+                <button
+                  key={conv.id}
+                  onClick={() => setActiveConversation(conv.id)}
+                  className={`w-full text-left flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                    activeConversationId === conv.id ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-medium" : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300"
+                  }`}
+                >
+                  <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0">
+                    {conv.type === "PROJECT" ? <Hash size={18} /> : <Users size={18} />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="truncate text-sm font-medium">{convTitle}</p>
+                    {lastMsg && (
+                      <p className="text-xs text-gray-500 truncate mt-0.5">
+                        {lastSenderName}: {lastMsg.content || "Attachment"}
+                      </p>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -63,7 +89,7 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
             <>
               <div className="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center px-6 bg-white dark:bg-gray-950 z-10 shadow-sm">
                 <h3 className="font-semibold text-gray-900 dark:text-white">
-                  {activeConversation.name || (activeConversation.project?.name || "Direct Message")}
+                  {getConversationName(activeConversation)}
                 </h3>
               </div>
               <MessageList conversationId={activeConversation.id} currentUserId={currentUserId} />

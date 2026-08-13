@@ -96,24 +96,28 @@ export default function ProjectChatPage({ params }: PageProps) {
             ))}
           </div>
         ) : messages.length > 0 ? (
-          messages.map((msg) => (
-            <div key={msg.id} className="flex items-start gap-3 group">
-              <Avatar name={msg.user.name} src={msg.user.avatar} size="sm" className="mt-0.5 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-xs font-semibold text-[var(--text-primary)]">
-                    {msg.user.name}
-                  </span>
-                  <span className="text-[10px] text-[var(--text-muted)]">
-                    {formatDateTime(msg.createdAt)}
-                  </span>
-                </div>
-                <div className="mt-1 text-xs text-[var(--text-primary)] bg-[var(--background)] border border-[var(--border-subtle)] p-2.5 rounded-[10px] max-w-xl whitespace-pre-wrap leading-relaxed inline-block">
-                  {msg.content}
+          messages.map((msg) => {
+            const sender = msg.sender || msg.user || { name: "Team Member", avatar: null };
+            const senderName = sender.name || "Team Member";
+            return (
+              <div key={msg.id} className="flex items-start gap-3 group">
+                <Avatar name={senderName} src={sender.avatar} size="sm" className="mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xs font-semibold text-[var(--text-primary)]">
+                      {senderName}
+                    </span>
+                    <span className="text-[10px] text-[var(--text-muted)]">
+                      {formatDateTime(msg.createdAt)}
+                    </span>
+                  </div>
+                  <div className="mt-1 text-xs text-[var(--text-primary)] bg-[var(--background)] border border-[var(--border-subtle)] p-2.5 rounded-[10px] max-w-xl whitespace-pre-wrap leading-relaxed inline-block">
+                    {msg.content}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-center text-[var(--text-muted)] p-6">
             <MessageSquare className="h-8 w-8 mb-2 stroke-1" />
