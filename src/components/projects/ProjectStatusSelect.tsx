@@ -117,7 +117,7 @@ export function ProjectStatusSelect({
   size = "sm",
 }: ProjectStatusSelectProps) {
   const router = useRouter();
-  const { toast } = useToast();
+  const { success, error: errToast } = useToast();
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
