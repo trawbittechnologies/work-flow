@@ -15,7 +15,7 @@ interface TaskModalProps {
   projectId: string;
   members: { id: string; user: { id: string; name: string; avatar?: string | null } }[];
   onTaskCreated?: () => void;
-  defaultStatus?: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
+  defaultStatus?: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
 }
 
 export function TaskModal({
@@ -108,7 +108,7 @@ export function TaskModal({
           <Select label="Status" id="task-status" {...register("status")}>
             <option value="TODO">To Do</option>
             <option value="IN_PROGRESS">In Progress</option>
-            <option value="REVIEW">Review</option>
+            <option value="IN_REVIEW">In Review</option>
             <option value="DONE">Done</option>
           </Select>
 

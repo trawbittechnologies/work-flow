@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Modal, ConfirmDialog } from "@/components/ui/Modal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useToast } from "@/components/ui/Toast";
-import { UserPlus, Trash2, Mail } from "lucide-react";
+import { UserPlus, Trash2, Mail, Star } from "lucide-react";
 import type { MemberWithUser } from "@/types";
 
 type PageProps = {
@@ -17,7 +17,7 @@ type PageProps = {
 export default function ProjectTeamPage({ params }: PageProps) {
   const { projectId } = use(params);
   const { success, error: showError } = useToast();
-  const [members, setMembers] = useState<MemberWithUser[]>([]);
+  const [members, setMembers] = useState<(MemberWithUser & { isLead?: boolean })[]>([]);
   const [loading, setLoading] = useState(true);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [inviteName, setInviteName] = useState("");
@@ -77,6 +77,24 @@ export default function ProjectTeamPage({ params }: PageProps) {
       showError("Error", "Failed to add member.");
     } finally {
       setInviting(false);
+    }
+  }
+
+  async function handleSetLead(userId: string, currentIsLead: boolean) {
+    try {
+      const res = await fetch(`/api/projects/${projectId}/lead`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId: currentIsLead ? null : userId }),
+      });
+      if (!res.ok) {
+        showError("Error", "Could not update project lead.");
+        return;
+      }
+      success("Project Lead", currentIsLead ? "Lead removed." : "Lead assigned.");
+      loadMembers();
+    } catch {
+      showError("Error", "Failed to update project lead.");
     }
   }
 
@@ -141,13 +159,18 @@ export default function ProjectTeamPage({ params }: PageProps) {
               <div className="flex items-start gap-3">
                 <Avatar name={member.user?.name || "Unknown"} src={member.user?.avatar} size="lg" />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <h3 className="text-sm font-semibold text-[var(--text-primary)] truncate">
                       {member.user?.name || "Unknown User"}
                     </h3>
                     {member.role === "OWNER" && (
                       <span className="text-[9px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 px-1.5 py-0.2 rounded uppercase">
                         Owner
+                      </span>
+                    )}
+                    {member.isLead && (
+                      <span className="text-[9px] font-bold bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400 border border-amber-200 dark:border-amber-800 px-1.5 py-0.2 rounded uppercase flex items-center gap-0.5">
+                        <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" /> Lead
                       </span>
                     )}
                   </div>
@@ -167,15 +190,25 @@ export default function ProjectTeamPage({ params }: PageProps) {
                   <span className="font-semibold text-[var(--text-primary)]">{member.completedTasks}</span> completed
                 </div>
 
-                {member.role !== "OWNER" && (
+                <div className="flex items-center gap-1">
                   <button
-                    onClick={() => setRemoveMemberId(member.userId)}
-                    className="text-[var(--text-muted)] hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
-                    title="Remove member"
+                    onClick={() => handleSetLead(member.userId, !!member.isLead)}
+                    className={`p-1 rounded transition-colors ${member.isLead ? "text-amber-500" : "text-[var(--text-muted)] hover:text-amber-500"}`}
+                    title={member.isLead ? "Remove as Lead" : "Make Project Lead"}
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Star className={`h-3.5 w-3.5 ${member.isLead ? "fill-amber-500" : ""}`} />
                   </button>
-                )}
+
+                  {member.role !== "OWNER" && (
+                    <button
+                      onClick={() => setRemoveMemberId(member.userId)}
+                      className="text-[var(--text-muted)] hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                      title="Remove member"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}

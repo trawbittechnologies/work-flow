@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 interface TaskTableProps {
   tasks: TaskWithDetails[];
   onTaskClick?: (task: TaskWithDetails) => void;
-  onStatusChange?: (taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE") => void;
+  onStatusChange?: (taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") => void;
 }
 
 export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps) {

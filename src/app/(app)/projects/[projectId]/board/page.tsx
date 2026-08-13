@@ -21,7 +21,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
   const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalDefaultStatus, setModalDefaultStatus] = useState<"TODO" | "IN_PROGRESS" | "REVIEW" | "DONE">("TODO");
+  const [modalDefaultStatus, setModalDefaultStatus] = useState<"TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE">("TODO");
   const [drawerTaskId, setDrawerTaskId] = useState<string | null>(null);
 
   async function loadData() {
@@ -50,7 +50,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
     loadData();
   }, [projectId]);
 
-  function handleOpenModalWithStatus(status: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE") {
+  function handleOpenModalWithStatus(status: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") {
     setModalDefaultStatus(status);
     setIsModalOpen(true);
   }

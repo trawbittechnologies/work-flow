@@ -18,14 +18,14 @@ import { useToast } from "@/components/ui/Toast";
 interface KanbanBoardProps {
   initialTasks: TaskWithDetails[];
   projectId: string;
-  onAddTask?: (status: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE") => void;
+  onAddTask?: (status: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") => void;
   onTaskClick?: (task: TaskWithDetails) => void;
 }
 
-const COLUMNS: Array<{ id: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE"; title: string }> = [
+const COLUMNS: Array<{ id: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE"; title: string }> = [
   { id: "TODO", title: "To Do" },
   { id: "IN_PROGRESS", title: "In Progress" },
-  { id: "REVIEW", title: "In Review" },
+  { id: "IN_REVIEW", title: "In Review" },
   { id: "DONE", title: "Done" },
 ];
 
@@ -52,7 +52,7 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
     if (!over) return;
 
     const taskId = active.id as string;
-    const newStatus = over.id as "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
+    const newStatus = over.id as "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
 
     const currentTask = tasks.find((t) => t.id === taskId);
     if (!currentTask || currentTask.status === newStatus) return;
