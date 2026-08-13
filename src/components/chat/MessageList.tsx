@@ -40,7 +40,7 @@ export function MessageList({ conversationId, currentUserId }: { conversationId:
   useChannel(`conversation:${conversationId}`, (msg) => {
     if (msg.name === "message.created") {
       setMessages((prev) => {
-        if (prev.find(m => m.id === msg.data.id)) return prev; // deduplicate
+        if (prev.find(m => m.id === msg.data.id)) return prev;
         return [...prev, msg.data];
       });
       setTimeout(() => {
@@ -50,15 +50,15 @@ export function MessageList({ conversationId, currentUserId }: { conversationId:
   });
 
   if (loading) {
-    return <div className="flex-1 flex items-center justify-center text-gray-500">Loading messages...</div>;
+    return <div className="flex-1 flex items-center justify-center text-xs font-bold text-text-muted">Loading conversation...</div>;
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900" ref={scrollRef}>
+    <div className="flex-1 overflow-y-auto p-6 bg-background" ref={scrollRef}>
       {messages.length === 0 ? (
-        <div className="h-full flex flex-col items-center justify-center text-gray-400">
-          <p>No messages yet.</p>
-          <p className="text-sm">Start the conversation!</p>
+        <div className="h-full flex flex-col items-center justify-center text-text-muted">
+          <p className="text-sm font-bold text-[#0A1237] dark:text-white mb-1">No messages yet</p>
+          <p className="text-xs text-text-muted">Send a message to start the conversation!</p>
         </div>
       ) : (
         <div className="flex flex-col">
