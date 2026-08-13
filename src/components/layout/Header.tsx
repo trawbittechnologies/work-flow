@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Bell, Search, Plus, ChevronDown, User, Settings, LogOut, LayoutGrid } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -21,9 +21,13 @@ interface HeaderProps {
 
 export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Hide duplicate header New Project button if user is on projects page or creating new project
+  const hideHeaderCreate = pathname.startsWith("/projects");
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -71,7 +75,7 @@ export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
           <input
             id="global-search"
             type="search"
-            placeholder="Search projects, tasks, people…"
+            placeholder="Search issues, projects, people (⌘K)…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={cn(
@@ -90,25 +94,29 @@ export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
       </form>
 
       <div className="ml-auto flex items-center gap-2">
-        {/* Create CTA Button with Lime Background */}
-        <Button
-          variant="primary"
-          size="sm"
-          leftIcon={<Plus className="h-3.5 w-3.5" />}
-          onClick={() => router.push("/projects/new")}
-          className="hidden sm:flex shadow-sm hover:scale-102"
-        >
-          New Project
-        </Button>
-        <Button
-          variant="primary"
-          size="icon"
-          onClick={() => router.push("/projects/new")}
-          className="sm:hidden shadow-sm"
-          aria-label="Create new project"
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
+        {/* Create CTA Button (Hidden on /projects to avoid duplicate action buttons) */}
+        {!hideHeaderCreate && (
+          <>
+            <Button
+              variant="primary"
+              size="sm"
+              leftIcon={<Plus className="h-3.5 w-3.5" />}
+              onClick={() => router.push("/projects/new")}
+              className="hidden sm:flex shadow-sm hover:scale-102"
+            >
+              New Project
+            </Button>
+            <Button
+              variant="primary"
+              size="icon"
+              onClick={() => router.push("/projects/new")}
+              className="sm:hidden shadow-sm"
+              aria-label="Create new project"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </>
+        )}
 
         {/* Theme Toggle */}
         <ThemeToggle />
