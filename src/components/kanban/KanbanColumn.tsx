@@ -9,7 +9,7 @@ import type { TaskWithDetails } from "@/types";
 import { cn } from "@/lib/utils";
 
 interface KanbanColumnProps {
-  id: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
+  id: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
   title: string;
   tasks: TaskWithDetails[];
   onAddTask?: () => void;
@@ -19,7 +19,7 @@ interface KanbanColumnProps {
 const columnHeaderColors: Record<string, string> = {
   TODO: "bg-slate-500",
   IN_PROGRESS: "bg-blue-500",
-  REVIEW: "bg-violet-500",
+  IN_REVIEW: "bg-violet-500",
   DONE: "bg-emerald-500",
 };
 

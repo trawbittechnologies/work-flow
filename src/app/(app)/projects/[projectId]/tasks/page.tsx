@@ -95,7 +95,7 @@ export default function ProjectTasksPage({ params }: PageProps) {
             <option value="ALL">All Statuses</option>
             <option value="TODO">To Do</option>
             <option value="IN_PROGRESS">In Progress</option>
-            <option value="REVIEW">Review</option>
+            <option value="IN_REVIEW">In Review</option>
             <option value="DONE">Done</option>
           </select>
         </div>

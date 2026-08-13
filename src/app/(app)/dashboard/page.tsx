@@ -11,6 +11,9 @@ import Link from "next/link";
 import { ArrowRight, Plus, FolderKanban } from "lucide-react";
 import type { Metadata } from "next";
 
+import { isAdmin } from "@/lib/role";
+import { ShieldCheck } from "lucide-react";
+
 export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
@@ -18,6 +21,7 @@ export default async function DashboardPage() {
   if (!session?.user?.id) redirect("/login");
 
   const userId = session.user.id;
+  const admin = await isAdmin(userId);
   const now = new Date();
 
   const [
@@ -36,9 +40,10 @@ export default async function DashboardPage() {
       select: { name: true },
     }),
     prisma.project.findMany({
-      where: { members: { some: { userId } } },
+      where: admin ? undefined : { members: { some: { userId } } },
       include: {
         owner: { select: { id: true, name: true, email: true, avatar: true } },
+        lead: { select: { id: true, name: true, email: true, avatar: true } },
         members: {
           include: { user: { select: { id: true, name: true, email: true, avatar: true } } },
         },
@@ -52,7 +57,6 @@ export default async function DashboardPage() {
       where: {
         assigneeId: userId,
         status: { not: "DONE" },
-        project: { members: { some: { userId } } },
       },
       include: {
         project: { select: { id: true, name: true, icon: true } },
@@ -66,21 +70,20 @@ export default async function DashboardPage() {
         assigneeId: userId,
         status: { not: "DONE" },
         dueDate: { lt: now },
-        project: { members: { some: { userId } } },
       },
     }),
     prisma.activity.findMany({
-      where: { project: { members: { some: { userId } } } },
+      where: admin ? undefined : { project: { members: { some: { userId } } } },
       include: { user: { select: { id: true, name: true, avatar: true } } },
       orderBy: { createdAt: "desc" },
       take: 10,
     }),
-    prisma.project.count({ where: { members: { some: { userId } } } }),
+    prisma.project.count({ where: admin ? undefined : { members: { some: { userId } } } }),
     prisma.project.count({
-      where: { members: { some: { userId } }, status: "IN_PROGRESS" },
+      where: admin ? { status: "IN_PROGRESS" } : { members: { some: { userId } }, status: "IN_PROGRESS" },
     }),
     prisma.project.count({
-      where: { members: { some: { userId } }, status: "COMPLETED" },
+      where: admin ? { status: "COMPLETED" } : { members: { some: { userId } }, status: "COMPLETED" },
     }),
     prisma.task.count({
       where: { assigneeId: userId, status: { not: "DONE" } },
@@ -106,13 +109,23 @@ export default async function DashboardPage() {
             {format(now, "EEEE, MMMM d, yyyy")}
           </p>
         </div>
-        <Link
-          href="/projects/new"
-          className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm"
-        >
-          <Plus className="h-4 w-4" />
-          New Project
-        </Link>
+        <div className="flex items-center gap-2">
+          {admin && (
+            <Link
+              href="/admin"
+              className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 dark:bg-indigo-950 dark:border-indigo-800 dark:text-indigo-300 font-semibold hover:bg-indigo-100 transition-colors"
+            >
+              <ShieldCheck className="h-4 w-4" /> Admin Portal
+            </Link>
+          )}
+          <Link
+            href="/projects/new"
+            className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm"
+          >
+            <Plus className="h-4 w-4" />
+            New Project
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}

@@ -14,6 +14,7 @@ import {
   ChevronRight,
   MessageSquare,
   LayoutGrid,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
@@ -23,6 +24,7 @@ interface SidebarProps {
     name: string;
     email: string;
     avatar?: string | null;
+    role?: "ADMIN" | "MEMBER";
   };
   unreadNotifications?: number;
 }
@@ -62,6 +64,21 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+        {user.role === "ADMIN" && (
+          <Link
+            href="/admin"
+            className={cn(
+              "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150 mb-2 border border-primary/20",
+              isActive("/admin")
+                ? "bg-primary text-white shadow-sm"
+                : "bg-primary-subtle text-primary hover:bg-primary hover:text-white"
+            )}
+          >
+            <ShieldCheck className="h-4 w-4 flex-shrink-0" />
+            <span className="flex-1">Admin Portal</span>
+          </Link>
+        )}
+
         {navItems.map((item) => {
           const active = isActive(item.href);
           return (

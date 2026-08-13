@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const [user, unreadCount] = await Promise.all([
     prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { id: true, name: true, email: true, avatar: true },
+      select: { id: true, name: true, email: true, avatar: true, role: true },
     }),
     prisma.notification.count({
       where: { userId: session.user.id, read: false },

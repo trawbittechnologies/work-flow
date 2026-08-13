@@ -43,7 +43,7 @@ export default function MyTasksPage() {
     };
   }, [showError]);
 
-  async function handleStatusChange(taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE") {
+  async function handleStatusChange(taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") {
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
     );
@@ -93,7 +93,7 @@ export default function MyTasksPage() {
             <option value="ALL">All Statuses</option>
             <option value="TODO">To Do</option>
             <option value="IN_PROGRESS">In Progress</option>
-            <option value="REVIEW">Review</option>
+            <option value="IN_REVIEW">In Review</option>
             <option value="DONE">Done</option>
           </select>
 

@@ -54,12 +54,13 @@ export async function POST(req: Request, { params }: RouteParams) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const userId = session.user.id;
   const { id } = await params;
 
   try {
-    const admin = await isAdmin(session.user.id);
+    const admin = await isAdmin(userId);
     const isMember = await prisma.projectMember.findUnique({
-      where: { projectId_userId: { projectId: id, userId: session.user.id } },
+      where: { projectId_userId: { projectId: id, userId } },
     });
     if (!admin && !isMember) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
@@ -72,7 +73,7 @@ export async function POST(req: Request, { params }: RouteParams) {
     const comment = await prisma.projectComment.create({
       data: {
         projectId: id,
-        userId: session.user.id,
+        userId,
         content: parsed.data.content,
         parentId: parsed.data.parentId ?? null,
       },
@@ -90,7 +91,7 @@ export async function POST(req: Request, { params }: RouteParams) {
     if (project) {
       const notifyUserIds = project.members
         .map((m: { userId: string }) => m.userId)
-        .filter((uid: string) => uid !== session.user.id);
+        .filter((uid: string) => uid !== userId);
 
       for (const uid of notifyUserIds) {
         await createNotification({
@@ -106,7 +107,7 @@ export async function POST(req: Request, { params }: RouteParams) {
     if (!parsed.data.parentId) {
       await logActivity({
         projectId: id,
-        userId: session.user.id,
+        userId,
         type: "COMMENT_ADDED",
         metadata: { commentId: comment.id },
       });

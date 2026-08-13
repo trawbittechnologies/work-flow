@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
-import { TaskDrawerLink } from "@/components/tasks/TaskDrawerLink";
 import { PriorityBadge } from "@/components/ui/Badge";
 import { cn, formatDate, isOverdue } from "@/lib/utils";
 import { CalendarRange, Calendar } from "lucide-react";
