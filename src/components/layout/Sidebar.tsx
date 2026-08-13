@@ -68,24 +68,24 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
         <Link
           href="/dashboard"
           onClick={() => setNavigatingHref("/dashboard")}
-          className="flex items-center gap-2.5 group"
+          className="flex items-center gap-3 group"
         >
-          {/* Trawbit Official Logo */}
-          <div className="relative h-8 w-8 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
+          {/* Trawbit Official Emblem Icon */}
+          <div className="relative h-8 w-8 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
             <Image
-              src="/logo.png"
+              src="/logo-icon.png"
               alt="Trawbit Logo"
-              width={36}
-              height={36}
-              className="h-8 w-8 object-contain scale-[2.2] object-[20%_50%]"
+              width={32}
+              height={32}
+              className="h-8 w-8 object-contain"
               priority
             />
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 leading-none">
             <span className="text-[17px] font-black text-[#111827] tracking-tight">
               Trawbit
             </span>
-            <span className="text-[17px] font-black text-[#94CB1E] tracking-tight">
+            <span className="text-[17px] font-black text-[#98CD28] tracking-tight">
               FlowDesk
             </span>
           </div>

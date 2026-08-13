@@ -71,13 +71,13 @@ export function Header({ user, unreadNotifications = 8 }: HeaderProps) {
     <header className="h-[var(--header-height)] fixed top-0 right-0 left-0 md:left-[var(--sidebar-width)] z-20 bg-[#F6F8FA] flex items-center justify-between px-6 transition-all duration-200 ease-in-out border-b border-transparent">
       {/* Mobile Brand Logo */}
       <Link href="/dashboard" className="flex items-center gap-2 md:hidden flex-shrink-0 mr-2">
-        <div className="relative h-8 w-8 rounded-xl overflow-hidden flex items-center justify-center">
+        <div className="relative h-8 w-8 rounded-full overflow-hidden flex items-center justify-center shadow-2xs">
           <Image
-            src="/logo.png"
+            src="/logo-icon.png"
             alt="Trawbit FlowDesk"
             width={32}
             height={32}
-            className="h-8 w-8 object-contain scale-[2.2] object-[20%_50%]"
+            className="h-8 w-8 object-contain"
             priority
           />
         </div>
