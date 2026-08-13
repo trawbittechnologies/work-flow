@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -69,26 +70,16 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
           onClick={() => setNavigatingHref("/dashboard")}
           className="flex items-center gap-2.5 group"
         >
-          {/* Stylized X/Leaf Logo Icon */}
-          <div className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-7 h-7"
-            >
-              <path
-                d="M8 8L24 24M24 8L8 24"
-                stroke="#94CB1E"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="8" cy="8" r="2.5" fill="#94CB1E" />
-              <circle cx="24" cy="8" r="2.5" fill="#94CB1E" />
-              <circle cx="8" cy="24" r="2.5" fill="#94CB1E" />
-              <circle cx="24" cy="24" r="2.5" fill="#94CB1E" />
-            </svg>
+          {/* Trawbit Official Logo */}
+          <div className="relative h-8 w-8 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Trawbit Logo"
+              width={36}
+              height={36}
+              className="h-8 w-8 object-contain scale-[2.2] object-[20%_50%]"
+              priority
+            />
           </div>
           <div className="flex items-center gap-1.5">
             <span className="text-[17px] font-black text-[#111827] tracking-tight">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { LayoutGrid } from "lucide-react";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Sign in",
+  title: "Sign in | Trawbit FlowDesk",
 };
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -11,11 +11,27 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="h-10 w-10 bg-[var(--primary)] rounded-[12px] flex items-center justify-center mb-3 shadow-lg text-white">
-            <LayoutGrid className="h-6 w-6" />
+          <div className="relative h-12 w-12 rounded-2xl overflow-hidden flex items-center justify-center mb-3 shadow-sm bg-white border border-[#E5E7EB]">
+            <Image
+              src="/logo.png"
+              alt="Trawbit FlowDesk"
+              width={48}
+              height={48}
+              className="h-12 w-12 object-contain scale-[2.2] object-[20%_50%]"
+              priority
+            />
           </div>
-          <h1 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">Flowdesk</h1>
-          <p className="text-sm text-[var(--text-secondary)] mt-0.5">Plan. Assign. Finish.</p>
+          <div className="flex items-center gap-1.5">
+            <span className="text-xl font-black text-[#111827] tracking-tight">
+              Trawbit
+            </span>
+            <span className="text-xl font-black text-[#94CB1E] tracking-tight">
+              FlowDesk
+            </span>
+          </div>
+          <p className="text-xs font-medium text-[var(--text-secondary)] mt-1">
+            Modern Project & Task Workspace
+          </p>
         </div>
         {children}
       </div>

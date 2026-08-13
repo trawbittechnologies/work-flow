@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Search,
@@ -68,6 +69,20 @@ export function Header({ user, unreadNotifications = 8 }: HeaderProps) {
 
   return (
     <header className="h-[var(--header-height)] fixed top-0 right-0 left-0 md:left-[var(--sidebar-width)] z-20 bg-[#F6F8FA] flex items-center justify-between px-6 transition-all duration-200 ease-in-out border-b border-transparent">
+      {/* Mobile Brand Logo */}
+      <Link href="/dashboard" className="flex items-center gap-2 md:hidden flex-shrink-0 mr-2">
+        <div className="relative h-8 w-8 rounded-xl overflow-hidden flex items-center justify-center">
+          <Image
+            src="/logo.png"
+            alt="Trawbit FlowDesk"
+            width={32}
+            height={32}
+            className="h-8 w-8 object-contain scale-[2.2] object-[20%_50%]"
+            priority
+          />
+        </div>
+      </Link>
+
       {/* Search Input Box */}
       <form onSubmit={handleSearch} className="flex-1 max-w-md">
         <div className="relative group">
