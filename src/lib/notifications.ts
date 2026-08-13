@@ -25,6 +25,7 @@ export interface CreateNotificationInput {
   projectId?: string;
   taskId?: string;
   sendEmail?: boolean;
+  senderAvatar?: string;
 }
 
 export async function createNotification({
@@ -36,6 +37,7 @@ export async function createNotification({
   projectId,
   taskId,
   sendEmail = false,
+  senderAvatar,
 }: CreateNotificationInput) {
   // 1. Save to database
   const notification = await prisma.notification.create({
@@ -58,20 +60,49 @@ export async function createNotification({
     console.error("[notifications] Failed to publish Ably event:", error);
   }
 
-  // 3. Web Push for background notification
+  // 3. Custom WhatsApp / Slack Styled Web Push Notification for Android Chrome
   try {
     const subscriptions = await prisma.pushSubscription.findMany({
       where: { userId },
     });
 
     if (subscriptions.length > 0) {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://work-flow-three-xi.vercel.app";
+
+      // Contextual Icon Prefix for Push Body
+      let prefix = "🔔";
+      const typeStr = String(type);
+      if (typeStr.includes("PROJECT") || typeStr.includes("MEMBER") || typeStr.includes("INVITE")) {
+        prefix = "👤";
+      } else if (typeStr.includes("TASK")) {
+        prefix = "📋";
+      } else if (typeStr.includes("COMMENT") || typeStr.includes("MESSAGE")) {
+        prefix = "💬";
+      } else if (typeStr.includes("MENTION")) {
+        prefix = "@";
+      }
+
+      const formattedBody = message.startsWith("👤") || message.startsWith("📋") || message.startsWith("💬") || message.startsWith("@")
+        ? message
+        : `${prefix} ${message}`;
+
+      // Use sender avatar if available, otherwise absolute FlowDesk brand icon URL
+      const iconUrl = senderAvatar && senderAvatar.startsWith("http")
+        ? senderAvatar
+        : `${baseUrl}/icon-192.png`;
+
       const payload = JSON.stringify({
-        title,
-        body: message,
-        icon: "/icon-192.png",
-        badge: "/badge-72.png",
+        title: "Trawbit FlowDesk",
+        body: formattedBody,
+        icon: iconUrl,
+        badge: `${baseUrl}/badge-72.png`,
         url: link || "/",
         notificationId: notification.id,
+        tag: `flowdesk-${typeStr.toLowerCase()}`,
+        actions: [
+          { action: "open", title: "Open FlowDesk" },
+          { action: "dismiss", title: "Dismiss" },
+        ],
       });
 
       const pushPromises = subscriptions.map(async (sub) => {
