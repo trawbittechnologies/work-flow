@@ -38,7 +38,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
   if (activities.length === 0) {
     return (
       <div className="bg-surface border border-border rounded-2xl px-4 py-10 text-center card-shadow">
-        <p className="text-sm font-semibold text-text-muted">No recent activity.</p>
+        <p className="text-sm font-bold text-text-muted">No recent activity.</p>
       </div>
     );
   }
@@ -46,14 +46,14 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
   return (
     <div className="bg-surface border border-border rounded-2xl card-shadow divide-y divide-border-subtle overflow-hidden">
       {activities.map((activity) => (
-        <div key={activity.id} className="flex gap-3 p-3.5 hover:bg-surface-alt/40 transition-colors">
+        <div key={activity.id} className="flex gap-3 p-3.5 hover:bg-surface-alt/50 transition-colors">
           <Avatar name={activity.user.name} src={activity.user.avatar} size="xs" className="mt-0.5 flex-shrink-0 ring-1 ring-border" />
           <div className="flex-1 min-w-0">
             <p className="text-xs text-text-primary leading-relaxed">
-              <span className="font-bold text-text-primary">{activity.user.name}</span>{" "}
+              <span className="font-black text-[#0A1237] dark:text-white">{activity.user.name}</span>{" "}
               <span className="text-text-secondary font-medium">{getActivityDescription(activity)}</span>
             </p>
-            <p className="text-[10px] font-semibold text-text-muted mt-1">
+            <p className="text-[10px] font-bold text-text-muted mt-1">
               {formatRelative(activity.createdAt)}
             </p>
           </div>
