@@ -1,4 +1,4 @@
-self.addEventListener('install', function (event) {
+self.addEventListener('install', function () {
   self.skipWaiting();
 });
 
@@ -7,18 +7,18 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('push', function (event) {
-  let data = { title: 'Trawbit FlowDesk', body: 'New notification' };
+  let data = { title: 'Flowdesk Notification', body: 'You have a new update in Flowdesk.' };
   if (event.data) {
     try {
       data = event.data.json();
     } catch (e) {
-      data = { title: 'Trawbit FlowDesk', body: event.data.text() };
+      data = { title: 'Flowdesk Notification', body: event.data.text() };
     }
   }
 
   const origin = self.location.origin;
 
-  // Resolve relative URLs to absolute HTTPS URLs for Chrome Android Notification Shade
+  // Resolve icon & badge relative paths to absolute HTTPS URLs for Chrome Android & Desktop push shades
   const iconUrl = data.icon 
     ? (data.icon.startsWith('http') ? data.icon : origin + data.icon) 
     : origin + '/icon-192.png';
@@ -42,29 +42,45 @@ self.addEventListener('push', function (event) {
       notificationId: data.notificationId,
     },
     actions: [
-      { action: 'open', title: 'Open FlowDesk' },
-      { action: 'dismiss', title: 'Dismiss' }
+      { action: 'open', title: 'Open in Flowdesk' },
+      { action: 'mark_read', title: 'Mark Read' }
     ]
   };
 
+  const pushTitle = data.title && !data.title.startsWith('Flowdesk') 
+    ? `Flowdesk · ${data.title}` 
+    : (data.title || 'Flowdesk Notification');
+
   event.waitUntil(
-    self.registration.showNotification(data.title || 'Trawbit FlowDesk', options)
+    self.registration.showNotification(pushTitle, options)
   );
 });
 
 self.addEventListener('notificationclick', function (event) {
   event.notification.close();
-  const targetUrl = event.notification?.data?.url || '/';
+  const notificationData = event.notification?.data || {};
+  const targetUrl = notificationData.url || '/';
+  const notificationId = notificationData.notificationId;
 
-  if (event.action === 'dismiss') {
+  // Handle Mark Read action directly from notification shade
+  if (event.action === 'mark_read' && notificationId) {
+    event.waitUntil(
+      fetch(`/api/notifications/${notificationId}`, { method: 'PATCH' }).catch(function (e) {
+        console.error('Failed to mark read from service worker:', e);
+      })
+    );
     return;
   }
 
+  // Handle click or Open action to focus/navigate open tab or launch new window
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
       for (let i = 0; i < clientList.length; i++) {
         let client = clientList[i];
-        if (client.url && client.url.includes(targetUrl) && 'focus' in client) {
+        if (client.url && client.url.includes(self.location.origin) && 'focus' in client) {
+          if ('navigate' in client) {
+            client.navigate(targetUrl);
+          }
           return client.focus();
         }
       }
