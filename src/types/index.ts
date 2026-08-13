@@ -55,7 +55,7 @@ export type ProjectWithProgress = Project & {
 export type TaskWithDetails = Task & {
   assignee: Pick<User, "id" | "name" | "email" | "avatar"> | null;
   createdBy: Pick<User, "id" | "name" | "email" | "avatar">;
-  project: Pick<Project, "id" | "name" | "icon">;
+  project: Pick<Project, "id" | "name" | "icon" | "key">;
   labels: (import("@prisma/client").TaskLabel & { label: Label })[];
   comments: (TaskComment & {
     user: Pick<User, "id" | "name" | "avatar">;
