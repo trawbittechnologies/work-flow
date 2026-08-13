@@ -41,11 +41,28 @@ export default function ProjectChatPage({ params }: PageProps) {
   }
 
   useEffect(() => {
-    loadMessages();
-    // Poll for new messages every 5s for simple real-time responsiveness
-    const interval = setInterval(loadMessages, 5000);
-    return () => clearInterval(interval);
-  }, [projectId]);
+    let isMounted = true;
+    const fetchChatMessages = async () => {
+      try {
+        const res = await fetch(`/api/projects/${projectId}/messages`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) setMessages(data.data || []);
+        }
+      } catch {
+        if (isMounted) showError("Error", "Could not load messages.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchChatMessages();
+    const interval = setInterval(fetchChatMessages, 5000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [projectId, showError]);
 
   useEffect(() => {
     if (!loading) scrollToBottom();

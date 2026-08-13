@@ -245,6 +245,8 @@ export default function ProjectCommentsPage({ params }: PageProps) {
     } finally {
       setLoading(false);
     }
+  }
+
   useEffect(() => {
     let isMounted = true;
     const fetchComments = async () => {

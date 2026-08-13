@@ -47,8 +47,32 @@ export default function ProjectBoardPage({ params }: PageProps) {
   }
 
   useEffect(() => {
-    loadData();
-  }, [projectId]);
+    let isMounted = true;
+    const fetchBoardData = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/tasks?projectId=${projectId}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) setTasks(data.tasks || []);
+        }
+        const memRes = await fetch(`/api/projects/${projectId}/members`);
+        if (memRes.ok) {
+          const data = await memRes.json();
+          if (isMounted) setMembers(data.data || []);
+        }
+      } catch {
+        if (isMounted) showError("Error", "Could not load board tasks.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchBoardData();
+    return () => {
+      isMounted = false;
+    };
+  }, [projectId, showError]);
 
   function handleOpenModalWithStatus(status: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") {
     setModalDefaultStatus(status);

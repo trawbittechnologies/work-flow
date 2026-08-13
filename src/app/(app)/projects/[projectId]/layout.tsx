@@ -84,10 +84,10 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
                 </h1>
                 {/* Project Key Badge */}
                 <span className="text-[11px] font-bold font-mono bg-surface-alt border border-border text-text-muted px-2 py-0.5 rounded">
-                  {(project as any).key}
+                  {project.key}
                 </span>
                 <StatusBadge status={project.status} />
-                <PriorityBadge priority={(project as any).priority} />
+                <PriorityBadge priority={project.priority} />
               </div>
               {project.description && (
                 <p className="text-sm font-medium text-text-secondary mt-1.5 max-w-2xl line-clamp-2">
@@ -136,10 +136,10 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
           </div>
 
           {/* Project Lead */}
-          {(project as any).lead && (
+          {project.lead && (
             <div className="flex items-center gap-1.5">
               <Star className="h-4 w-4 text-amber-500" />
-              <span>Lead: <strong className="text-text-primary font-semibold">{(project as any).lead.name}</strong></span>
+              <span>Lead: <strong className="text-text-primary font-semibold">{project.lead.name}</strong></span>
             </div>
           )}
 
