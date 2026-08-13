@@ -132,32 +132,48 @@ export async function POST(request: Request, { params }: { params: Promise<{ con
     });
 
     // Update conversation's updatedAt
-    await prisma.conversation.update({
+    const conversation = await prisma.conversation.update({
       where: { id: conversationId },
-      data: { updatedAt: new Date() }
+      data: { updatedAt: new Date() },
+      include: {
+        project: { select: { name: true } },
+      }
     });
 
     // Publish to Ably
     await publishEvent(`conversation:${conversationId}`, "message.created", message);
 
-    // Send Push & DB Notification to offline/other members
+    // Send Push & DB Notification to other members
     const otherMembers = await prisma.conversationMember.findMany({
       where: { conversationId, userId: { not: userId } },
       select: { userId: true }
     });
 
     const senderName = message.sender?.name || "Someone";
-    const previewText = message.content ? message.content.slice(0, 100) : "Sent an attachment";
+    const senderAvatar = message.sender?.avatar || undefined;
+    const previewText = message.content ? message.content.slice(0, 120) : "Sent an attachment";
+    const convName = conversation.name || conversation.project?.name || "Chat";
 
-    for (const m of otherMembers) {
+    const notifTitle = conversation.type === "DIRECT" 
+      ? `💬 DM from ${senderName}`
+      : `💬 ${convName}`;
+
+    const notifMessage = conversation.type === "DIRECT"
+      ? previewText
+      : `${senderName}: ${previewText}`;
+
+    const notifPromises = otherMembers.map((m) =>
       createNotification({
         userId: m.userId,
         type: "MESSAGE",
-        title: `New message from ${senderName}`,
-        message: previewText,
+        title: notifTitle,
+        message: notifMessage,
         link: `/chat?conversationId=${conversationId}`,
-      }).catch((err) => console.error("[notifications] Message notification error:", err));
-    }
+        senderAvatar,
+      }).catch((err) => console.error("[notifications] Message notification error:", err))
+    );
+
+    await Promise.allSettled(notifPromises);
 
     return NextResponse.json(message);
 

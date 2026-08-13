@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useChatStore } from "./useChatStore";
 import { MessageList } from "./MessageList";
 import { MessageComposer } from "./MessageComposer";
-import { Users, Hash, Plus, Search, MessageSquarePlus, Check } from "lucide-react";
+import { Users, Hash, Plus, Search, MessageSquarePlus } from "lucide-react";
 import { ChannelProvider } from "ably/react";
 import { Modal } from "@/components/ui/Modal";
 import { Avatar } from "@/components/ui/Avatar";
@@ -19,7 +20,10 @@ interface MemberUser {
   role?: string;
 }
 
-export function ChatLayout({ currentUserId }: { currentUserId: string }) {
+function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
+  const searchParams = useSearchParams();
+  const urlConvId = searchParams.get("conversationId");
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [conversations, setConversations] = useState<any[]>([]);
   const [users, setUsers] = useState<MemberUser[]>([]);
@@ -36,13 +40,20 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sync with URL query parameter when notification link is clicked
+  useEffect(() => {
+    if (urlConvId) {
+      setActiveConversation(urlConvId);
+    }
+  }, [urlConvId, setActiveConversation]);
+
   async function fetchConversations() {
     try {
       const res = await fetch("/api/conversations");
       const data = await res.json();
       if (Array.isArray(data)) {
         setConversations(data);
-        if (data.length > 0 && !activeConversationId) {
+        if (data.length > 0 && !activeConversationId && !urlConvId) {
           setActiveConversation(data[0].id);
         }
       }
@@ -359,5 +370,13 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
         </div>
       </Modal>
     </div>
+  );
+}
+
+export function ChatLayout({ currentUserId }: { currentUserId: string }) {
+  return (
+    <Suspense fallback={<div className="p-6 text-center text-xs text-text-muted">Loading chat...</div>}>
+      <ChatLayoutContent currentUserId={currentUserId} />
+    </Suspense>
   );
 }

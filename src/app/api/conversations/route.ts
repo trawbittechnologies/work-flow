@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { createNotification } from "@/lib/notifications";
 
 export async function GET(request: Request) {
   try {
@@ -107,6 +108,22 @@ export async function POST(request: Request) {
         }
       }
     });
+
+    // Notify other member when a new direct conversation is started
+    if (type === "DIRECT" && allMembers.length === 2) {
+      const senderUser = await prisma.user.findUnique({ where: { id: userId }, select: { name: true, avatar: true } });
+      const targetUserId = allMembers.find((id) => id !== userId);
+      if (targetUserId && senderUser) {
+        createNotification({
+          userId: targetUserId,
+          type: "MESSAGE",
+          title: `💬 New Direct Message`,
+          message: `${senderUser.name} started a direct message conversation with you`,
+          link: `/chat?conversationId=${conversation.id}`,
+          senderAvatar: senderUser.avatar || undefined,
+        }).catch((err) => console.error("[notifications] DM creation error:", err));
+      }
+    }
 
     return NextResponse.json(conversation);
   } catch (error) {

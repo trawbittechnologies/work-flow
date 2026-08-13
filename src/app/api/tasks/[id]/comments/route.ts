@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { createCommentSchema } from "@/lib/validations/task";
+import { createNotification } from "@/lib/notifications";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -42,7 +43,16 @@ export async function POST(req: Request, { params }: RouteParams) {
   const { id } = await params;
 
   try {
-    const task = await prisma.task.findUnique({ where: { id }, select: { projectId: true } });
+    const task = await prisma.task.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        projectId: true,
+        assigneeId: true,
+        createdById: true,
+      },
+    });
     if (!task) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     const isMember = await prisma.projectMember.findUnique({
@@ -64,6 +74,30 @@ export async function POST(req: Request, { params }: RouteParams) {
       },
       include: { user: { select: { id: true, name: true, avatar: true } } },
     });
+
+    // Notify task assignee & creator if different from commenter
+    const authorId = session.user.id;
+    const authorName = comment.user?.name || "Someone";
+    const authorAvatar = comment.user?.avatar || undefined;
+    const targets = new Set<string>();
+
+    if (task.assigneeId && task.assigneeId !== authorId) targets.add(task.assigneeId);
+    if (task.createdById && task.createdById !== authorId) targets.add(task.createdById);
+
+    const notifPromises = Array.from(targets).map((targetUserId) =>
+      createNotification({
+        userId: targetUserId,
+        type: "NEW_COMMENT",
+        title: `💬 New comment on "${task.title}"`,
+        message: `${authorName}: "${comment.content.slice(0, 100)}"`,
+        projectId: task.projectId,
+        taskId: task.id,
+        link: `/tasks/${task.id}`,
+        senderAvatar: authorAvatar,
+      }).catch((err) => console.error("[notifications] Task comment notification error:", err))
+    );
+
+    await Promise.allSettled(notifPromises);
 
     return NextResponse.json({ success: true, data: comment }, { status: 201 });
   } catch (error) {
