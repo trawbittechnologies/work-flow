@@ -245,9 +245,33 @@ export default function ProjectCommentsPage({ params }: PageProps) {
     } finally {
       setLoading(false);
     }
-  }
+  useEffect(() => {
+    let isMounted = true;
+    const fetchComments = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/projects/${projectId}/comments`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) setComments(data.data || []);
+        }
+        const sessionRes = await fetch("/api/auth/session");
+        if (sessionRes.ok) {
+          const session = await sessionRes.json();
+          if (isMounted) setCurrentUserId(session?.user?.id || "");
+        }
+      } catch {
+        if (isMounted) showError("Error", "Could not load comments.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
 
-  useEffect(() => { loadComments(); }, [projectId]);
+    fetchComments();
+    return () => {
+      isMounted = false;
+    };
+  }, [projectId, showError]);
 
   async function handlePost(e: React.FormEvent) {
     e.preventDefault();

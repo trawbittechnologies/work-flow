@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import type { NotificationType } from "@prisma/client";
 import { updateTaskSchema } from "@/lib/validations/task";
 import { logActivity } from "@/lib/activity";
 import { createNotification } from "@/lib/notifications";
@@ -153,7 +154,7 @@ export async function PATCH(req: Request, { params }: RouteParams) {
 
       await createNotification({
         userId: assigneeId,
-        type: notifType as any,
+        type: notifType as NotificationType,
         title: notifTitle,
         message: `You were assigned "${task.title}" in ${project?.name}`,
         projectId: task.projectId,
@@ -164,7 +165,7 @@ export async function PATCH(req: Request, { params }: RouteParams) {
       if (existingTask.assigneeId && existingTask.assigneeId !== assigneeId) {
         await createNotification({
           userId: existingTask.assigneeId,
-          type: "TASK_REASSIGNED" as any,
+          type: "TASK_REASSIGNED" as NotificationType,
           title: "Task reassigned",
           message: `"${task.title}" was reassigned to someone else`,
           projectId: task.projectId,

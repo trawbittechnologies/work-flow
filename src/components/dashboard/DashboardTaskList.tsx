@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { cn, formatDueDate, isOverdue } from "@/lib/utils";
-import { PriorityBadge } from "@/components/ui/Badge";
 import type { Task, Project, User } from "@prisma/client";
 import { CalendarDays, AlertCircle } from "lucide-react";
 import { ProjectIcon } from "@/components/ui/ProjectIcon";
@@ -18,14 +17,14 @@ export function DashboardTaskList({ tasks }: DashboardTaskListProps) {
   if (tasks.length === 0) {
     return (
       <div className="bg-surface border border-border rounded-xl px-6 py-10 text-center shadow-sm">
-        <p className="text-sm font-medium text-text-muted">No pending tasks. You're all caught up! 🎉</p>
+        <p className="text-sm font-medium text-text-muted">No pending tasks. You&apos;re all caught up! 🎉</p>
       </div>
     );
   }
 
   return (
     <div className="bg-surface border border-border rounded-xl shadow-sm overflow-hidden divide-y divide-border-subtle">
-      {tasks.map((task, i) => {
+      {tasks.map((task) => {
         const overdue = task.dueDate ? isOverdue(task.dueDate) : false;
         return (
           <Link

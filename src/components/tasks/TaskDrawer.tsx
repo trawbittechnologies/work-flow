@@ -20,26 +20,50 @@ interface TaskDrawerProps {
 }
 
 export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDeleted }: TaskDrawerProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [task, setTask] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const { error: showError, success } = useToast();
 
   useEffect(() => {
+    let isMounted = true;
     if (isOpen && taskId) {
-      loadTask();
+      setLoading(true);
+      fetch(`/api/tasks/${taskId}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to load task");
+          return res.json();
+        })
+        .then((data) => {
+          if (isMounted) setTask(data.data);
+        })
+        .catch(() => {
+          if (isMounted) {
+            showError("Error", "Could not load task details.");
+            onClose();
+          }
+        })
+        .finally(() => {
+          if (isMounted) setLoading(false);
+        });
     } else {
       setTask(null);
     }
-  }, [isOpen, taskId]);
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen, taskId, onClose, showError]);
 
   async function loadTask() {
+    if (!taskId) return;
     setLoading(true);
     try {
       const res = await fetch(`/api/tasks/${taskId}`);
       if (!res.ok) throw new Error("Failed to load task");
       const data = await res.json();
       setTask(data.data);
+      if (onTaskUpdated) onTaskUpdated();
     } catch {
       showError("Error", "Could not load task details.");
       onClose();
@@ -131,7 +155,7 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
                 <div className="col-span-2">
                   <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Labels</p>
                   <div className="flex flex-wrap gap-2">
-                    {task.labels.map(({ label }: any) => (
+                    {task.labels.map(({ label }: { label: { id: string; name: string; color: string } }) => (
                       <span
                         key={label.id}
                         style={{ backgroundColor: `${label.color}15`, color: label.color, borderColor: `${label.color}40` }}

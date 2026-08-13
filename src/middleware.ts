@@ -33,7 +33,7 @@ export default auth(async (req) => {
 
   // Protect admin routes — only users with ADMIN role can access /admin/*
   if (pathname.startsWith("/admin")) {
-    const role = (req.auth?.user as any)?.role;
+    const role = (req.auth?.user as { role?: string })?.role;
     if (role !== "ADMIN") {
       return NextResponse.redirect(new URL("/dashboard", req.nextUrl.origin));
     }

@@ -10,26 +10,31 @@ export function MessageList({ conversationId, currentUserId }: { conversationId:
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const fetchMessages = async () => {
-    try {
-      const res = await fetch(`/api/conversations/${conversationId}/messages`);
-      const data = await res.json();
-      if (data.messages) {
-        setMessages(data.messages);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-      setTimeout(() => {
-        if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }, 100);
-    }
-  };
-
   useEffect(() => {
+    let isMounted = true;
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch(`/api/conversations/${conversationId}/messages`);
+        const data = await res.json();
+        if (isMounted && data.messages) {
+          setMessages(data.messages);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+          setTimeout(() => {
+            if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+          }, 100);
+        }
+      }
+    };
+
     fetchMessages();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      isMounted = false;
+    };
   }, [conversationId]);
 
   useChannel(`conversation:${conversationId}`, (msg) => {

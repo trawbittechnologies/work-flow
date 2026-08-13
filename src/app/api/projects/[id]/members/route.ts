@@ -59,7 +59,7 @@ export async function GET(_req: Request, { params }: RouteParams) {
       select: { leadId: true },
     });
 
-    const enriched = members.map((m: { userId: string; [key: string]: any }) => {
+    const enriched = members.map((m: Record<string, unknown> & { userId: string }) => {
       const assigned = taskCounts
         .filter((t: { assigneeId: string | null }) => t.assigneeId === m.userId)
         .reduce((acc: number, t: { _count: number }) => acc + t._count, 0);
