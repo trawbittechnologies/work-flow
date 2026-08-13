@@ -4,7 +4,6 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { MessageCircle, CheckCheck, Trash2, FileText, Smile } from "lucide-react";
 import { useChatStore } from "./useChatStore";
-import { useChannel } from "ably/react";
 import { Avatar } from "@/components/ui/Avatar";
 import { cn } from "@/lib/utils";
 
@@ -12,19 +11,9 @@ import { cn } from "@/lib/utils";
 export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }) {
   const { setReplyingTo } = useChatStore();
   const [isDeleted, setIsDeleted] = useState(!!message.deletedAt);
-  const [content, setContent] = useState(message.content);
+  const [content] = useState(message.content);
   const [reactions, setReactions] = useState<{ [emoji: string]: number }>({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
-  useChannel(`conversation:${message.conversationId}`, (msg) => {
-    if (msg.name === "message.deleted" && msg.data.id === message.id) {
-      setIsDeleted(true);
-      setContent("");
-    }
-    if (msg.name === "message.updated" && msg.data.id === message.id) {
-      setContent(msg.data.content);
-    }
-  });
 
   const handleDelete = async () => {
     try {

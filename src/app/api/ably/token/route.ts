@@ -8,14 +8,18 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!process.env.ABLY_API_KEY) {
+    return NextResponse.json({ disabled: true, message: "Ably API key not configured" });
+  }
+
   try {
-    const client = new Ably.Rest(process.env.ABLY_API_KEY as string);
+    const client = new Ably.Rest(process.env.ABLY_API_KEY);
     const tokenRequestData = await client.auth.createTokenRequest({
       clientId: session.user.id,
     });
     return NextResponse.json(tokenRequestData);
   } catch (error) {
     console.error("Ably auth error:", error);
-    return NextResponse.json({ error: "Failed to generate token" }, { status: 500 });
+    return NextResponse.json({ disabled: true, error: "Failed to generate token" }, { status: 200 });
   }
 }

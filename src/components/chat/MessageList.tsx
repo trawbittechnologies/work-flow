@@ -46,6 +46,14 @@ export function MessageList({ conversationId, currentUserId }: { conversationId:
       setTimeout(() => {
         if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }, 100);
+    } else if (msg.name === "message.deleted") {
+      setMessages((prev) =>
+        prev.map((m) => (m.id === msg.data.id ? { ...m, deletedAt: new Date().toISOString() } : m))
+      );
+    } else if (msg.name === "message.updated") {
+      setMessages((prev) =>
+        prev.map((m) => (m.id === msg.data.id ? { ...m, content: msg.data.content } : m))
+      );
     }
   });
 

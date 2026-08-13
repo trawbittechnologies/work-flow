@@ -4,7 +4,7 @@ import { NotificationType } from "@prisma/client";
 import Ably from "ably";
 import nodemailer from "nodemailer";
 
-const ably = new Ably.Rest(process.env.ABLY_API_KEY || "missing-ably-key");
+const ably = process.env.ABLY_API_KEY ? new Ably.Rest({ key: process.env.ABLY_API_KEY }) : null;
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -52,15 +52,17 @@ export async function createNotification({
     },
   });
 
-  // 2. Real-time update via Ably
-  try {
-    const channel = ably.channels.get(`user:${userId}`);
-    await channel.publish("notification.created", notification);
-  } catch (error) {
-    console.error("[notifications] Failed to publish Ably event:", error);
+  // 2. Real-time update via Ably (if configured)
+  if (ably) {
+    try {
+      const channel = ably.channels.get(`user:${userId}`);
+      await channel.publish("notification.created", notification);
+    } catch (error) {
+      console.error("[notifications] Failed to publish Ably event:", error);
+    }
   }
 
-  // 3. Custom WhatsApp / Slack Styled Web Push Notification for Android Chrome
+  // 3. Custom Web Push Notification for recipient devices
   try {
     const subscriptions = await prisma.pushSubscription.findMany({
       where: { userId },
@@ -86,21 +88,20 @@ export async function createNotification({
         ? message
         : `${prefix} ${message}`;
 
-      // Use sender avatar if available, otherwise absolute FlowDesk brand icon URL
       const iconUrl = senderAvatar && senderAvatar.startsWith("http")
         ? senderAvatar
         : `${baseUrl}/icon-192.png`;
 
       const payload = JSON.stringify({
-        title: "Trawbit FlowDesk",
+        title,
         body: formattedBody,
         icon: iconUrl,
         badge: `${baseUrl}/badge-72.png`,
-        url: link || "/",
+        url: link || "/chat",
         notificationId: notification.id,
         tag: `flowdesk-${typeStr.toLowerCase()}`,
         actions: [
-          { action: "open", title: "Open FlowDesk" },
+          { action: "open", title: "Open Flowdesk" },
           { action: "dismiss", title: "Dismiss" },
         ],
       });
@@ -120,7 +121,7 @@ export async function createNotification({
         } catch (error: unknown) {
           const pushError = error as { statusCode?: number };
           if (pushError.statusCode === 404 || pushError.statusCode === 410) {
-            console.log("[notifications] Subscription expired or invalid, deleting:", sub.id);
+            console.log("[notifications] Subscription expired, deleting:", sub.id);
             await prisma.pushSubscription.delete({ where: { id: sub.id } });
           } else {
             console.error("[notifications] Error sending web push:", error);
@@ -131,7 +132,7 @@ export async function createNotification({
       await Promise.allSettled(pushPromises);
     }
   } catch (error) {
-    console.error("[notifications] Error fetching or sending push notifications:", error);
+    console.error("[notifications] Error sending push notifications:", error);
   }
 
   // 4. Optional Email Fallback
