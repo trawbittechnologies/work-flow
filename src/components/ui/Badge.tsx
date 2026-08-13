@@ -11,7 +11,7 @@ export function Badge({ children, colorClass, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border transition-colors",
+        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border transition-colors",
         colorClass,
         className
       )}
@@ -32,7 +32,7 @@ const priorityDots: Record<string, string> = {
   URGENT: "bg-red-500",
   HIGH: "bg-orange-500",
   MEDIUM: "bg-amber-500",
-  LOW: "bg-slate-400",
+  LOW: "bg-[#0A1237]/60 dark:bg-slate-400",
 };
 
 const priorityLabels: Record<string, string> = {

@@ -17,7 +17,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-xs font-semibold uppercase tracking-wider text-text-secondary"
+            className="text-xs font-extrabold uppercase tracking-wider text-[#0A1237] dark:text-white"
           >
             {label}
           </label>
@@ -32,11 +32,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              "w-full h-9 px-3 text-sm rounded-xl border transition-all duration-150",
+              "w-full h-9.5 px-3.5 text-sm rounded-xl border transition-all duration-150 font-medium",
               "bg-surface text-text-primary shadow-xs",
               "border-border placeholder:text-text-muted",
-              "hover:border-text-muted/50",
-              "focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary",
+              "hover:border-text-muted/60",
+              "focus:outline-none focus:ring-2 focus:ring-[#C3D946] focus:border-[#A8BD2F]",
               "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-background",
               error && "border-red-500 focus:ring-red-500/20 focus:border-red-500",
               leftAddon && "pl-9",
@@ -52,7 +52,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && (
-          <p className="text-xs text-red-500 font-medium">{error}</p>
+          <p className="text-xs text-red-500 font-bold">{error}</p>
         )}
         {helperText && !error && (
           <p className="text-xs text-text-muted">{helperText}</p>
@@ -75,7 +75,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          <label htmlFor={inputId} className="text-xs font-extrabold uppercase tracking-wider text-[#0A1237] dark:text-white">
             {label}
           </label>
         )}
@@ -83,18 +83,18 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "w-full px-3 py-2 text-sm rounded-xl border transition-all duration-150 resize-y min-h-[80px]",
+            "w-full px-3.5 py-2.5 text-sm rounded-xl border transition-all duration-150 font-medium resize-y min-h-[80px]",
             "bg-surface text-text-primary shadow-xs",
             "border-border placeholder:text-text-muted",
-            "hover:border-text-muted/50",
-            "focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary",
+            "hover:border-text-muted/60",
+            "focus:outline-none focus:ring-2 focus:ring-[#C3D946] focus:border-[#A8BD2F]",
             "disabled:opacity-50 disabled:cursor-not-allowed",
             error && "border-red-500 focus:ring-red-500/20 focus:border-red-500",
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+        {error && <p className="text-xs text-red-500 font-bold">{error}</p>}
         {helperText && !error && <p className="text-xs text-text-muted">{helperText}</p>}
       </div>
     );
@@ -114,7 +114,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          <label htmlFor={inputId} className="text-xs font-extrabold uppercase tracking-wider text-[#0A1237] dark:text-white">
             {label}
           </label>
         )}
@@ -122,11 +122,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "w-full h-9 px-3 text-sm rounded-xl border transition-all duration-150",
+            "w-full h-9.5 px-3.5 text-sm rounded-xl border transition-all duration-150 font-medium",
             "bg-surface text-text-primary shadow-xs",
             "border-border",
-            "hover:border-text-muted/50",
-            "focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary",
+            "hover:border-text-muted/60",
+            "focus:outline-none focus:ring-2 focus:ring-[#C3D946] focus:border-[#A8BD2F]",
             "disabled:opacity-50 disabled:cursor-not-allowed",
             error && "border-red-500 focus:ring-red-500/20 focus:border-red-500",
             className
@@ -135,7 +135,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         >
           {children}
         </select>
-        {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+        {error && <p className="text-xs text-red-500 font-bold">{error}</p>}
         {helperText && !error && <p className="text-xs text-text-muted">{helperText}</p>}
       </div>
     );

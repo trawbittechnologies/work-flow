@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 import { Loader2 } from "lucide-react";
 
-type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "outline";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "outline" | "navy";
 type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,7 +15,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-primary hover:bg-primary-dark text-white shadow-sm border border-transparent active:scale-[0.98]",
+    "bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[#0A1237] font-extrabold shadow-sm border border-transparent active:scale-[0.98]",
+  navy:
+    "bg-[#0A1237] hover:bg-[#142054] text-white font-bold shadow-sm border border-transparent active:scale-[0.98]",
   secondary:
     "bg-surface hover:bg-surface-alt text-text-primary border border-border shadow-xs hover:border-border/80 active:scale-[0.98]",
   ghost:
@@ -23,12 +25,12 @@ const variantStyles: Record<ButtonVariant, string> = {
   danger:
     "bg-red-600 hover:bg-red-700 text-white shadow-sm border border-transparent active:scale-[0.98]",
   outline:
-    "bg-transparent hover:bg-primary-subtle text-primary border border-primary/30 hover:border-primary active:scale-[0.98]",
+    "bg-transparent hover:bg-primary-subtle text-[#0A1237] dark:text-[#C3D946] border border-[#C3D946] hover:border-primary active:scale-[0.98]",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-7 px-2.5 text-xs gap-1.5 rounded-lg font-medium",
-  md: "h-9 px-3.5 text-sm gap-2 rounded-xl font-medium",
+  sm: "h-7 px-3 text-xs gap-1.5 rounded-lg font-medium",
+  md: "h-9 px-4 text-sm gap-2 rounded-xl font-medium",
   lg: "h-10 px-5 text-sm gap-2 rounded-xl font-semibold",
   icon: "h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0",
 };
@@ -53,10 +55,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          "inline-flex items-center justify-center transition-all duration-150 cursor-pointer",
+          "inline-flex items-center justify-center transition-all duration-150 cursor-pointer select-none whitespace-nowrap",
           "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-1",
-          "select-none whitespace-nowrap",
           variantStyles[variant],
           sizeStyles[size],
           className
