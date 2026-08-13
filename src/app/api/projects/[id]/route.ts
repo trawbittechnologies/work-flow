@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { updateProjectSchema } from "@/lib/validations/project";
 import { logActivity } from "@/lib/activity";
+import { isAdmin } from "@/lib/role";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -22,13 +23,18 @@ export async function GET(_req: Request, { params }: RouteParams) {
   const { id } = await params;
 
   try {
-    const member = await getProjectAndVerifyAccess(id, session.user.id);
-    if (!member) return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    const admin = await isAdmin(session.user.id);
+    
+    if (!admin) {
+      const member = await getProjectAndVerifyAccess(id, session.user.id);
+      if (!member) return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
 
     const project = await prisma.project.findUnique({
       where: { id },
       include: {
         owner: { select: { id: true, name: true, email: true, avatar: true } },
+        lead: { select: { id: true, name: true, email: true, avatar: true } },
         members: {
           include: {
             user: { select: { id: true, name: true, email: true, avatar: true } },
@@ -43,6 +49,8 @@ export async function GET(_req: Request, { params }: RouteParams) {
         _count: { select: { tasks: true, members: true, messages: true } },
       },
     });
+
+    if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 });
 
     return NextResponse.json({ success: true, data: project });
   } catch (error) {
@@ -59,11 +67,11 @@ export async function PATCH(req: Request, { params }: RouteParams) {
   const { id } = await params;
 
   try {
+    const admin = await isAdmin(session.user.id);
     const member = await getProjectAndVerifyAccess(id, session.user.id);
-    if (!member) return NextResponse.json({ error: "Project not found" }, { status: 404 });
 
-    // Only OWNER can edit project settings
-    if (member.role !== "OWNER") {
+    // Must be admin or project owner
+    if (!admin && (!member || member.role !== "OWNER")) {
       return NextResponse.json({ error: "Only the project owner can edit this project" }, { status: 403 });
     }
 
@@ -73,7 +81,18 @@ export async function PATCH(req: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Invalid request", details: parsed.error.flatten() }, { status: 400 });
     }
 
-    const oldProject = member.project;
+    const oldProject = member?.project ?? await prisma.project.findUnique({ where: { id }, select: { status: true, leadId: true, name: true } });
+
+    // If leadId is specified, verify they are a project member
+    if (parsed.data.leadId) {
+      const leadMember = await prisma.projectMember.findUnique({
+        where: { projectId_userId: { projectId: id, userId: parsed.data.leadId } },
+      });
+      if (!leadMember) {
+        return NextResponse.json({ error: "Lead must be a project member" }, { status: 400 });
+      }
+    }
+
     const project = await prisma.project.update({
       where: { id },
       data: {
@@ -81,6 +100,8 @@ export async function PATCH(req: Request, { params }: RouteParams) {
         ...(parsed.data.description !== undefined && { description: parsed.data.description }),
         ...(parsed.data.icon && { icon: parsed.data.icon }),
         ...(parsed.data.status && { status: parsed.data.status }),
+        ...(parsed.data.priority && { priority: parsed.data.priority }),
+        ...(parsed.data.leadId !== undefined && { leadId: parsed.data.leadId }),
         ...(parsed.data.startDate !== undefined && {
           startDate: parsed.data.startDate ? new Date(parsed.data.startDate) : null,
         }),
@@ -90,12 +111,32 @@ export async function PATCH(req: Request, { params }: RouteParams) {
       },
     });
 
-    if (parsed.data.status && parsed.data.status !== oldProject.status) {
+    const actorId = session.user.id;
+
+    if (parsed.data.status && parsed.data.status !== oldProject?.status) {
       await logActivity({
         projectId: id,
-        userId: session.user.id,
+        userId: actorId,
         type: "PROJECT_STATUS_CHANGED",
-        metadata: { from: oldProject.status, to: parsed.data.status },
+        metadata: { from: oldProject?.status, to: parsed.data.status },
+      });
+    }
+
+    if (parsed.data.leadId !== undefined && parsed.data.leadId !== oldProject?.leadId) {
+      await logActivity({
+        projectId: id,
+        userId: actorId,
+        type: "PROJECT_LEAD_CHANGED",
+        metadata: { leadId: parsed.data.leadId },
+      });
+    }
+
+    if (parsed.data.name || parsed.data.description !== undefined || parsed.data.priority) {
+      await logActivity({
+        projectId: id,
+        userId: actorId,
+        type: "PROJECT_EDITED",
+        metadata: { updatedFields: Object.keys(parsed.data) },
       });
     }
 
@@ -114,14 +155,15 @@ export async function DELETE(_req: Request, { params }: RouteParams) {
   const { id } = await params;
 
   try {
+    const admin = await isAdmin(session.user.id);
     const project = await prisma.project.findUnique({
       where: { id },
       select: { ownerId: true, name: true },
     });
 
     if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 });
-    if (project.ownerId !== session.user.id) {
-      return NextResponse.json({ error: "Only the project owner can delete this project" }, { status: 403 });
+    if (!admin && project.ownerId !== session.user.id) {
+      return NextResponse.json({ error: "Only the project owner or admin can delete this project" }, { status: 403 });
     }
 
     await prisma.project.delete({ where: { id } });

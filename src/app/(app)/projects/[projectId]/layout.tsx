@@ -2,12 +2,13 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import { calculateProgress, formatDate, isOverdue, cn } from "@/lib/utils";
-import { StatusBadge } from "@/components/ui/Badge";
-import { AvatarGroup } from "@/components/ui/Avatar";
+import { StatusBadge, PriorityBadge } from "@/components/ui/Badge";
+import { AvatarGroup, Avatar } from "@/components/ui/Avatar";
 import { ProjectNav } from "@/components/projects/ProjectNav";
-import { CalendarDays, ShieldCheck, Plus } from "lucide-react";
+import { CalendarDays, ShieldCheck, Plus, Star, Tag } from "lucide-react";
 import Link from "next/link";
 import { ProjectIcon } from "@/components/ui/ProjectIcon";
+import { isAdmin } from "@/lib/role";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -20,6 +21,8 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
 
   const { projectId } = await params;
 
+  const admin = await isAdmin(session.user.id);
+
   const member = await prisma.projectMember.findUnique({
     where: {
       projectId_userId: { projectId, userId: session.user.id },
@@ -28,6 +31,7 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
       project: {
         include: {
           owner: { select: { id: true, name: true, email: true, avatar: true } },
+          lead: { select: { id: true, name: true, email: true, avatar: true } },
           members: {
             include: { user: { select: { id: true, name: true, email: true, avatar: true } } },
           },
@@ -37,13 +41,29 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
     },
   });
 
-  if (!member) notFound();
+  // Admin can view any project even if not a member
+  if (!member && !admin) notFound();
 
-  const { project } = member;
+  // If admin but not a member, fetch the project directly
+  const project = member?.project ?? await prisma.project.findUnique({
+    where: { id: projectId },
+    include: {
+      owner: { select: { id: true, name: true, email: true, avatar: true } },
+      lead: { select: { id: true, name: true, email: true, avatar: true } },
+      members: {
+        include: { user: { select: { id: true, name: true, email: true, avatar: true } } },
+      },
+      tasks: { select: { id: true, status: true } },
+    },
+  });
+
+  if (!project) notFound();
+
   const completedTasks = project.tasks.filter((t: { status: string }) => t.status === "DONE").length;
   const totalTasks = project.tasks.length;
   const progress = calculateProgress(completedTasks, totalTasks);
   const overdueDeadline = project.deadline ? isOverdue(project.deadline) : false;
+  const userRole = (member?.role as "OWNER" | "MEMBER") ?? "MEMBER";
 
   return (
     <div className="space-y-6">
@@ -58,11 +78,16 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
               <ProjectIcon name={project.icon} className="h-7 w-7" />
             </div>
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-2xl font-bold text-text-primary tracking-tight">
                   {project.name}
                 </h1>
+                {/* Project Key Badge */}
+                <span className="text-[11px] font-bold font-mono bg-surface-alt border border-border text-text-muted px-2 py-0.5 rounded">
+                  {(project as any).key}
+                </span>
                 <StatusBadge status={project.status} />
+                <PriorityBadge priority={(project as any).priority} />
               </div>
               {project.description && (
                 <p className="text-sm font-medium text-text-secondary mt-1.5 max-w-2xl line-clamp-2">
@@ -78,6 +103,13 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
               <span className="text-sm font-bold text-text-primary">
                 {progress}% <span className="text-text-muted font-medium">({completedTasks}/{totalTasks})</span>
               </span>
+              {/* Progress Bar */}
+              <div className="w-24 h-1.5 bg-surface-alt rounded-full mt-1 overflow-hidden">
+                <div
+                  className="h-full bg-primary rounded-full transition-all"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <AvatarGroup
@@ -103,6 +135,14 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
             <span>Owner: <strong className="text-text-primary font-semibold">{project.owner.name}</strong></span>
           </div>
 
+          {/* Project Lead */}
+          {(project as any).lead && (
+            <div className="flex items-center gap-1.5">
+              <Star className="h-4 w-4 text-amber-500" />
+              <span>Lead: <strong className="text-text-primary font-semibold">{(project as any).lead.name}</strong></span>
+            </div>
+          )}
+
           {project.startDate && (
             <div className="flex items-center gap-1.5">
               <CalendarDays className="h-4 w-4" />
@@ -126,7 +166,7 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
 
         {/* Navigation Tabs */}
         <div className="relative z-10">
-          <ProjectNav projectId={projectId} userRole={member.role as "OWNER" | "MEMBER"} />
+          <ProjectNav projectId={projectId} userRole={userRole} />
         </div>
       </div>
 

@@ -12,18 +12,33 @@ datasource db {
 
 // ─── Enums ───────────────────────────────────────────────────────────────────
 
+enum UserRole {
+  ADMIN
+  MEMBER
+}
+
 enum ProjectStatus {
   PLANNING
+  NOT_STARTED
   IN_PROGRESS
   ON_HOLD
+  REVIEW
   COMPLETED
+  ARCHIVED
   CANCELLED
+}
+
+enum ProjectPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
 }
 
 enum TaskStatus {
   TODO
   IN_PROGRESS
-  REVIEW
+  IN_REVIEW
   DONE
 }
 
@@ -41,28 +56,36 @@ enum MemberRole {
 
 enum NotificationType {
   TASK_ASSIGNED
+  TASK_REASSIGNED
   TASK_COMPLETED
   TASK_STATUS_CHANGED
   TASK_DUE_SOON
   TASK_OVERDUE
   PROJECT_INVITE
+  PROJECT_STATUS_CHANGED
   MENTION
+  NEW_COMMENT
   NEW_PROJECT_MESSAGE
+  FILE_UPLOADED
   MESSAGE
 }
 
 enum ActivityType {
   PROJECT_CREATED
+  PROJECT_EDITED
   PROJECT_STATUS_CHANGED
+  PROJECT_LEAD_CHANGED
   MEMBER_ADDED
   MEMBER_REMOVED
   TASK_CREATED
   TASK_ASSIGNED
+  TASK_REASSIGNED
   TASK_STATUS_CHANGED
   TASK_PRIORITY_CHANGED
   TASK_COMPLETED
   COMMENT_ADDED
   FILE_UPLOADED
+  ANNOUNCEMENT_POSTED
 }
 
 enum ConversationType {
@@ -78,6 +101,7 @@ enum MessageType {
   FILE
   PROJECT
   TASK
+  ANNOUNCEMENT
   SYSTEM
 }
 
@@ -89,15 +113,19 @@ model User {
   email        String   @unique
   passwordHash String
   avatar       String?
+  role         UserRole @default(MEMBER)
+  isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   // Relations
   ownedProjects         Project[]            @relation("ProjectOwner")
+  ledProjects           Project[]            @relation("ProjectLead")
   projectMembships      ProjectMember[]
   assignedTasks         Task[]               @relation("TaskAssignee")
   createdTasks          Task[]               @relation("TaskCreator")
   comments              TaskComment[]
+  projectComments       ProjectComment[]
   messages              Message[]
   notifications         Notification[]
   activities            Activity[]
@@ -112,19 +140,23 @@ model User {
 }
 
 model Project {
-  id          String        @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
+  key         String          @unique
   description String?
-  icon        String        @default("📋")
-  status      ProjectStatus @default(PLANNING)
+  icon        String          @default("Clipboard")
+  status      ProjectStatus   @default(PLANNING)
+  priority    ProjectPriority @default(MEDIUM)
   ownerId     String
+  leadId      String?
   startDate   DateTime?
   deadline    DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   // Relations
-  owner         User            @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  owner         User             @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  lead          User?            @relation("ProjectLead", fields: [leadId], references: [id], onDelete: SetNull)
   members       ProjectMember[]
   tasks         Task[]
   activities    Activity[]
@@ -133,8 +165,10 @@ model Project {
   files         File[]
   conversations Conversation[]
   messages      Message[]
+  comments      ProjectComment[]
 
   @@index([ownerId])
+  @@index([leadId])
   @@index([status])
   @@map("projects")
 }
@@ -154,6 +188,26 @@ model ProjectMember {
   @@index([projectId])
   @@index([userId])
   @@map("project_members")
+}
+
+model ProjectComment {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  content   String
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  project  Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent   ProjectComment?  @relation("ProjectCommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies  ProjectComment[] @relation("ProjectCommentReplies")
+
+  @@index([projectId])
+  @@index([parentId])
+  @@map("project_comments")
 }
 
 model Label {
@@ -218,22 +272,26 @@ model TaskComment {
   taskId    String
   userId    String
   content   String
+  parentId  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
-  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task     Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent   TaskComment?  @relation("TaskCommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies  TaskComment[] @relation("TaskCommentReplies")
 
   @@index([taskId])
+  @@index([parentId])
   @@map("task_comments")
 }
 
 model Conversation {
   id        String           @id @default(cuid())
   type      ConversationType
-  name      String?          
-  projectId String?          
+  name      String?
+  projectId String?
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 
@@ -266,8 +324,8 @@ model Message {
   content        String
   type           MessageType @default(TEXT)
   replyToId      String?
-  projectId      String?     
-  taskId         String?     
+  projectId      String?
+  taskId         String?
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   deletedAt      DateTime?

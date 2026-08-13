@@ -11,6 +11,9 @@ import {
   MessageSquare,
   Activity,
   Settings,
+  FolderOpen,
+  CalendarRange,
+  MessagesSquare,
 } from "lucide-react";
 
 interface ProjectNavProps {
@@ -26,7 +29,10 @@ export function ProjectNav({ projectId, userRole }: ProjectNavProps) {
     { label: "Overview", href: baseUrl, exact: true, icon: LayoutDashboard },
     { label: "Tasks", href: `${baseUrl}/tasks`, icon: CheckSquare },
     { label: "Board", href: `${baseUrl}/board`, icon: Kanban },
+    { label: "Timeline", href: `${baseUrl}/timeline`, icon: CalendarRange },
+    { label: "Files", href: `${baseUrl}/files`, icon: FolderOpen },
     { label: "Team", href: `${baseUrl}/team`, icon: Users },
+    { label: "Comments", href: `${baseUrl}/comments`, icon: MessagesSquare },
     { label: "Chat", href: `${baseUrl}/chat`, icon: MessageSquare },
     { label: "Activity", href: `${baseUrl}/activity`, icon: Activity },
     ...(userRole === "OWNER"

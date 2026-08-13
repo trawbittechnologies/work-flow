@@ -22,12 +22,13 @@ export function Badge({ children, colorClass, className }: BadgeProps) {
 }
 
 interface PriorityBadgeProps {
-  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT" | "CRITICAL";
   showDot?: boolean;
   className?: string;
 }
 
 const priorityDots: Record<string, string> = {
+  CRITICAL: "bg-red-700",
   URGENT: "bg-red-500",
   HIGH: "bg-orange-500",
   MEDIUM: "bg-amber-500",
@@ -35,6 +36,7 @@ const priorityDots: Record<string, string> = {
 };
 
 const priorityLabels: Record<string, string> = {
+  CRITICAL: "Critical",
   URGENT: "Urgent",
   HIGH: "High",
   MEDIUM: "Medium",

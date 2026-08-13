@@ -4,6 +4,7 @@ import type {
   ProjectMember,
   Task,
   TaskComment,
+  ProjectComment,
   Message,
   Notification,
   Activity,
@@ -11,12 +12,24 @@ import type {
 } from "@prisma/client";
 
 // ─── Re-exports ───────────────────────────────────────────────────────────────
-export type { User, Project, ProjectMember, Task, TaskComment, Message, Notification, Activity, Label };
+export type {
+  User,
+  Project,
+  ProjectMember,
+  Task,
+  TaskComment,
+  ProjectComment,
+  Message,
+  Notification,
+  Activity,
+  Label,
+};
 
 // ─── Extended Types ───────────────────────────────────────────────────────────
 
 export type ProjectWithDetails = Project & {
   owner: Pick<User, "id" | "name" | "email" | "avatar">;
+  lead: Pick<User, "id" | "name" | "email" | "avatar"> | null;
   members: (ProjectMember & {
     user: Pick<User, "id" | "name" | "email" | "avatar">;
   })[];
@@ -29,6 +42,7 @@ export type ProjectWithDetails = Project & {
 
 export type ProjectWithProgress = Project & {
   owner: Pick<User, "id" | "name" | "email" | "avatar">;
+  lead: Pick<User, "id" | "name" | "email" | "avatar"> | null;
   members: (ProjectMember & {
     user: Pick<User, "id" | "name" | "email" | "avatar">;
   })[];
@@ -45,14 +59,22 @@ export type TaskWithDetails = Task & {
   labels: (import("@prisma/client").TaskLabel & { label: Label })[];
   comments: (TaskComment & {
     user: Pick<User, "id" | "name" | "avatar">;
+    replies?: (TaskComment & { user: Pick<User, "id" | "name" | "avatar"> })[];
   })[];
   _count: {
     comments: number;
+    files?: number;
   };
 };
 
 export type CommentWithUser = TaskComment & {
   user: Pick<User, "id" | "name" | "avatar">;
+  replies?: (TaskComment & { user: Pick<User, "id" | "name" | "avatar"> })[];
+};
+
+export type ProjectCommentWithUser = ProjectComment & {
+  user: Pick<User, "id" | "name" | "avatar">;
+  replies?: (ProjectComment & { user: Pick<User, "id" | "name" | "avatar"> })[];
 };
 
 export type MessageWithUser = Message & {
@@ -88,6 +110,7 @@ export type DashboardStats = {
   completedProjects: number;
   pendingTasks: number;
   overdueTasks: number;
+  totalMembers?: number;
 };
 
 // ─── Session User ─────────────────────────────────────────────────────────────
@@ -97,4 +120,5 @@ export type SessionUser = {
   name: string;
   email: string;
   image?: string | null;
+  role?: "ADMIN" | "MEMBER";
 };

@@ -84,6 +84,7 @@ export function getAvatarColor(name: string): string {
 
 export function getPriorityColor(priority: string): string {
   switch (priority) {
+    case "CRITICAL": return "text-red-700 bg-red-100 border-red-300 dark:text-red-300 dark:bg-red-950 dark:border-red-800";
     case "URGENT": return "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-950 dark:border-red-800";
     case "HIGH": return "text-orange-600 bg-orange-50 border-orange-200 dark:text-orange-400 dark:bg-orange-950 dark:border-orange-800";
     case "MEDIUM": return "text-amber-600 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950 dark:border-amber-800";
@@ -94,6 +95,7 @@ export function getPriorityColor(priority: string): string {
 
 export function getPriorityDotColor(priority: string): string {
   switch (priority) {
+    case "CRITICAL": return "bg-red-700";
     case "URGENT": return "bg-red-500";
     case "HIGH": return "bg-orange-500";
     case "MEDIUM": return "bg-amber-500";
@@ -104,14 +106,18 @@ export function getPriorityDotColor(priority: string): string {
 
 export function getStatusColor(status: string): string {
   switch (status) {
+    // Task statuses
     case "TODO": return "text-slate-600 bg-slate-100 border-slate-200 dark:text-slate-400 dark:bg-slate-800 dark:border-slate-700";
     case "IN_PROGRESS": return "text-blue-600 bg-blue-50 border-blue-200 dark:text-blue-400 dark:bg-blue-950 dark:border-blue-800";
-    case "REVIEW": return "text-violet-600 bg-violet-50 border-violet-200 dark:text-violet-400 dark:bg-violet-950 dark:border-violet-800";
+    case "IN_REVIEW": return "text-violet-600 bg-violet-50 border-violet-200 dark:text-violet-400 dark:bg-violet-950 dark:border-violet-800";
     case "DONE": return "text-emerald-600 bg-emerald-50 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-800";
     // Project statuses
     case "PLANNING": return "text-slate-600 bg-slate-100 border-slate-200 dark:text-slate-400 dark:bg-slate-800 dark:border-slate-700";
+    case "NOT_STARTED": return "text-gray-500 bg-gray-50 border-gray-200 dark:text-gray-400 dark:bg-gray-900 dark:border-gray-700";
     case "ON_HOLD": return "text-amber-600 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950 dark:border-amber-800";
+    case "REVIEW": return "text-purple-600 bg-purple-50 border-purple-200 dark:text-purple-400 dark:bg-purple-950 dark:border-purple-800";
     case "COMPLETED": return "text-emerald-600 bg-emerald-50 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-800";
+    case "ARCHIVED": return "text-gray-400 bg-gray-100 border-gray-200 dark:text-gray-500 dark:bg-gray-800 dark:border-gray-700";
     case "CANCELLED": return "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-950 dark:border-red-800";
     default: return "text-slate-600 bg-slate-100 border-slate-200";
   }

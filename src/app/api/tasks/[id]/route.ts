@@ -139,21 +139,38 @@ export async function PATCH(req: Request, { params }: RouteParams) {
       assigneeId !== existingTask.assigneeId &&
       assigneeId !== session.user.id
     ) {
+      // Distinguish between first-time assignment and reassignment
+      const activityType = existingTask.assigneeId ? "TASK_REASSIGNED" : "TASK_ASSIGNED";
+      const notifType = existingTask.assigneeId ? "TASK_REASSIGNED" : "TASK_ASSIGNED";
+      const notifTitle = existingTask.assigneeId ? "Task reassigned to you" : "Task assigned to you";
+
       await logActivity({
         projectId: task.projectId,
         userId: session.user.id,
-        type: "TASK_ASSIGNED",
-        metadata: { taskId: id, taskTitle: task.title, assigneeId },
+        type: activityType,
+        metadata: { taskId: id, taskTitle: task.title, assigneeId, previousAssigneeId: existingTask.assigneeId },
       });
 
       await createNotification({
         userId: assigneeId,
-        type: "TASK_ASSIGNED",
-        title: "Task assigned to you",
+        type: notifType as any,
+        title: notifTitle,
         message: `You were assigned "${task.title}" in ${project?.name}`,
         projectId: task.projectId,
         taskId: id,
       });
+
+      // Notify previous assignee of reassignment
+      if (existingTask.assigneeId && existingTask.assigneeId !== assigneeId) {
+        await createNotification({
+          userId: existingTask.assigneeId,
+          type: "TASK_REASSIGNED" as any,
+          title: "Task reassigned",
+          message: `"${task.title}" was reassigned to someone else`,
+          projectId: task.projectId,
+          taskId: id,
+        });
+      }
     }
 
     return NextResponse.json({ success: true, data: task });

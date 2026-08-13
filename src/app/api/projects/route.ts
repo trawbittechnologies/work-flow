@@ -3,8 +3,18 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { createProjectSchema } from "@/lib/validations/project";
 import { logActivity } from "@/lib/activity";
+import { isAdmin } from "@/lib/role";
 
-// GET /api/projects — get all projects for the current user
+function generateProjectKey(name: string): string {
+  const base = name
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 4);
+  const suffix = Math.floor(Math.random() * 900 + 100);
+  return `${base || "PRJ"}${suffix}`;
+}
+
+// GET /api/projects — get projects (all for admin, assigned for member)
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {
@@ -12,12 +22,15 @@ export async function GET() {
   }
 
   try {
+    const admin = await isAdmin(session.user.id);
+
     const projects = await prisma.project.findMany({
-      where: {
-        members: { some: { userId: session.user.id } },
-      },
+      where: admin
+        ? undefined // Admin sees all
+        : { members: { some: { userId: session.user.id } } },
       include: {
         owner: { select: { id: true, name: true, email: true, avatar: true } },
+        lead: { select: { id: true, name: true, email: true, avatar: true } },
         members: {
           include: {
             user: { select: { id: true, name: true, email: true, avatar: true } },
@@ -54,15 +67,28 @@ export async function POST(request: Request) {
       );
     }
 
-    const { name, description, icon, status, startDate, deadline } = parsed.data;
+    const { name, description, icon, status, priority, leadId, startDate, deadline } = parsed.data;
+
+    // Generate unique project key
+    let key = generateProjectKey(name);
+    let attempts = 0;
+    while (attempts < 10) {
+      const existing = await prisma.project.findUnique({ where: { key } });
+      if (!existing) break;
+      key = generateProjectKey(name);
+      attempts++;
+    }
 
     const project = await prisma.project.create({
       data: {
         name: name.trim(),
         description: description?.trim() ?? null,
-        icon,
-        status,
+        icon: icon ?? "Clipboard",
+        key,
+        status: status ?? "PLANNING",
+        priority: priority ?? "MEDIUM",
         ownerId: session.user.id,
+        leadId: leadId ?? null,
         startDate: startDate ? new Date(startDate) : null,
         deadline: deadline ? new Date(deadline) : null,
         // Auto-add creator as OWNER member
@@ -75,6 +101,7 @@ export async function POST(request: Request) {
       },
       include: {
         owner: { select: { id: true, name: true, email: true, avatar: true } },
+        lead: { select: { id: true, name: true, email: true, avatar: true } },
         members: {
           include: {
             user: { select: { id: true, name: true, email: true, avatar: true } },

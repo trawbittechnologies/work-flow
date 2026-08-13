@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-export default auth((req) => {
+export default auth(async (req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
 
@@ -29,6 +29,14 @@ export default auth((req) => {
   // Redirect authenticated users away from auth pages
   if (isLoggedIn && isPublicPath) {
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl.origin));
+  }
+
+  // Protect admin routes — only users with ADMIN role can access /admin/*
+  if (pathname.startsWith("/admin")) {
+    const role = (req.auth?.user as any)?.role;
+    if (role !== "ADMIN") {
+      return NextResponse.redirect(new URL("/dashboard", req.nextUrl.origin));
+    }
   }
 
   return NextResponse.next();

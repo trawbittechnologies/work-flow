@@ -6,7 +6,7 @@ export const createTaskSchema = z.object({
   projectId: z.string().min(1, "Invalid project"),
   assigneeId: z.string().optional().nullable(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
-  status: z.enum(["TODO", "IN_PROGRESS", "REVIEW", "DONE"]).optional(),
+  status: z.enum(["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"]).optional(),
   dueDate: z.string().optional().nullable(),
   labelIds: z.array(z.string()).optional(),
 });
@@ -16,13 +16,14 @@ export const updateTaskSchema = z.object({
   description: z.string().max(2000).optional().nullable(),
   assigneeId: z.string().optional().nullable(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
-  status: z.enum(["TODO", "IN_PROGRESS", "REVIEW", "DONE"]).optional(),
+  status: z.enum(["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"]).optional(),
   dueDate: z.string().optional().nullable(),
   labelIds: z.array(z.string()).optional(),
 });
 
 export const createCommentSchema = z.object({
   content: z.string().min(1, "Comment cannot be empty").max(2000, "Comment too long"),
+  parentId: z.string().optional().nullable(),
 });
 
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
