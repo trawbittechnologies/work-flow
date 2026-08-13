@@ -5,7 +5,20 @@ import { useSearchParams } from "next/navigation";
 import { useChatStore } from "./useChatStore";
 import { MessageList } from "./MessageList";
 import { MessageComposer } from "./MessageComposer";
-import { Users, Hash, Plus, Search, MessageSquarePlus } from "lucide-react";
+import { 
+  Users, 
+  Hash, 
+  Plus, 
+  Search, 
+  MessageSquarePlus, 
+  Phone, 
+  Video, 
+  Info, 
+  X,
+  FileText,
+  Bell,
+  ShieldCheck
+} from "lucide-react";
 import { ChannelProvider } from "ably/react";
 import { Modal } from "@/components/ui/Modal";
 import { Avatar } from "@/components/ui/Avatar";
@@ -31,6 +44,7 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
   const [isDmModalOpen, setIsDmModalOpen] = useState(false);
   const [memberSearch, setMemberSearch] = useState("");
   const [startingDm, setStartingDm] = useState<string | null>(null);
+  const [showRightDrawer, setShowRightDrawer] = useState(false);
 
   const { activeConversationId, setActiveConversation } = useChatStore();
 
@@ -40,7 +54,6 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Sync with URL query parameter when notification link is clicked
   useEffect(() => {
     if (urlConvId) {
       setActiveConversation(urlConvId);
@@ -134,7 +147,7 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
 
   return (
     <div className="flex h-[calc(100vh-var(--header-height))] overflow-hidden bg-background">
-      {/* Sidebar */}
+      {/* Slack Sidebar */}
       <div className="w-80 border-r border-border bg-surface flex flex-col flex-shrink-0 card-shadow z-10">
         {/* Header */}
         <div className="p-4 border-b border-border space-y-3">
@@ -213,7 +226,7 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-5 w-5 text-text-muted hover:text-text-primary"
+                className="h-5 w-5 text-text-muted hover:text-text-primary cursor-pointer"
                 onClick={() => setIsDmModalOpen(true)}
                 title="Start new DM"
               >
@@ -240,7 +253,7 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                     {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#C3D946] rounded-r-full glow-lime" />}
                     <div className="relative flex-shrink-0">
                       <Avatar name={avatar?.name || title} src={avatar?.avatar} size="sm" className="ring-1 ring-border" />
-                      <span className="absolute bottom-0 right-0 h-2 w-2 bg-emerald-500 rounded-full ring-2 ring-surface" />
+                      <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-emerald-500 rounded-full ring-2 ring-surface" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="truncate text-xs font-bold leading-tight">{title}</p>
@@ -261,14 +274,14 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col relative bg-background">
+      <div className="flex-1 flex flex-col relative bg-background min-w-0">
         {activeConversation ? (
           <ChannelProvider channelName={`conversation:${activeConversation.id}`}>
-            {/* Active Header */}
+            {/* Active Header Action Bar */}
             <div className="h-14 border-b border-border flex items-center justify-between px-6 bg-surface z-10 shadow-xs">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 {activeConversation.type === "DIRECT" ? (
-                  <div className="relative">
+                  <div className="relative flex-shrink-0">
                     <Avatar
                       name={getConversationName(activeConversation)}
                       src={getConversationAvatar(activeConversation)?.avatar}
@@ -277,23 +290,123 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                     <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-emerald-500 rounded-full ring-2 ring-surface" />
                   </div>
                 ) : (
-                  <div className="h-8 w-8 rounded-lg bg-[#0A1237] text-[#C3D946] flex items-center justify-center font-bold">
+                  <div className="h-8 w-8 rounded-lg bg-[#0A1237] text-[#C3D946] flex items-center justify-center font-bold flex-shrink-0">
                     <Hash className="h-4 w-4" />
                   </div>
                 )}
-                <div>
-                  <h3 className="text-sm font-extrabold text-[#0A1237] dark:text-white tracking-tight">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-extrabold text-[#0A1237] dark:text-white tracking-tight truncate">
                     {getConversationName(activeConversation)}
                   </h3>
-                  <p className="text-[10px] font-semibold text-text-muted">
-                    {activeConversation.type === "DIRECT" ? "Direct Message" : "Project Channel"}
+                  <p className="text-[10px] font-semibold text-text-muted flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span>{activeConversation.type === "DIRECT" ? "Active Now" : `${activeConversation.members?.length || 2} members`}</span>
                   </p>
                 </div>
               </div>
+
+              {/* Call & Info Action Toolbar */}
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-text-muted hover:text-[#0A1237] dark:hover:text-[#C3D946]"
+                  title="Audio call"
+                >
+                  <Phone className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-text-muted hover:text-[#0A1237] dark:hover:text-[#C3D946]"
+                  title="Video call"
+                >
+                  <Video className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    "h-8 w-8 transition-colors cursor-pointer",
+                    showRightDrawer ? "bg-[#0A1237] text-[#C3D946]" : "text-text-muted hover:text-[#0A1237] dark:hover:text-[#C3D946]"
+                  )}
+                  onClick={() => setShowRightDrawer((o) => !o)}
+                  title="Conversation details"
+                >
+                  <Info className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
-            <MessageList conversationId={activeConversation.id} currentUserId={currentUserId} />
-            <MessageComposer conversationId={activeConversation.id} currentUserId={currentUserId} />
+            <div className="flex-1 flex overflow-hidden">
+              <div className="flex-1 flex flex-col min-w-0">
+                <MessageList conversationId={activeConversation.id} currentUserId={currentUserId} />
+                <MessageComposer conversationId={activeConversation.id} currentUserId={currentUserId} />
+              </div>
+
+              {/* Slack/Teams Right Details Panel */}
+              {showRightDrawer && (
+                <div className="w-72 border-l border-border bg-surface p-4 flex flex-col gap-5 overflow-y-auto hidden lg:flex flex-shrink-0 card-shadow">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <h4 className="text-xs font-black text-[#0A1237] dark:text-white uppercase tracking-wider">Details</h4>
+                    <button onClick={() => setShowRightDrawer(false)} className="text-text-muted hover:text-text-primary p-1 cursor-pointer">
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {/* Profile Header */}
+                  <div className="flex flex-col items-center text-center space-y-2">
+                    <Avatar
+                      name={getConversationName(activeConversation)}
+                      src={getConversationAvatar(activeConversation)?.avatar}
+                      size="lg"
+                    />
+                    <h5 className="text-sm font-extrabold text-[#0A1237] dark:text-white">
+                      {getConversationName(activeConversation)}
+                    </h5>
+                    <span className="text-[10px] font-bold text-text-muted bg-surface-alt px-2.5 py-0.5 rounded-full border border-border">
+                      {activeConversation.type === "DIRECT" ? "Direct Message" : "Project Channel"}
+                    </span>
+                  </div>
+
+                  {/* Options */}
+                  <div className="space-y-2 pt-2 border-t border-border">
+                    <button className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-surface-alt text-xs font-bold text-text-secondary cursor-pointer">
+                      <span className="flex items-center gap-2.5">
+                        <Bell className="h-4 w-4 text-text-muted" />
+                        Mute Notifications
+                      </span>
+                      <span className="text-[10px] text-text-muted">Off</span>
+                    </button>
+                    <button className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-surface-alt text-xs font-bold text-text-secondary cursor-pointer">
+                      <span className="flex items-center gap-2.5">
+                        <FileText className="h-4 w-4 text-text-muted" />
+                        Shared Files
+                      </span>
+                      <span className="text-[10px] font-bold bg-surface-alt border border-border px-1.5 py-0.5 rounded">
+                        {activeConversation.messages?.filter((m: { attachments?: unknown[] }) => m.attachments?.length).length || 0}
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Members list */}
+                  <div className="space-y-2 pt-2 border-t border-border">
+                    <h6 className="text-[10px] font-black uppercase text-text-muted tracking-widest">
+                      Members ({activeConversation.members?.length || 2})
+                    </h6>
+                    <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                      {activeConversation.members?.map((m: any) => (
+                        <div key={m.id || m.userId} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-surface-alt">
+                          <Avatar name={m.user?.name || "Member"} src={m.user?.avatar} size="xs" />
+                          <span className="text-xs font-bold text-text-primary truncate">{m.user?.name || "Workspace Member"}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </ChannelProvider>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-text-muted p-8 text-center">
