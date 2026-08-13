@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { StatusBadge, PriorityBadge } from "@/components/ui/Badge";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 
 interface SearchResults {
   projects: Array<{ id: string; name: string; description?: string | null; icon: string; status: string }>;
@@ -81,7 +82,7 @@ function SearchContent() {
                     className="flex items-center justify-between p-3.5 hover:bg-[var(--background)] transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-lg">{p.icon}</span>
+                      <span className="text-lg text-text-secondary"><ProjectIcon name={p.icon} className="h-5 w-5" /></span>
                       <div>
                         <h3 className="text-xs font-semibold text-[var(--text-primary)]">{p.name}</h3>
                         {p.description && <p className="text-[11px] text-[var(--text-muted)] line-clamp-1">{p.description}</p>}
@@ -110,8 +111,8 @@ function SearchContent() {
                   >
                     <div className="space-y-0.5">
                       <h3 className="text-xs font-semibold text-[var(--text-primary)]">{t.title}</h3>
-                      <p className="text-[10px] text-[var(--text-muted)]">
-                        {t.project.icon} {t.project.name}
+                      <p className="text-[10px] text-[var(--text-muted)] flex items-center gap-1">
+                        <ProjectIcon name={t.project.icon} className="h-3 w-3" /> {t.project.name}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Mail, CheckSquare } from "lucide-react";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Team" };
@@ -116,7 +117,7 @@ export default async function GlobalTeamPage() {
                       key={pm.project.id}
                       className="inline-flex items-center gap-1 text-[11px] bg-[var(--background)] border border-[var(--border-subtle)] px-2 py-0.5 rounded-[6px] text-[var(--text-secondary)] font-medium"
                     >
-                      <span>{pm.project.icon}</span>
+                      <span className="text-text-secondary"><ProjectIcon name={pm.project.icon} className="h-3 w-3" /></span>
                       <span className="truncate max-w-[120px]">{pm.project.name}</span>
                     </span>
                   ))}

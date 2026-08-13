@@ -7,6 +7,7 @@ import { CommentSection } from "@/components/tasks/CommentSection";
 import { formatDate, isOverdue } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Task Details" };
@@ -61,7 +62,7 @@ export default async function TaskDetailPage({ params }: PageProps) {
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-lg">{task.project.icon}</span>
+              <span className="text-lg text-text-secondary"><ProjectIcon name={task.project.icon} className="h-5 w-5" /></span>
               <span className="text-xs font-semibold text-[var(--text-muted)]">{task.project.name}</span>
             </div>
             <div className="flex items-center gap-2">

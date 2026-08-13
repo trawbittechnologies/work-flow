@@ -7,6 +7,7 @@ import { AvatarGroup } from "@/components/ui/Avatar";
 import { ProjectNav } from "@/components/projects/ProjectNav";
 import { CalendarDays, ShieldCheck, Plus } from "lucide-react";
 import Link from "next/link";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -53,8 +54,8 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
         
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 relative z-10">
           <div className="flex items-start gap-4">
-            <div className="h-14 w-14 rounded-xl bg-surface-alt border border-border flex items-center justify-center text-3xl flex-shrink-0 shadow-sm">
-              {project.icon}
+            <div className="h-14 w-14 rounded-xl bg-surface-alt border border-border flex items-center justify-center flex-shrink-0 shadow-sm text-text-secondary">
+              <ProjectIcon name={project.icon} className="h-7 w-7" />
             </div>
             <div>
               <div className="flex items-center gap-3">
