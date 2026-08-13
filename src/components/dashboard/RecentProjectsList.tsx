@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Globe,
@@ -8,6 +9,9 @@ import {
   Wrench,
   Layers,
   MoreVertical,
+  ExternalLink,
+  Edit,
+  Folder,
 } from "lucide-react";
 
 interface RecentProjectsListProps {
@@ -79,6 +83,8 @@ const mockProjects = [
 ];
 
 export function RecentProjectsList({ initialProjects: _initialProjects }: RecentProjectsListProps) {
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
   return (
     <div className="bg-white border border-[#EAEDF2] rounded-2xl p-6 shadow-2xs">
       {/* Header */}
@@ -88,7 +94,7 @@ export function RecentProjectsList({ initialProjects: _initialProjects }: Recent
         </h3>
         <Link
           href="/projects"
-          className="text-xs font-bold text-[#88C315] hover:text-[#74A710] transition-colors"
+          className="text-xs font-bold text-[#88C315] hover:text-[#74A710] active:scale-95 transition-all"
         >
           View all
         </Link>
@@ -99,12 +105,12 @@ export function RecentProjectsList({ initialProjects: _initialProjects }: Recent
         {mockProjects.map((project) => (
           <div
             key={project.id}
-            className="flex items-center justify-between gap-4 py-1 group"
+            className="flex items-center justify-between gap-4 py-1 group relative"
           >
             {/* Left: Icon + Title/Updated */}
             <div className="flex items-center gap-3.5 min-w-[200px] flex-1">
               <div
-                className={`h-10 w-10 rounded-xl ${project.iconBg} text-white flex items-center justify-center flex-shrink-0 shadow-2xs`}
+                className={`h-10 w-10 rounded-xl ${project.iconBg} text-white flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}
               >
                 <project.icon className="h-5 w-5" />
               </div>
@@ -135,7 +141,7 @@ export function RecentProjectsList({ initialProjects: _initialProjects }: Recent
             </div>
 
             {/* Right: Status Badge & 3-Dots */}
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-3 flex-shrink-0 relative">
               <span
                 className={`text-[11px] font-bold px-2.5 py-1 rounded-lg ${
                   project.statusVariant === "in-progress"
@@ -150,10 +156,42 @@ export function RecentProjectsList({ initialProjects: _initialProjects }: Recent
 
               <button
                 aria-label="Project actions"
-                className="text-[#9CA3AF] hover:text-[#111827] p-1 rounded transition-colors cursor-pointer"
+                onClick={() =>
+                  setActiveMenu(activeMenu === project.id ? null : project.id)
+                }
+                className="text-[#9CA3AF] hover:text-[#111827] p-1 rounded-lg hover:bg-[#F3F4F6] transition-colors cursor-pointer"
               >
                 <MoreVertical className="h-4 w-4" />
               </button>
+
+              {activeMenu === project.id && (
+                <div className="absolute right-0 top-full mt-1 w-40 bg-white border border-[#E5E7EB] rounded-xl shadow-xl z-20 py-1 text-xs animate-in font-medium">
+                  <Link
+                    href="/projects"
+                    onClick={() => setActiveMenu(null)}
+                    className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
+                  >
+                    <Folder className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                    <span>Open Project</span>
+                  </Link>
+                  <Link
+                    href="/board"
+                    onClick={() => setActiveMenu(null)}
+                    className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                    <span>View Board</span>
+                  </Link>
+                  <Link
+                    href="/settings"
+                    onClick={() => setActiveMenu(null)}
+                    className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
+                  >
+                    <Edit className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                    <span>Settings</span>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -10,49 +10,80 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 
-const data = [
-  { day: "May 12", completed: 28, inProgress: 10 },
-  { day: "May 13", completed: 42, inProgress: 12 },
-  { day: "May 14", completed: 58, inProgress: 18 },
-  { day: "May 15", completed: 64, inProgress: 26 },
-  { day: "May 16", completed: 78, inProgress: 32 },
-  { day: "May 17", completed: 88, inProgress: 38 },
-  { day: "May 18", completed: 100, inProgress: 44 },
-];
+const datasets: Record<
+  string,
+  Array<{ day: string; completed: number; inProgress: number }>
+> = {
+  "This Week": [
+    { day: "May 12", completed: 28, inProgress: 10 },
+    { day: "May 13", completed: 42, inProgress: 12 },
+    { day: "May 14", completed: 58, inProgress: 18 },
+    { day: "May 15", completed: 64, inProgress: 26 },
+    { day: "May 16", completed: 78, inProgress: 32 },
+    { day: "May 17", completed: 88, inProgress: 38 },
+    { day: "May 18", completed: 100, inProgress: 44 },
+  ],
+  "This Month": [
+    { day: "Week 1", completed: 20, inProgress: 15 },
+    { day: "Week 2", completed: 45, inProgress: 25 },
+    { day: "Week 3", completed: 72, inProgress: 35 },
+    { day: "Week 4", completed: 95, inProgress: 42 },
+  ],
+  "This Quarter": [
+    { day: "Month 1", completed: 30, inProgress: 20 },
+    { day: "Month 2", completed: 65, inProgress: 35 },
+    { day: "Month 3", completed: 98, inProgress: 45 },
+  ],
+};
 
 export function ProjectProgressChart() {
   const [timeframe, setTimeframe] = useState("This Week");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSelect = (t: string) => {
+    setDropdownOpen(false);
+    startTransition(() => {
+      setTimeframe(t);
+    });
+  };
+
+  const chartData = datasets[timeframe] || datasets["This Week"];
 
   return (
-    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-6 shadow-2xs">
+    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-6 shadow-2xs relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[15px] font-bold text-[#111827]">
-          Project Progress
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-[15px] font-bold text-[#111827]">
+            Project Progress
+          </h3>
+          {isPending && (
+            <Loader2 className="h-4 w-4 animate-spin text-[#88C315]" />
+          )}
+        </div>
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#4B5563] bg-white border border-[#E5E7EB] px-3 py-1.5 rounded-xl hover:bg-[#F9FAFB] transition-colors cursor-pointer shadow-2xs"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#4B5563] bg-white border border-[#E5E7EB] px-3 py-1.5 rounded-xl hover:bg-[#F9FAFB] active:scale-95 transition-all cursor-pointer shadow-2xs"
           >
             <span>{timeframe}</span>
             <ChevronDown className="h-3.5 w-3.5 text-[#9CA3AF]" />
           </button>
           {dropdownOpen && (
-            <div className="absolute right-0 top-full mt-1.5 w-32 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-10 py-1 text-xs font-medium">
+            <div className="absolute right-0 top-full mt-1.5 w-32 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-10 py-1 text-xs font-medium animate-in">
               {["This Week", "This Month", "This Quarter"].map((t) => (
                 <button
                   key={t}
-                  onClick={() => {
-                    setTimeframe(t);
-                    setDropdownOpen(false);
-                  }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
+                  onClick={() => handleSelect(t)}
+                  className="w-full text-left px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151] flex items-center justify-between"
                 >
-                  {t}
+                  <span>{t}</span>
+                  {timeframe === t && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#88C315]" />
+                  )}
                 </button>
               ))}
             </div>
@@ -73,10 +104,15 @@ export function ProjectProgressChart() {
       </div>
 
       {/* Chart */}
-      <div className="h-64 w-full">
+      <div className="h-64 w-full relative">
+        {isPending && (
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center z-10 rounded-xl">
+            <Loader2 className="h-6 w-6 animate-spin text-[#88C315]" />
+          </div>
+        )}
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            data={data}
+            data={chartData}
             margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
           >
             <CartesianGrid

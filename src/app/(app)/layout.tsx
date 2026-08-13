@@ -7,6 +7,8 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { ForceLogout } from "@/components/auth/ForceLogout";
 import { NotificationManager } from "@/components/notifications/NotificationManager";
 import { AblyProvider } from "@/components/chat/AblyProvider";
+import { Suspense } from "react";
+import { TopProgressBar } from "@/components/layout/TopProgressBar";
 import { CommandCenter } from "@/components/ui/CommandCenter";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +30,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <AblyProvider>
       <div className="min-h-screen bg-background">
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         <Sidebar user={user} unreadNotifications={unreadCount} />
         <Header user={user} unreadNotifications={unreadCount} />
         <CommandCenter />

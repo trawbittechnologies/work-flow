@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { Metadata } from "next";
 
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ProjectProgressChart } from "@/components/dashboard/ProjectProgressChart";
 import { TasksOverviewChart } from "@/components/dashboard/TasksOverviewChart";
@@ -34,26 +35,8 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top Greeting Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black tracking-tight text-[#111827]">
-            Dashboard
-          </h1>
-          <p className="text-[13px] font-medium text-[#6B7280] mt-0.5">
-            Welcome back, {userName} 👋
-          </p>
-        </div>
-
-        {/* Date Filter Button */}
-        <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#374151] hover:bg-[#F9FAFB] shadow-2xs transition-colors cursor-pointer">
-            <Calendar className="h-4 w-4 text-[#6B7280]" />
-            <span>May 12 - May 18, 2025</span>
-            <ChevronDown className="h-3.5 w-3.5 text-[#9CA3AF]" />
-          </button>
-        </div>
-      </div>
+      {/* Top Greeting Header with interactive date selector & loading */}
+      <DashboardHeader userName={userName} />
 
       {/* Row 1: 4 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">

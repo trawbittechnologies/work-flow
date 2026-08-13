@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -13,8 +14,7 @@ import {
   Users,
   Settings,
   Plus,
-  ArrowRight,
-  Sparkles,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +30,7 @@ interface SidebarProps {
 
 export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications = 0 }: SidebarProps) {
   const pathname = usePathname();
+  const [navigatingHref, setNavigatingHref] = useState<string | null>(null);
 
   function isActive(href: string) {
     if (href === "/dashboard") return pathname === href;
@@ -63,7 +64,11 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
     >
       {/* Brand Header */}
       <div className="px-6 py-6 flex-shrink-0 flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center gap-2.5 group">
+        <Link
+          href="/dashboard"
+          onClick={() => setNavigatingHref("/dashboard")}
+          className="flex items-center gap-2.5 group"
+        >
           {/* Stylized X/Leaf Logo Icon */}
           <div className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0">
             <svg
@@ -102,27 +107,37 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
         <div className="space-y-1">
           {mainNav.map((item) => {
             const active = isActive(item.href);
+            const isNavigating = navigatingHref === item.href && pathname !== item.href;
+
             return (
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={() => setNavigatingHref(item.href)}
                 className={cn(
-                  "group flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150",
+                  "group flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150 relative",
                   active
                     ? "bg-[#F3F9DE] text-[#111827] font-bold shadow-2xs"
                     : "text-[#6B7280] hover:bg-[#F7F8FA] hover:text-[#111827]"
                 )}
               >
-                <item.icon
-                  className={cn(
-                    "h-4 w-4 flex-shrink-0 transition-colors duration-150",
-                    active
-                      ? "text-[#88C315]"
-                      : "text-[#9CA3AF] group-hover:text-[#111827]"
-                  )}
-                  strokeWidth={active ? 2.3 : 1.9}
-                />
+                {isNavigating ? (
+                  <Loader2 className="h-4 w-4 flex-shrink-0 animate-spin text-[#88C315]" />
+                ) : (
+                  <item.icon
+                    className={cn(
+                      "h-4 w-4 flex-shrink-0 transition-colors duration-150",
+                      active
+                        ? "text-[#88C315]"
+                        : "text-[#9CA3AF] group-hover:text-[#111827]"
+                    )}
+                    strokeWidth={active ? 2.3 : 1.9}
+                  />
+                )}
                 <span className="flex-1 truncate">{item.label}</span>
+                {isNavigating && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#88C315] animate-ping" />
+                )}
               </Link>
             );
           })}
@@ -136,7 +151,7 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
             </span>
             <Link
               href="/projects/new"
-              className="p-0.5 text-[#9CA3AF] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"
+              className="p-0.5 text-[#9CA3AF] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors cursor-pointer"
               title="Add Project"
             >
               <Plus className="h-3.5 w-3.5" />
@@ -161,31 +176,6 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
           </div>
         </div>
       </nav>
-
-      {/* Upgrade Plan Card Footer */}
-      <div className="p-4 flex-shrink-0">
-        <div className="bg-[#F6F7FA] border border-[#EAEDF2] rounded-2xl p-3.5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="h-9 w-9 rounded-xl bg-[#EDE9FE] text-[#7C3AED] flex items-center justify-center flex-shrink-0 shadow-2xs">
-              <Sparkles className="h-4.5 w-4.5" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[12px] font-bold text-[#111827] leading-tight">
-                Upgrade Plan
-              </p>
-              <p className="text-[10px] text-[#6B7280] leading-tight mt-0.5 line-clamp-2">
-                Unlock advanced features for your team.
-              </p>
-            </div>
-          </div>
-          <button
-            aria-label="Upgrade details"
-            className="h-7 w-7 rounded-full border border-[#D1D5DB] flex items-center justify-center text-[#4B5563] hover:bg-white hover:text-black hover:border-gray-400 transition-all flex-shrink-0 cursor-pointer shadow-2xs"
-          >
-            <ArrowRight className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      </div>
     </aside>
   );
 }
