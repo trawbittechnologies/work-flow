@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Modal, ConfirmDialog } from "@/components/ui/Modal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useToast } from "@/components/ui/Toast";
-import { UserPlus, Trash2, Mail, Star, Search, Check, Shield } from "lucide-react";
+import { UserPlus, Trash2, Mail, Star, Search, Check } from "lucide-react";
 import type { MemberWithUser } from "@/types";
 import { cn } from "@/lib/utils";
 

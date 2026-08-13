@@ -51,7 +51,27 @@ export default function AdminProjectsPage() {
     }
   }
 
-  useEffect(() => { loadProjects(); }, []);
+  useEffect(() => {
+    let isMounted = true;
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/admin/projects");
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) setProjects(data.data || []);
+        }
+      } catch {
+        if (isMounted) showError("Error", "Could not load projects.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchProjects();
+    return () => {
+      isMounted = false;
+    };
+  }, [showError]);
 
   async function handleArchive(project: AdminProject) {
     const newStatus = project.status === "ARCHIVED" ? "ON_HOLD" : "ARCHIVED";

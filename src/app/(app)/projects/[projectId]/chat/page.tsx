@@ -26,20 +26,6 @@ export default function ProjectChatPage({ params }: PageProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
-  async function loadMessages() {
-    try {
-      const res = await fetch(`/api/projects/${projectId}/messages`);
-      if (res.ok) {
-        const data = await res.json();
-        setMessages(data.data || []);
-      }
-    } catch {
-      showError("Error", "Could not load messages.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     let isMounted = true;
     const fetchChatMessages = async () => {

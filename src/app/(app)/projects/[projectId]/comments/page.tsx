@@ -33,7 +33,7 @@ interface CommentCardProps {
 }
 
 function CommentCard({ comment, currentUserId, projectId, onRefresh, isReply }: CommentCardProps) {
-  const { success, error: showError } = useToast();
+  const { error: showError } = useToast();
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [isReplying, setIsReplying] = useState(false);

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/role";
 import { calculateProgress } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight, FolderKanban, Users, CheckSquare, AlertTriangle, TrendingUp, ShieldCheck } from "lucide-react";
+import { ArrowRight, FolderKanban, Users, AlertTriangle, TrendingUp, ShieldCheck } from "lucide-react";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ProjectCard } from "@/components/dashboard/ProjectCard";
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
@@ -20,6 +20,7 @@ export default async function AdminDashboardPage() {
   if (!admin) redirect("/dashboard");
 
   const now = new Date();
+  const upcomingDeadline = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   const [
     totalProjects,
@@ -50,7 +51,7 @@ export default async function AdminDashboardPage() {
       where: {
         status: { not: "COMPLETED" },
         OR: [
-          { deadline: { lt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) } },
+          { deadline: { lt: upcomingDeadline } },
           { tasks: { some: { status: { not: "DONE" }, dueDate: { lt: now } } } },
         ],
       },

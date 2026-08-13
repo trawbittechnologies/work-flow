@@ -18,7 +18,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
   const { projectId } = use(params);
   const { error: showError } = useToast();
   const [tasks, setTasks] = useState<TaskWithDetails[]>([]);
-  const [members, setMembers] = useState<any[]>([]);
+  const [members, setMembers] = useState<Array<{ id: string; user: { id: string; name: string; avatar?: string | null } }>>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalDefaultStatus, setModalDefaultStatus] = useState<"TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE">("TODO");

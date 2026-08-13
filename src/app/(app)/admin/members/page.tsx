@@ -48,7 +48,27 @@ export default function AdminMembersPage() {
     }
   }
 
-  useEffect(() => { loadUsers(); }, []);
+  useEffect(() => {
+    let isMounted = true;
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("/api/admin/users");
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) setUsers(data.data || []);
+        }
+      } catch {
+        if (isMounted) showError("Error", "Could not load members.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchUsers();
+    return () => {
+      isMounted = false;
+    };
+  }, [showError]);
 
   async function handleCreateUser(e: React.FormEvent) {
     e.preventDefault();

@@ -28,28 +28,27 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
 
   useEffect(() => {
     let isMounted = true;
-    if (isOpen && taskId) {
-      setLoading(true);
-      fetch(`/api/tasks/${taskId}`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to load task");
-          return res.json();
-        })
-        .then((data) => {
-          if (isMounted) setTask(data.data);
-        })
-        .catch(() => {
-          if (isMounted) {
-            showError("Error", "Could not load task details.");
-            onClose();
-          }
-        })
-        .finally(() => {
-          if (isMounted) setLoading(false);
-        });
-    } else {
-      setTask(null);
+    if (!isOpen || !taskId) {
+      return;
     }
+    const fetchTask = async () => {
+      try {
+        const res = await fetch(`/api/tasks/${taskId}`);
+        if (!res.ok) throw new Error("Failed to load task");
+        const data = await res.json();
+        if (isMounted) {
+          setTask(data.data);
+        }
+      } catch {
+        if (isMounted) {
+          showError("Error", "Could not load task details.");
+          onClose();
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    fetchTask();
     return () => {
       isMounted = false;
     };
