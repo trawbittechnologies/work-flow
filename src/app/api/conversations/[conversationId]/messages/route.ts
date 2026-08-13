@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { publishEvent } from "@/lib/ably";
+import { createNotification } from "@/lib/notifications";
 
 export async function GET(request: Request, { params }: { params: Promise<{ conversationId: string }> }) {
   try {
@@ -138,6 +139,25 @@ export async function POST(request: Request, { params }: { params: Promise<{ con
 
     // Publish to Ably
     await publishEvent(`conversation:${conversationId}`, "message.created", message);
+
+    // Send Push & DB Notification to offline/other members
+    const otherMembers = await prisma.conversationMember.findMany({
+      where: { conversationId, userId: { not: userId } },
+      select: { userId: true }
+    });
+
+    const senderName = message.sender?.name || "Someone";
+    const previewText = message.content ? message.content.slice(0, 100) : "Sent an attachment";
+
+    for (const m of otherMembers) {
+      createNotification({
+        userId: m.userId,
+        type: "MESSAGE",
+        title: `New message from ${senderName}`,
+        message: previewText,
+        link: `/chat?conversationId=${conversationId}`,
+      }).catch((err) => console.error("[notifications] Message notification error:", err));
+    }
 
     return NextResponse.json(message);
 

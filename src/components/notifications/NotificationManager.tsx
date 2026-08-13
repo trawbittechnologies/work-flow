@@ -45,20 +45,28 @@ export function NotificationManager({ userId, vapidPublicKey }: NotificationMana
       return; // Not supported
     }
 
-    navigator.serviceWorker.register("/sw.js").then((registration) => {
-      registration.pushManager.getSubscription().then((subscription) => {
+    navigator.serviceWorker.register("/sw.js").then(async (registration) => {
+      try {
+        const subscription = await registration.pushManager.getSubscription();
         if (!subscription && Notification.permission === "default") {
-          // Ask user to enable notifications after they login
           setShowPrompt(true);
         } else if (subscription) {
-          // Keep it updated in DB
           sendSubscriptionToServer(subscription);
+        } else if (!subscription && Notification.permission === "granted" && vapidPublicKey) {
+          // Auto re-subscribe if permission was granted previously but subscription was lost
+          const newSub = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+          });
+          await sendSubscriptionToServer(newSub);
         }
-      });
+      } catch (e) {
+        console.error("[NotificationManager] Subscription check error:", e);
+      }
     }).catch(err => {
       console.error("Service Worker registration failed:", err);
     });
-  }, []);
+  }, [vapidPublicKey]);
 
   async function sendSubscriptionToServer(subscription: PushSubscription) {
     try {

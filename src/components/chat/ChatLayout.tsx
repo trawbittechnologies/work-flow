@@ -4,6 +4,7 @@ import { useChatStore } from "./useChatStore";
 import { MessageList } from "./MessageList";
 import { MessageComposer } from "./MessageComposer";
 import { Users, Hash } from "lucide-react";
+import { ChannelProvider } from "ably/react";
 
 export function ChatLayout({ currentUserId }: { currentUserId: string }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,7 +87,7 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col relative bg-gray-50 dark:bg-gray-900">
           {activeConversation ? (
-            <>
+            <ChannelProvider channelName={`conversation:${activeConversation.id}`}>
               <div className="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center px-6 bg-white dark:bg-gray-950 z-10 shadow-sm">
                 <h3 className="font-semibold text-gray-900 dark:text-white">
                   {getConversationName(activeConversation)}
@@ -94,7 +95,7 @@ export function ChatLayout({ currentUserId }: { currentUserId: string }) {
               </div>
               <MessageList conversationId={activeConversation.id} currentUserId={currentUserId} />
               <MessageComposer conversationId={activeConversation.id} currentUserId={currentUserId} />
-            </>
+            </ChannelProvider>
           ) : (
             <div className="flex-1 flex items-center justify-center text-gray-400">
               Select a conversation to start chatting
