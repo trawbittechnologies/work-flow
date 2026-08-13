@@ -5,7 +5,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useToast } from "@/components/ui/Toast";
 import { ConfirmDialog } from "@/components/ui/Modal";
-import { FolderOpen, Upload, Download, Trash2, File, Image, FileText, FileCode, FileVideo } from "lucide-react";
+import { FolderOpen, Upload, Download, Trash2, File, Image as ImageIcon, FileText, FileCode, FileVideo } from "lucide-react";
 import { formatRelative } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +34,7 @@ function formatFileSize(bytes: number): string {
 }
 
 function getFileIcon(mimeType: string) {
-  if (mimeType.startsWith("image/")) return <Image className="h-5 w-5 text-blue-500" />;
+  if (mimeType.startsWith("image/")) return <ImageIcon className="h-5 w-5 text-blue-500" />;
   if (mimeType.startsWith("video/")) return <FileVideo className="h-5 w-5 text-purple-500" />;
   if (mimeType.includes("pdf") || mimeType.includes("document") || mimeType.includes("text")) return <FileText className="h-5 w-5 text-red-500" />;
   if (mimeType.includes("code") || mimeType.includes("json") || mimeType.includes("javascript")) return <FileCode className="h-5 w-5 text-green-500" />;

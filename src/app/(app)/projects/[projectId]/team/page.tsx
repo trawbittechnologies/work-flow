@@ -27,7 +27,26 @@ export default function ProjectTeamPage({ params }: PageProps) {
   const [removeMemberId, setRemoveMemberId] = useState<string | null>(null);
   const [removing, setRemoving] = useState(false);
 
-  async function loadMembers() {
+  useEffect(() => {
+    let ignore = false;
+    async function fetchMembers() {
+      try {
+        const res = await fetch(`/api/projects/${projectId}/members`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!ignore) setMembers(data.data || []);
+        }
+      } catch {
+        if (!ignore) showError("Error", "Could not fetch project members.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    fetchMembers();
+    return () => { ignore = true; };
+  }, [projectId, showError]);
+
+  async function reloadMembers() {
     try {
       const res = await fetch(`/api/projects/${projectId}/members`);
       if (res.ok) {
@@ -36,14 +55,8 @@ export default function ProjectTeamPage({ params }: PageProps) {
       }
     } catch {
       showError("Error", "Could not fetch project members.");
-    } finally {
-      setLoading(false);
     }
   }
-
-  useEffect(() => {
-    loadMembers();
-  }, [projectId]);
 
   async function handleAddMember(e: React.FormEvent) {
     e.preventDefault();
@@ -72,7 +85,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
       setInviteEmail("");
       setInvitePassword("");
       setIsInviteOpen(false);
-      loadMembers();
+      reloadMembers();
     } catch {
       showError("Error", "Failed to add member.");
     } finally {
@@ -92,7 +105,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
         return;
       }
       success("Project Lead", currentIsLead ? "Lead removed." : "Lead assigned.");
-      loadMembers();
+      reloadMembers();
     } catch {
       showError("Error", "Failed to update project lead.");
     }
@@ -115,7 +128,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
 
       success("Member removed", "Member has been removed from the project.");
       setRemoveMemberId(null);
-      loadMembers();
+      reloadMembers();
     } catch {
       showError("Error", "Could not remove member.");
     } finally {
