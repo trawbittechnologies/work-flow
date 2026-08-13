@@ -15,13 +15,13 @@ type PageProps = {
   params: Promise<{ projectId: string }>;
 };
 
-const EMOJIS = ["📋", "🚀", "💡", "🎯", "🛠️", "🌟", "🔥", "💼", "🏗️", "🎨", "📊", "🔬", "🌿", "🎮", "📱", "🖥️", "🤖", "🔐", "📦", "🌐"];
+import { ProjectIcon, PROJECT_ICONS } from "@/components/ui/ProjectIcon";
 
 export default function ProjectSettingsPage({ params }: PageProps) {
   const { projectId } = use(params);
   const router = useRouter();
   const { success, error: showError } = useToast();
-  const [selectedIcon, setSelectedIcon] = useState("📋");
+  const [selectedIcon, setSelectedIcon] = useState("Clipboard");
   const [loading, setLoading] = useState(true);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -50,7 +50,7 @@ export default function ProjectSettingsPage({ params }: PageProps) {
               startDate: data.startDate ? new Date(data.startDate).toISOString().split("T")[0] : "",
               deadline: data.deadline ? new Date(data.deadline).toISOString().split("T")[0] : "",
             });
-            setSelectedIcon(data.icon || "📋");
+            setSelectedIcon(data.icon || "Clipboard");
           }
         }
       } catch {
@@ -128,18 +128,18 @@ export default function ProjectSettingsPage({ params }: PageProps) {
               Project Icon
             </label>
             <div className="flex flex-wrap gap-2">
-              {EMOJIS.map((emoji) => (
+              {PROJECT_ICONS.map((iconName) => (
                 <button
-                  key={emoji}
+                  key={iconName}
                   type="button"
-                  onClick={() => setSelectedIcon(emoji)}
-                  className={`h-8 w-8 rounded-[8px] text-base flex items-center justify-center border transition-all ${
-                    selectedIcon === emoji
-                      ? "border-[var(--primary)] bg-[var(--primary-subtle)] ring-2 ring-[var(--primary)] ring-offset-1"
-                      : "border-[var(--border)] hover:border-[var(--text-muted)]"
+                  onClick={() => setSelectedIcon(iconName)}
+                  className={`h-8 w-8 rounded-[8px] flex items-center justify-center border transition-all ${
+                    selectedIcon === iconName
+                      ? "border-[var(--primary)] bg-[var(--primary-subtle)] ring-2 ring-[var(--primary)] ring-offset-1 text-[var(--primary)]"
+                      : "border-[var(--border)] hover:border-[var(--text-muted)] text-[var(--text-secondary)]"
                   }`}
                 >
-                  {emoji}
+                  <ProjectIcon name={iconName} className="h-4 w-4" />
                 </button>
               ))}
             </div>

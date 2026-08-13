@@ -4,6 +4,7 @@ import { AvatarGroup } from "@/components/ui/Avatar";
 import { StatusBadge } from "@/components/ui/Badge";
 import type { Project, ProjectMember, User, Task } from "@prisma/client";
 import { CalendarDays } from "lucide-react";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 
 type ProjectCardProps = {
   project: Project & {
@@ -30,8 +31,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
     >
       {/* Header */}
       <div className="flex items-start gap-3 mb-4">
-        <div className="h-10 w-10 rounded-lg bg-surface-alt border border-border flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-primary-subtle group-hover:border-primary/20 transition-colors">
-          {project.icon}
+        <div className="h-10 w-10 rounded-lg bg-surface-alt border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-primary-subtle group-hover:border-primary/20 transition-colors text-text-secondary group-hover:text-primary">
+          <ProjectIcon name={project.icon} />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-text-primary truncate group-hover:text-primary transition-colors">

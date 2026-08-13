@@ -3,6 +3,7 @@ import { cn, formatDueDate, isOverdue } from "@/lib/utils";
 import { PriorityBadge } from "@/components/ui/Badge";
 import type { Task, Project, User } from "@prisma/client";
 import { CalendarDays, AlertCircle } from "lucide-react";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 
 type TaskItem = Task & {
   project: Pick<Project, "id" | "name" | "icon">;
@@ -48,8 +49,8 @@ export function DashboardTaskList({ tasks }: DashboardTaskListProps) {
               <p className="text-sm font-semibold text-text-primary truncate group-hover:text-primary transition-colors">{task.title}</p>
               <div className="flex items-center gap-2 mt-0.5">
                 <p className="text-xs text-text-muted truncate flex items-center gap-1.5">
-                  <span className="inline-flex items-center justify-center h-4 w-4 rounded bg-surface-alt border border-border text-[8px]">
-                    {task.project.icon}
+                  <span className="inline-flex items-center justify-center h-4 w-4 rounded bg-surface-alt border border-border text-[8px] text-text-secondary">
+                    <ProjectIcon name={task.project.icon} className="h-3 w-3" />
                   </span>
                   {task.project.name}
                 </p>
