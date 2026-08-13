@@ -78,7 +78,8 @@ export type ProjectCommentWithUser = ProjectComment & {
 };
 
 export type MessageWithUser = Message & {
-  user: Pick<User, "id" | "name" | "avatar">;
+  sender?: Pick<User, "id" | "name" | "avatar">;
+  user?: Pick<User, "id" | "name" | "avatar">;
 };
 
 export type NotificationWithProject = Notification & {

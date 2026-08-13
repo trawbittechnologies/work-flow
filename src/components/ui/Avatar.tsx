@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { cn, getInitials, getAvatarColor } from "@/lib/utils";
 import Image from "next/image";
