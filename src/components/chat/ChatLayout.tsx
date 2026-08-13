@@ -47,18 +47,6 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
 
   const { activeConversationId, setActiveConversation } = useChatStore();
 
-  useEffect(() => {
-    fetchConversations();
-    fetchUsers();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (urlConvId) {
-      setActiveConversation(urlConvId);
-    }
-  }, [urlConvId, setActiveConversation]);
-
   async function fetchConversations() {
     try {
       const res = await fetch("/api/conversations");
@@ -85,6 +73,18 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
       console.error("Error fetching users:", e);
     }
   }
+
+  useEffect(() => {
+    fetchConversations();
+    fetchUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (urlConvId) {
+      setActiveConversation(urlConvId);
+    }
+  }, [urlConvId, setActiveConversation]);
 
   async function startDirectMessage(targetUserId: string) {
     setStartingDm(targetUserId);

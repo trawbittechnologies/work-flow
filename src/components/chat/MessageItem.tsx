@@ -130,7 +130,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
 
           {/* Timestamp & WhatsApp Double Checkmark */}
           <div className={cn("flex items-center justify-end gap-1 mt-1 text-[10px] font-bold", isOwn ? "text-[#C3D946]" : "text-[#8A918A]")}>
-            <span>{format(new Date(message.createdAt || Date.now()), "h:mm a")}</span>
+            <span>{format(message.createdAt ? new Date(message.createdAt) : new Date(0), "h:mm a")}</span>
             {message.editedAt && <span className="italic">Edited</span>}
             {isOwn && (
               <span title="Delivered & Read">

@@ -48,10 +48,11 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  // Keep state synced with initialFiles prop when props change
-  useEffect(() => {
+  const [prevInitialFiles, setPrevInitialFiles] = useState(initialFiles);
+  if (prevInitialFiles !== initialFiles) {
+    setPrevInitialFiles(initialFiles);
     setFiles(initialFiles);
-  }, [initialFiles]);
+  }
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
