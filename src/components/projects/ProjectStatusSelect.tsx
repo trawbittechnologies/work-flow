@@ -164,11 +164,10 @@ export function ProjectStatusSelect({
           throw new Error("Failed to update status");
         }
 
-        toast({
-          title: "Status updated",
-          description: `Project status changed to ${statusConfig[newStatus]?.label || newStatus}`,
-          variant: "success",
-        });
+        success(
+          "Status updated",
+          `Project status changed to ${statusConfig[newStatus]?.label || newStatus}`
+        );
 
         startTransition(() => {
           router.refresh();
@@ -176,11 +175,10 @@ export function ProjectStatusSelect({
       } catch (error) {
         console.error(error);
         setCurrentStatus(previousStatus);
-        toast({
-          title: "Error",
-          description: "Could not update project status. Please try again.",
-          variant: "error",
-        });
+        errToast(
+          "Error updating status",
+          "Could not update project status. Please try again."
+        );
       } finally {
         setIsUpdating(false);
       }
