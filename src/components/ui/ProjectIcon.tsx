@@ -6,7 +6,7 @@ export type ProjectIconName = keyof typeof icons;
 export const PROJECT_ICONS: ProjectIconName[] = [
   "Clipboard", "Rocket", "Lightbulb", "Target", "Wrench",
   "Star", "Flame", "Briefcase", "Construction", "Palette",
-  "BarChart", "Microscope", "Leaf", "Gamepad2", "Smartphone",
+  "ChartBar", "Microscope", "Leaf", "Gamepad2", "Smartphone",
   "Monitor", "Bot", "Lock", "Package", "Globe"
 ];
 
