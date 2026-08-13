@@ -70,9 +70,9 @@ export async function PATCH(req: Request, { params }: RouteParams) {
     const admin = await isAdmin(session.user.id);
     const member = await getProjectAndVerifyAccess(id, session.user.id);
 
-    // Must be admin or project owner
-    if (!admin && (!member || member.role !== "OWNER")) {
-      return NextResponse.json({ error: "Only the project owner can edit this project" }, { status: 403 });
+    // Must be admin or member of the project
+    if (!admin && !member) {
+      return NextResponse.json({ error: "Only project members and admins can update this project" }, { status: 403 });
     }
 
     const body = await req.json();

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn, formatDate, isOverdue } from "@/lib/utils";
 import { AvatarGroup } from "@/components/ui/Avatar";
-import { StatusBadge } from "@/components/ui/Badge";
+import { ProjectStatusSelect } from "@/components/projects/ProjectStatusSelect";
 import type { Project, ProjectMember, User, Task } from "@prisma/client";
 import { CalendarDays } from "lucide-react";
 import { ProjectIcon } from "@/components/ui/ProjectIcon";
@@ -22,25 +22,30 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const isDeadlineOverdue = project.deadline ? isOverdue(project.deadline) : false;
 
   return (
-    <Link
-      href={`/projects/${project.id}`}
+    <div
       className={cn(
-        "group flex flex-col justify-between bg-surface border border-border rounded-2xl p-5 card-shadow",
-        "hover:border-[#C3D946] hover:-translate-y-0.5 transition-all duration-200"
+        "group flex flex-col justify-between bg-white border border-[#EAEDF2] rounded-2xl p-5 shadow-2xs",
+        "hover:border-[#88C315] hover:-translate-y-0.5 transition-all duration-200"
       )}
     >
       <div>
         {/* Header */}
         <div className="flex items-start gap-3.5 mb-3">
-          <div className="h-10 w-10 rounded-xl bg-[#0A1237] border border-border flex items-center justify-center flex-shrink-0 text-[#C3D946] group-hover:scale-105 transition-transform mt-0.5">
+          <div className="h-10 w-10 rounded-xl bg-[#88C315] flex items-center justify-center flex-shrink-0 text-white group-hover:scale-105 transition-transform mt-0.5 shadow-2xs">
             <ProjectIcon name={project.icon} />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">
-              <h3 className="text-sm font-extrabold text-[#0A1237] dark:text-white truncate group-hover:text-primary transition-colors tracking-tight">
+              <Link
+                href={`/projects/${project.id}`}
+                className="text-sm font-extrabold text-[#111827] truncate hover:text-[#88C315] transition-colors tracking-tight"
+              >
                 {project.name}
-              </h3>
-              <StatusBadge status={project.status} className="flex-shrink-0 text-[10px] px-2 py-0.5" />
+              </Link>
+              <ProjectStatusSelect
+                projectId={project.id}
+                initialStatus={project.status}
+              />
             </div>
             {project.description ? (
               <p className="text-xs font-medium text-text-secondary line-clamp-2 mt-1.5 leading-relaxed">
@@ -98,6 +103,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <span className="text-[10px] font-semibold text-text-muted">No deadline</span>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
