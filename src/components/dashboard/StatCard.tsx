@@ -1,76 +1,126 @@
+import { ReactNode } from "react";
+import {
+  ArrowUpRight,
+  TrendingUp,
+  FolderKanban,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { TrendingUp, AlertCircle, Clock, FolderKanban, CheckCircle2 } from "lucide-react";
 
-type StatColor = "indigo" | "blue" | "amber" | "red" | "emerald" | "lime";
-
-interface StatCardProps {
+export interface MetricCardProps {
   label: string;
-  value: number;
-  color?: StatColor;
+  value: string | number;
+  icon?: ReactNode;
+  iconBg?: string;
+  trendText?: string;
+  trendType?: "positive" | "negative" | "neutral";
+  showArrow?: boolean;
+  color?: "indigo" | "blue" | "amber" | "red" | "emerald" | "lime" | string;
   trend?: number;
 }
 
-const colorMap: Record<StatColor, { bg: string; text: string; border: string; icon: React.ReactNode }> = {
+const colorMap: Record<
+  string,
+  { bg: string; text: string; border: string; icon: ReactNode }
+> = {
   lime: {
-    bg: "bg-[#F3F8D7] dark:bg-[#C3D946]/20",
-    text: "text-[#0A1237] dark:text-[#C3D946]",
-    border: "border-[#C3D946]/50",
-    icon: <FolderKanban className="h-4 w-4 text-[#0A1237] dark:text-[#C3D946]" />,
+    bg: "bg-[#F3F9DE]",
+    text: "text-[#88C315]",
+    border: "border-[#88C315]/30",
+    icon: <FolderKanban className="h-5 w-5 text-[#88C315]" />,
   },
   indigo: {
-    bg: "bg-[#F3F8D7] dark:bg-[#C3D946]/20",
-    text: "text-[#0A1237] dark:text-[#C3D946]",
-    border: "border-[#C3D946]/50",
-    icon: <FolderKanban className="h-4 w-4 text-[#0A1237] dark:text-[#C3D946]" />,
+    bg: "bg-[#EDE9FE]",
+    text: "text-[#7C3AED]",
+    border: "border-[#7C3AED]/30",
+    icon: <FolderKanban className="h-5 w-5 text-[#7C3AED]" />,
   },
   blue: {
-    bg: "bg-sky-50 dark:bg-sky-950/40",
-    text: "text-sky-700 dark:text-sky-400",
-    border: "border-sky-200 dark:border-sky-800/40",
-    icon: <Clock className="h-4 w-4 text-sky-600" />,
+    bg: "bg-sky-50",
+    text: "text-sky-600",
+    border: "border-sky-200",
+    icon: <Clock className="h-5 w-5 text-sky-600" />,
   },
   amber: {
-    bg: "bg-amber-50 dark:bg-amber-950/40",
-    text: "text-amber-700 dark:text-amber-400",
-    border: "border-amber-200 dark:border-amber-800/40",
-    icon: <Clock className="h-4 w-4 text-amber-600" />,
+    bg: "bg-[#FFFBEB]",
+    text: "text-[#F59E0B]",
+    border: "border-amber-200",
+    icon: <Clock className="h-5 w-5 text-[#F59E0B]" />,
   },
   red: {
-    bg: "bg-red-50 dark:bg-red-950/40",
-    text: "text-red-700 dark:text-red-400",
-    border: "border-red-200 dark:border-red-800/40",
-    icon: <AlertCircle className="h-4 w-4 text-red-600" />,
+    bg: "bg-[#FEF2F2]",
+    text: "text-[#EF4444]",
+    border: "border-red-200",
+    icon: <AlertCircle className="h-5 w-5 text-[#EF4444]" />,
   },
   emerald: {
-    bg: "bg-emerald-50 dark:bg-emerald-950/40",
-    text: "text-emerald-700 dark:text-emerald-400",
-    border: "border-emerald-200 dark:border-emerald-800/40",
-    icon: <CheckCircle2 className="h-4 w-4 text-emerald-600" />,
+    bg: "bg-[#ECFDF5]",
+    text: "text-[#10B981]",
+    border: "border-emerald-200",
+    icon: <CheckCircle2 className="h-5 w-5 text-[#10B981]" />,
   },
 };
 
-export function StatCard({ label, value, color = "indigo", trend }: StatCardProps) {
-  const colors = colorMap[color];
+export function StatCard({
+  label,
+  value,
+  icon,
+  iconBg,
+  trendText,
+  trendType = "positive",
+  showArrow = true,
+  color = "lime",
+  trend,
+}: MetricCardProps) {
+  const fallback = colorMap[color] || colorMap.lime;
 
   return (
-    <div className={cn(
-      "bg-surface border rounded-2xl p-4 transition-all duration-200 card-shadow hover:-translate-y-0.5",
-      colors.border
-    )}>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[11px] font-extrabold text-[#828EA8] uppercase tracking-wider">{label}</span>
-        <div className={cn("h-7 w-7 rounded-xl flex items-center justify-center shadow-xs", colors.bg)}>
-          {colors.icon}
+    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-5 shadow-2xs hover:shadow-xs transition-all duration-200">
+      <div className="flex items-start gap-4">
+        {/* Rounded Icon Box */}
+        <div
+          className={cn(
+            "h-12 w-12 rounded-2xl flex items-center justify-center flex-shrink-0",
+            iconBg || fallback.bg
+          )}
+        >
+          {icon || fallback.icon}
         </div>
-      </div>
-      <div className="flex items-baseline justify-between mt-1">
-        <p className={cn("text-2.5xl font-black tracking-tight", colors.text)}>{value}</p>
-        {trend !== undefined && (
-          <div className={cn("flex items-center gap-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-current/20", colors.bg, colors.text)}>
-            <TrendingUp className="h-3 w-3" />
-            <span>{trend > 0 ? "+" : ""}{trend}%</span>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <p className="text-[13px] font-medium text-[#6B7280]">{label}</p>
+          <h3 className="text-2xl font-black text-[#111827] tracking-tight mt-0.5">
+            {value}
+          </h3>
+          <div className="flex items-center gap-1 mt-1">
+            {trendText ? (
+              <span
+                className={cn(
+                  "text-[12px] font-semibold flex items-center",
+                  trendType === "positive" && "text-[#16A34A]",
+                  trendType === "negative" && "text-[#EF4444]",
+                  trendType === "neutral" && "text-[#6B7280]"
+                )}
+              >
+                {trendText}
+                {showArrow && (
+                  <ArrowUpRight className="h-3.5 w-3.5 inline stroke-[2.5]" />
+                )}
+              </span>
+            ) : trend !== undefined ? (
+              <span className="text-[11px] font-semibold text-[#16A34A] flex items-center gap-0.5">
+                <TrendingUp className="h-3 w-3" />
+                <span>
+                  {trend > 0 ? "+" : ""}
+                  {trend}%
+                </span>
+              </span>
+            ) : null}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

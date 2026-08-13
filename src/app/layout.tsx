@@ -12,16 +12,16 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Flowdesk — Plan. Assign. Finish.",
-    template: "%s | Flowdesk",
+    default: "Trawbit FlowDesk",
+    template: "%s | Trawbit FlowDesk",
   },
   description:
-    "A premium collaborative project management platform for small teams. Plan projects, assign tasks, track progress, and communicate — all in one place.",
-  keywords: ["project management", "tasks", "team collaboration", "kanban", "productivity"],
-  authors: [{ name: "Flowdesk" }],
+    "Trawbit FlowDesk — Modern collaborative project management platform for high-performance teams.",
+  keywords: ["project management", "tasks", "team collaboration", "kanban", "productivity", "trawbit", "flowdesk"],
+  authors: [{ name: "Trawbit FlowDesk" }],
   openGraph: {
-    title: "Flowdesk — Plan. Assign. Finish.",
-    description: "Premium project management for small teams.",
+    title: "Trawbit FlowDesk",
+    description: "Modern project management for high-performance teams.",
     type: "website",
   },
 };

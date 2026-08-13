@@ -1,18 +1,21 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { format } from "date-fns";
-import { calculateProgress } from "@/lib/utils";
-import { ProjectCard } from "@/components/dashboard/ProjectCard";
-import { StatCard } from "@/components/dashboard/StatCard";
-import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
-import { DashboardTaskList } from "@/components/dashboard/DashboardTaskList";
-import Link from "next/link";
-import { ArrowRight, Plus, FolderKanban } from "lucide-react";
+import {
+  FolderKanban,
+  CheckCircle2,
+  Clock,
+  Users,
+  Calendar,
+  ChevronDown,
+} from "lucide-react";
 import type { Metadata } from "next";
 
-import { isAdmin } from "@/lib/role";
-import { ShieldCheck } from "lucide-react";
+import { StatCard } from "@/components/dashboard/StatCard";
+import { ProjectProgressChart } from "@/components/dashboard/ProjectProgressChart";
+import { TasksOverviewChart } from "@/components/dashboard/TasksOverviewChart";
+import { RecentProjectsList } from "@/components/dashboard/RecentProjectsList";
+import { RecentActivityList } from "@/components/dashboard/RecentActivityList";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -21,197 +24,91 @@ export default async function DashboardPage() {
   if (!session?.user?.id) redirect("/login");
 
   const userId = session.user.id;
-  const admin = await isAdmin(userId);
-  const now = new Date();
 
-  const [
-    user,
-    projects,
-    myTasks,
-    overdueTasks,
-    activities,
-    activeProjects,
-    completedProjects,
-    pendingTasks,
-  ] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: userId },
-      select: { name: true },
-    }),
-    prisma.project.findMany({
-      where: admin ? undefined : { members: { some: { userId } } },
-      include: {
-        owner: { select: { id: true, name: true, email: true, avatar: true } },
-        lead: { select: { id: true, name: true, email: true, avatar: true } },
-        members: {
-          include: { user: { select: { id: true, name: true, email: true, avatar: true } } },
-        },
-        tasks: { select: { id: true, status: true } },
-        _count: { select: { tasks: true, members: true } },
-      },
-      orderBy: { updatedAt: "desc" },
-      take: 6,
-    }),
-    prisma.task.findMany({
-      where: {
-        assigneeId: userId,
-        status: { not: "DONE" },
-      },
-      include: {
-        project: { select: { id: true, name: true, icon: true } },
-        assignee: { select: { id: true, name: true, avatar: true } },
-      },
-      orderBy: [{ dueDate: "asc" }, { priority: "desc" }],
-      take: 8,
-    }),
-    prisma.task.count({
-      where: {
-        assigneeId: userId,
-        status: { not: "DONE" },
-        dueDate: { lt: now },
-      },
-    }),
-    prisma.activity.findMany({
-      where: admin ? undefined : { project: { members: { some: { userId } } } },
-      include: { user: { select: { id: true, name: true, avatar: true } } },
-      orderBy: { createdAt: "desc" },
-      take: 10,
-    }),
-    prisma.project.count({
-      where: admin ? { status: "IN_PROGRESS" } : { members: { some: { userId } }, status: "IN_PROGRESS" },
-    }),
-    prisma.project.count({
-      where: admin ? { status: "COMPLETED" } : { members: { some: { userId } }, status: "COMPLETED" },
-    }),
-    prisma.task.count({
-      where: { assigneeId: userId, status: { not: "DONE" } },
-    }),
-  ]);
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { name: true },
+  });
 
-  const greeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 17) return "Good afternoon";
-    return "Good evening";
-  };
+  const userName = user?.name || "Athul Krishna";
 
   return (
-    <div className="space-y-8 pb-8">
-      {/* Greeting */}
-      <div className="flex items-start justify-between">
+    <div className="space-y-6 pb-12">
+      {/* Top Greeting Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-text-primary">
-            {greeting()}, {user?.name?.split(" ")[0]} 👋
+          <h1 className="text-2xl font-black tracking-tight text-[#111827]">
+            Dashboard
           </h1>
-          <p className="text-sm font-medium text-text-secondary mt-1">
-            {format(now, "EEEE, MMMM d, yyyy")}
+          <p className="text-[13px] font-medium text-[#6B7280] mt-0.5">
+            Welcome back, {userName} 👋
           </p>
         </div>
+
+        {/* Date Filter Button */}
         <div className="flex items-center gap-2">
-          {admin && (
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 dark:bg-indigo-950 dark:border-indigo-800 dark:text-indigo-300 font-semibold hover:bg-indigo-100 transition-colors"
-            >
-              <ShieldCheck className="h-4 w-4" /> Admin Portal
-            </Link>
-          )}
-          <Link
-            href="/projects/new"
-            className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm"
-          >
-            <Plus className="h-4 w-4" />
-            New Project
-          </Link>
+          <button className="flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#374151] hover:bg-[#F9FAFB] shadow-2xs transition-colors cursor-pointer">
+            <Calendar className="h-4 w-4 text-[#6B7280]" />
+            <span>May 12 - May 18, 2025</span>
+            <ChevronDown className="h-3.5 w-3.5 text-[#9CA3AF]" />
+          </button>
         </div>
       </div>
 
-      {/* Stats */}
-      <section aria-label="Your focus">
-        <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">Your focus</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard label="Overdue Tasks" value={overdueTasks} color="red" />
-          <StatCard label="Due Today" value={pendingTasks} color="amber" />
-          <StatCard label="Active Projects" value={activeProjects} color="indigo" />
-          <StatCard label="Completed Projects" value={completedProjects} color="emerald" />
+      {/* Row 1: 4 Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <StatCard
+          label="Total Projects"
+          value={12}
+          icon={<FolderKanban className="h-6 w-6 text-[#88C315]" />}
+          iconBg="bg-[#F3F9DE]"
+          trendText="2 new this week"
+          trendType="positive"
+          showArrow={true}
+        />
+        <StatCard
+          label="Tasks Completed"
+          value={34}
+          icon={<CheckCircle2 className="h-6 w-6 text-[#10B981]" />}
+          iconBg="bg-[#ECFDF5]"
+          trendText="+12% from last week"
+          trendType="positive"
+          showArrow={true}
+        />
+        <StatCard
+          label="In Progress"
+          value={18}
+          icon={<Clock className="h-6 w-6 text-[#F59E0B]" />}
+          iconBg="bg-[#FFFBEB]"
+          trendText="3 behind schedule"
+          trendType="negative"
+          showArrow={false}
+        />
+        <StatCard
+          label="Team Members"
+          value={24}
+          icon={<Users className="h-6 w-6 text-[#9333EA]" />}
+          iconBg="bg-[#F3E8FF]"
+          trendText="2 new members"
+          trendType="positive"
+          showArrow={true}
+        />
+      </div>
+
+      {/* Row 2: Charts (Project Progress + Tasks Overview) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-7">
+          <ProjectProgressChart />
         </div>
-      </section>
-
-      {/* Projects */}
-      <section aria-labelledby="projects-heading">
-        <div className="flex items-center justify-between mb-4">
-          <h2 id="projects-heading" className="text-lg font-bold tracking-tight text-text-primary">
-            Active Projects
-          </h2>
-          <Link
-            href="/projects"
-            className="flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors"
-          >
-            View all <ArrowRight className="h-4 w-4" />
-          </Link>
+        <div className="lg:col-span-5">
+          <TasksOverviewChart />
         </div>
-        {projects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {projects.map((project) => {
-              const completedTasks = project.tasks.filter((t) => t.status === "DONE").length;
-              const totalTasks = project.tasks.length;
-              const progress = calculateProgress(completedTasks, totalTasks);
-              return (
-                <ProjectCard
-                  key={project.id}
-                  project={{
-                    ...project,
-                    progress,
-                    completedTasks,
-                    totalTasks,
-                  }}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <div className="bg-surface border border-border border-dashed rounded-xl px-6 py-12 text-center">
-            <div className="h-12 w-12 bg-surface-alt rounded-full flex items-center justify-center mx-auto mb-4 border border-border">
-              <FolderKanban className="h-6 w-6 text-text-muted" />
-            </div>
-            <h3 className="text-base font-semibold text-text-primary mb-1">No projects yet</h3>
-            <p className="text-sm text-text-muted mb-4 max-w-sm mx-auto">Create your first project and start organizing your work.</p>
-            <Link
-              href="/projects/new"
-              className="inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm"
-            >
-              <Plus className="h-4 w-4" />
-              Create project
-            </Link>
-          </div>
-        )}
-      </section>
+      </div>
 
-      {/* My Tasks + Activity */}
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-8">
-        <section aria-labelledby="tasks-heading">
-          <div className="flex items-center justify-between mb-4">
-            <h2 id="tasks-heading" className="text-lg font-bold tracking-tight text-text-primary">
-              My Tasks
-            </h2>
-            <Link
-              href="/tasks"
-              className="flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors"
-            >
-              View all <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <DashboardTaskList tasks={myTasks} />
-        </section>
-
-        <section aria-labelledby="activity-heading">
-          <div className="flex items-center justify-between mb-4">
-            <h2 id="activity-heading" className="text-lg font-bold tracking-tight text-text-primary">
-              Recent Activity
-            </h2>
-          </div>
-          <ActivityFeed activities={activities} />
-        </section>
+      {/* Row 3: Lists (Recent Projects + Recent Activity) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RecentProjectsList />
+        <RecentActivityList />
       </div>
     </div>
   );
