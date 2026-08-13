@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -11,12 +11,9 @@ import {
   Folder,
   ExternalLink,
   Edit,
-  Trash2,
-  Users,
   CheckCircle2,
   TrendingUp,
   LayoutGrid,
-  Filter,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { ProjectStatusSelect } from "@/components/projects/ProjectStatusSelect";
@@ -72,11 +69,24 @@ const priorityConfig: Record<
   LOW: { label: "Low", bg: "bg-[#F0FDF4]", text: "text-[#16A34A]", dot: "bg-[#22C55E]" },
 };
 
-export function ProjectsTable({ initialProjects, isAdminUser = false }: ProjectsTableProps) {
+export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = false }: ProjectsTableProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [priorityFilter, setPriorityFilter] = useState("ALL");
   const [activeActionMenu, setActiveActionMenu] = useState<string | null>(null);
+  const actionMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (actionMenuRef.current && !actionMenuRef.current.contains(e.target as Node)) {
+        setActiveActionMenu(null);
+      }
+    }
+    if (activeActionMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [activeActionMenu]);
 
   const filteredProjects = useMemo(() => {
     return initialProjects.filter((p) => {
@@ -221,33 +231,33 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
         </div>
       </div>
 
-      {/* Main Table Container */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl shadow-2xs overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Main Table Container with ample min-height so dropdowns never get clipped */}
+      <div className="bg-white border border-[#EAEDF2] rounded-2xl shadow-2xs min-h-[360px] pb-12">
+        <div className="overflow-x-visible">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#F8F9FA] border-b border-[#EAEDF2] text-[11px] font-extrabold uppercase tracking-wider text-[#6B7280]">
-                <th className="py-3.5 pl-6 pr-4">Project</th>
+                <th className="py-3.5 pl-6 pr-4 rounded-tl-2xl">Project</th>
                 <th className="py-3.5 px-4">Status</th>
                 <th className="py-3.5 px-4">Progress</th>
                 <th className="py-3.5 px-4">Priority</th>
                 <th className="py-3.5 px-4">Lead</th>
                 <th className="py-3.5 px-4">Team</th>
                 <th className="py-3.5 px-4">Deadline</th>
-                <th className="py-3.5 pr-6 pl-4 text-right">Actions</th>
+                <th className="py-3.5 pr-6 pl-4 text-right rounded-tr-2xl">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAEDF2] text-xs">
               {filteredProjects.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-[#9CA3AF]">
+                  <td colSpan={8} className="py-16 text-center text-[#9CA3AF]">
                     <LayoutGrid className="h-8 w-8 mx-auto mb-2 opacity-50" />
                     <p className="font-semibold text-sm text-[#4B5563]">No projects found</p>
                     <p className="text-xs mt-0.5">Try clearing filters or search query.</p>
                   </td>
                 </tr>
               ) : (
-                filteredProjects.map((project) => {
+                filteredProjects.map((project, idx) => {
                   const priority =
                     priorityConfig[project.priority] || priorityConfig.MEDIUM;
 
@@ -259,13 +269,15 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       })
                     : "No deadline";
 
+                  const isLastRow = idx === filteredProjects.length - 1;
+
                   return (
                     <tr
                       key={project.id}
                       className="hover:bg-[#F9FAFC] transition-colors group"
                     >
                       {/* Project Name & Key */}
-                      <td className="py-4 pl-6 pr-4">
+                      <td className="py-4.5 pl-6 pr-4">
                         <div className="flex items-center gap-3.5">
                           <div className="h-10 w-10 rounded-xl bg-[#88C315] text-white flex items-center justify-center flex-shrink-0 shadow-2xs font-bold text-sm group-hover:scale-105 transition-transform">
                             {project.key.slice(0, 2).toUpperCase()}
@@ -292,7 +304,7 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Interactive Status Badge Dropdown */}
-                      <td className="py-4 px-4">
+                      <td className="py-4.5 px-4 relative">
                         <ProjectStatusSelect
                           projectId={project.id}
                           initialStatus={project.status}
@@ -300,7 +312,7 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Progress Bar & Tasks */}
-                      <td className="py-4 px-4 min-w-[160px]">
+                      <td className="py-4.5 px-4 min-w-[160px]">
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between text-[11px]">
                             <span className="font-bold text-[#111827]">
@@ -320,7 +332,7 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Priority */}
-                      <td className="py-4 px-4">
+                      <td className="py-4.5 px-4">
                         <span
                           className={cn(
                             "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border border-transparent",
@@ -339,7 +351,7 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Lead */}
-                      <td className="py-4 px-4">
+                      <td className="py-4.5 px-4">
                         {project.lead ? (
                           <div className="flex items-center gap-2">
                             <Avatar
@@ -358,7 +370,7 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Team Avatars Stack */}
-                      <td className="py-4 px-4">
+                      <td className="py-4.5 px-4">
                         <div className="flex items-center -space-x-1.5 overflow-hidden">
                           {project.members?.slice(0, 3).map((m, i) => (
                             <Avatar
@@ -378,7 +390,7 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Deadline */}
-                      <td className="py-4 px-4">
+                      <td className="py-4.5 px-4">
                         <div className="flex items-center gap-1.5 text-[#6B7280]">
                           <Calendar className="h-3.5 w-3.5 text-[#9CA3AF]" />
                           <span className="font-medium">{formattedDeadline}</span>
@@ -386,46 +398,55 @@ export function ProjectsTable({ initialProjects, isAdminUser = false }: Projects
                       </td>
 
                       {/* Actions */}
-                      <td className="py-4 pr-6 pl-4 text-right relative">
-                        <button
-                          onClick={() =>
-                            setActiveActionMenu(
-                              activeActionMenu === project.id ? null : project.id
-                            )
-                          }
-                          className="p-1 text-[#9CA3AF] hover:text-[#111827] rounded-lg hover:bg-[#F3F4F6] transition-colors cursor-pointer"
-                        >
-                          <MoreVertical className="h-4 w-4" />
-                        </button>
+                      <td className="py-4.5 pr-6 pl-4 text-right relative">
+                        <div className="relative inline-block" ref={activeActionMenu === project.id ? actionMenuRef : undefined}>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveActionMenu(
+                                activeActionMenu === project.id ? null : project.id
+                              );
+                            }}
+                            className="p-1 text-[#9CA3AF] hover:text-[#111827] rounded-lg hover:bg-[#F3F4F6] transition-colors cursor-pointer"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </button>
 
-                        {activeActionMenu === project.id && (
-                          <div className="absolute right-6 top-full mt-1 w-44 bg-white border border-[#E5E7EB] rounded-xl shadow-xl z-30 py-1.5 text-xs animate-in font-medium text-left">
-                            <Link
-                              href={`/projects/${project.id}`}
-                              onClick={() => setActiveActionMenu(null)}
-                              className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
+                          {activeActionMenu === project.id && (
+                            <div
+                              className={cn(
+                                "absolute right-0 w-48 bg-white border border-[#E5E7EB] rounded-2xl shadow-2xl z-[100] py-2 text-xs animate-in font-medium text-left",
+                                isLastRow && filteredProjects.length > 2 ? "bottom-full mb-1" : "top-full mt-1"
+                              )}
                             >
-                              <Folder className="h-3.5 w-3.5 text-[#9CA3AF]" />
-                              <span>Project Details</span>
-                            </Link>
-                            <Link
-                              href={`/projects/${project.id}/board`}
-                              onClick={() => setActiveActionMenu(null)}
-                              className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
-                            >
-                              <ExternalLink className="h-3.5 w-3.5 text-[#9CA3AF]" />
-                              <span>Kanban Board</span>
-                            </Link>
-                            <Link
-                              href={`/projects/${project.id}/settings`}
-                              onClick={() => setActiveActionMenu(null)}
-                              className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F3F4F6] text-[#374151]"
-                            >
-                              <Edit className="h-3.5 w-3.5 text-[#9CA3AF]" />
-                              <span>Project Settings</span>
-                            </Link>
-                          </div>
-                        )}
+                              <Link
+                                href={`/projects/${project.id}`}
+                                onClick={() => setActiveActionMenu(null)}
+                                className="flex items-center gap-2 px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] rounded-xl mx-1"
+                              >
+                                <Folder className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                                <span>Project Details</span>
+                              </Link>
+                              <Link
+                                href={`/projects/${project.id}/board`}
+                                onClick={() => setActiveActionMenu(null)}
+                                className="flex items-center gap-2 px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] rounded-xl mx-1"
+                              >
+                                <ExternalLink className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                                <span>Kanban Board</span>
+                              </Link>
+                              <Link
+                                href={`/projects/${project.id}/settings`}
+                                onClick={() => setActiveActionMenu(null)}
+                                className="flex items-center gap-2 px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] rounded-xl mx-1"
+                              >
+                                <Edit className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                                <span>Project Settings</span>
+                              </Link>
+                            </div>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );
