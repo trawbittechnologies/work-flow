@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, Search, Plus, ChevronDown, User, Settings, LogOut } from "lucide-react";
+import { Bell, Search, Plus, ChevronDown, User, Settings, LogOut, LayoutGrid } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
@@ -58,13 +58,8 @@ export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
     <header className="h-[var(--header-height)] fixed top-0 right-0 left-0 md:left-[var(--sidebar-width)] z-20 bg-surface/80 backdrop-blur-md border-b border-border flex items-center px-4 gap-3 transition-all duration-200 ease-in-out">
       {/* Mobile logo */}
       <Link href="/dashboard" className="flex items-center gap-2 md:hidden flex-shrink-0">
-        <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shadow-sm">
-          <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-            <rect x="1" y="1" width="5" height="5" rx="1.5" fill="white" />
-            <rect x="8" y="1" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.7" />
-            <rect x="1" y="8" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.7" />
-            <rect x="8" y="8" width="5" height="5" rx="1.5" fill="white" />
-          </svg>
+        <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shadow-sm text-white">
+          <LayoutGrid className="h-5 w-5" />
         </div>
       </Link>
 

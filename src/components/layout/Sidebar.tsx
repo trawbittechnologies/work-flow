@@ -13,6 +13,7 @@ import {
   LogOut,
   ChevronRight,
   MessageSquare,
+  LayoutGrid,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
@@ -50,13 +51,8 @@ export function Sidebar({ user, unreadNotifications = 0 }: SidebarProps) {
       {/* Logo */}
       <div className="px-5 py-5 flex-shrink-0">
         <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary-dark transition-colors shadow-sm">
-            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <rect x="1" y="1" width="5" height="5" rx="1.5" fill="white" />
-              <rect x="8" y="1" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.7" />
-              <rect x="1" y="8" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.7" />
-              <rect x="8" y="8" width="5" height="5" rx="1.5" fill="white" />
-            </svg>
+          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary-dark transition-colors shadow-sm text-white">
+            <LayoutGrid className="h-5 w-5" />
           </div>
           <span className="text-base font-bold text-text-primary tracking-tight">
             Flowdesk
