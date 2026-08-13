@@ -13,12 +13,12 @@ import { Select } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 
-const EMOJIS = ["📋", "🚀", "💡", "🎯", "🛠️", "🌟", "🔥", "💼", "🏗️", "🎨", "📊", "🔬", "🌿", "🎮", "📱", "🖥️", "🤖", "🔐", "📦", "🌐"];
+import { ProjectIcon, PROJECT_ICONS } from "@/components/ui/ProjectIcon";
 
 export default function NewProjectPage() {
   const router = useRouter();
   const { success, error: showError } = useToast();
-  const [selectedIcon, setSelectedIcon] = useState("📋");
+  const [selectedIcon, setSelectedIcon] = useState("Clipboard");
 
   const {
     register,
@@ -27,7 +27,7 @@ export default function NewProjectPage() {
     setValue,
   } = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
-    defaultValues: { icon: "📋", status: "PLANNING" },
+    defaultValues: { icon: "Clipboard", status: "PLANNING" },
   });
 
   async function onSubmit(data: CreateProjectInput) {
@@ -71,23 +71,23 @@ export default function NewProjectPage() {
               Project Icon
             </label>
             <div className="flex flex-wrap gap-2">
-              {EMOJIS.map((emoji) => (
+              {PROJECT_ICONS.map((iconName) => (
                 <button
-                  key={emoji}
+                  key={iconName}
                   type="button"
                   onClick={() => {
-                    setSelectedIcon(emoji);
-                    setValue("icon", emoji);
+                    setSelectedIcon(iconName);
+                    setValue("icon", iconName);
                   }}
-                  className={`h-9 w-9 rounded-[8px] text-lg flex items-center justify-center border transition-all ${
-                    selectedIcon === emoji
-                      ? "border-[var(--primary)] bg-[var(--primary-subtle)] ring-2 ring-[var(--primary)] ring-offset-1"
-                      : "border-[var(--border)] hover:border-[var(--text-muted)] hover:bg-[var(--background)]"
+                  className={`h-10 w-10 rounded-[8px] flex items-center justify-center border transition-all ${
+                    selectedIcon === iconName
+                      ? "border-[var(--primary)] bg-[var(--primary-subtle)] ring-2 ring-[var(--primary)] ring-offset-1 text-[var(--primary)]"
+                      : "border-[var(--border)] hover:border-[var(--text-muted)] hover:bg-[var(--background)] text-[var(--text-secondary)]"
                   }`}
-                  aria-label={`Select ${emoji} as project icon`}
-                  aria-pressed={selectedIcon === emoji}
+                  aria-label={`Select ${iconName} as project icon`}
+                  aria-pressed={selectedIcon === iconName}
                 >
-                  {emoji}
+                  <ProjectIcon name={iconName} />
                 </button>
               ))}
             </div>
