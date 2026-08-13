@@ -25,33 +25,33 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <Link
       href={`/projects/${project.id}`}
       className={cn(
-        "group block bg-surface border border-border rounded-xl p-4",
-        "hover:border-primary/50 hover:shadow-md transition-all duration-200"
+        "group block bg-surface border border-border rounded-2xl p-4.5 card-shadow",
+        "hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200"
       )}
     >
       {/* Header */}
-      <div className="flex items-start gap-3 mb-4">
-        <div className="h-10 w-10 rounded-lg bg-surface-alt border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-primary-subtle group-hover:border-primary/20 transition-colors text-text-secondary group-hover:text-primary">
+      <div className="flex items-start gap-3.5 mb-4">
+        <div className="h-10 w-10 rounded-xl bg-surface-alt border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-primary-subtle group-hover:border-primary/20 transition-colors text-text-secondary group-hover:text-primary">
           <ProjectIcon name={project.icon} />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-text-primary truncate group-hover:text-primary transition-colors">
+          <h3 className="text-sm font-bold text-text-primary truncate group-hover:text-primary transition-colors tracking-tight">
             {project.name}
           </h3>
           {project.description && (
-            <p className="text-xs text-text-muted truncate mt-0.5">{project.description}</p>
+            <p className="text-xs text-text-muted truncate mt-0.5 leading-tight">{project.description}</p>
           )}
         </div>
-        <StatusBadge status={project.status} className="flex-shrink-0 text-[10px] px-1.5 py-0.5" />
+        <StatusBadge status={project.status} className="flex-shrink-0 text-[10px] px-2 py-0.5" />
       </div>
 
-      {/* Progress */}
+      {/* Progress bar */}
       <div className="mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[11px] font-medium text-text-muted">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-[11px] font-semibold text-text-muted">
             {project.completedTasks}/{project.totalTasks} tasks
           </span>
-          <span className="text-[11px] font-bold text-text-secondary">
+          <span className="text-[11px] font-extrabold text-primary">
             {project.progress}%
           </span>
         </div>
@@ -68,7 +68,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-auto">
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border-subtle">
         <AvatarGroup
           users={project.members.map((m) => ({ name: m.user?.name || "Unknown", avatar: m.user?.avatar }))}
           max={4}
@@ -77,8 +77,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {project.deadline && (
           <span
             className={cn(
-              "flex items-center gap-1.5 text-[11px] font-medium px-2 py-1 rounded bg-surface-alt",
-              isDeadlineOverdue ? "text-danger bg-danger-subtle" : "text-text-muted"
+              "flex items-center gap-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full border",
+              isDeadlineOverdue
+                ? "text-red-600 bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800"
+                : "text-text-muted bg-surface-alt border-border-subtle"
             )}
           >
             <CalendarDays className="h-3 w-3" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar } from "@/components/ui/Avatar";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useToast } from "@/components/ui/Toast";
@@ -34,10 +34,10 @@ function formatFileSize(bytes: number): string {
 }
 
 function getFileIcon(mimeType: string) {
-  if (mimeType.startsWith("image/")) return <ImageIcon className="h-5 w-5 text-blue-500" />;
+  if (mimeType.startsWith("image/")) return <ImageIcon className="h-5 w-5 text-indigo-500" />;
   if (mimeType.startsWith("video/")) return <FileVideo className="h-5 w-5 text-purple-500" />;
   if (mimeType.includes("pdf") || mimeType.includes("document") || mimeType.includes("text")) return <FileText className="h-5 w-5 text-red-500" />;
-  if (mimeType.includes("code") || mimeType.includes("json") || mimeType.includes("javascript")) return <FileCode className="h-5 w-5 text-green-500" />;
+  if (mimeType.includes("code") || mimeType.includes("json") || mimeType.includes("javascript")) return <FileCode className="h-5 w-5 text-emerald-500" />;
   return <File className="h-5 w-5 text-text-muted" />;
 }
 
@@ -47,6 +47,11 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
   const [uploading, setUploading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  // Keep state synced with initialFiles prop when props change
+  useEffect(() => {
+    setFiles(initialFiles);
+  }, [initialFiles]);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -76,7 +81,6 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
       showError("Error", "Failed to upload file.");
     } finally {
       setUploading(false);
-      // reset the input
       e.target.value = "";
     }
   }
@@ -111,7 +115,7 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
           <p className="text-xs text-text-muted">{files.length} file{files.length !== 1 ? "s" : ""} attached</p>
         </div>
         <label className={cn(
-          "inline-flex items-center gap-2 h-9 px-4 text-sm rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm cursor-pointer",
+          "inline-flex items-center gap-2 h-9 px-4 text-sm rounded-xl bg-primary hover:bg-primary-dark text-white font-semibold transition-all shadow-xs cursor-pointer active:scale-95",
           uploading && "opacity-60 pointer-events-none"
         )}>
           <Upload className="h-4 w-4" />
@@ -127,24 +131,24 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
           description="Upload project files to share with your team."
         />
       ) : (
-        <div className="bg-surface border border-border rounded-[14px] divide-y divide-border-subtle">
+        <div className="bg-surface border border-border rounded-2xl divide-y divide-border-subtle overflow-hidden card-shadow">
           {files.map((file) => (
-            <div key={file.id} className="flex items-center gap-4 p-4 group hover:bg-background transition-colors">
-              <div className="flex-shrink-0">
+            <div key={file.id} className="flex items-center gap-4 p-4 group hover:bg-surface-alt/50 transition-colors">
+              <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-surface-alt border border-border flex items-center justify-center">
                 {getFileIcon(file.mimeType)}
               </div>
 
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-text-primary truncate">{file.name}</p>
-                <div className="flex items-center gap-3 mt-0.5">
-                  <span className="text-[11px] text-text-muted">{formatFileSize(file.size)}</span>
+                <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+                  <span className="text-[11px] font-medium text-text-muted">{formatFileSize(file.size)}</span>
                   <span className="text-[11px] text-text-muted">·</span>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
                     <Avatar name={file.user.name} src={file.user.avatar} size="xs" />
-                    <span className="text-[11px] text-text-muted">{file.user.name}</span>
+                    <span className="text-[11px] font-medium text-text-secondary">{file.user.name}</span>
                   </div>
                   <span className="text-[11px] text-text-muted">·</span>
-                  <span className="text-[11px] text-text-muted">{formatRelative(file.createdAt)}</span>
+                  <span className="text-[11px] font-medium text-text-muted">{formatRelative(file.createdAt)}</span>
                 </div>
               </div>
 
@@ -154,7 +158,7 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
                   download={file.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 rounded-[6px] text-text-muted hover:text-primary hover:bg-primary-subtle transition-colors"
+                  className="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-primary-subtle transition-colors"
                   title="Download"
                 >
                   <Download className="h-4 w-4" />
@@ -162,7 +166,7 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
                 {canDelete(file) && (
                   <button
                     onClick={() => setDeleteId(file.id)}
-                    className="p-1.5 rounded-[6px] text-text-muted hover:text-red-500 hover:bg-red-50 transition-colors"
+                    className="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
                     title="Delete file"
                   >
                     <Trash2 className="h-4 w-4" />

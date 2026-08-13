@@ -17,14 +17,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-[var(--text-primary)]"
+            className="text-xs font-semibold uppercase tracking-wider text-text-secondary"
           >
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           {leftAddon && (
-            <span className="absolute left-3 text-[var(--text-muted)] flex items-center">
+            <span className="absolute left-3 text-text-muted flex items-center pointer-events-none">
               {leftAddon}
             </span>
           )}
@@ -32,13 +32,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              "w-full h-9 px-3 text-sm rounded-[10px] border transition-colors duration-150",
-              "bg-[var(--surface)] text-[var(--text-primary)]",
-              "border-[var(--border)] placeholder:text-[var(--text-muted)]",
-              "hover:border-[var(--text-muted)]",
-              "focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-0 focus:border-[var(--primary)]",
-              "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background)]",
-              error && "border-red-500 focus:ring-red-500",
+              "w-full h-9 px-3 text-sm rounded-xl border transition-all duration-150",
+              "bg-surface text-text-primary shadow-xs",
+              "border-border placeholder:text-text-muted",
+              "hover:border-text-muted/50",
+              "focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary",
+              "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-background",
+              error && "border-red-500 focus:ring-red-500/20 focus:border-red-500",
               leftAddon && "pl-9",
               rightAddon && "pr-9",
               className
@@ -46,16 +46,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {rightAddon && (
-            <span className="absolute right-3 text-[var(--text-muted)] flex items-center">
+            <span className="absolute right-3 text-text-muted flex items-center">
               {rightAddon}
             </span>
           )}
         </div>
         {error && (
-          <p className="text-xs text-red-500">{error}</p>
+          <p className="text-xs text-red-500 font-medium">{error}</p>
         )}
         {helperText && !error && (
-          <p className="text-xs text-[var(--text-muted)]">{helperText}</p>
+          <p className="text-xs text-text-muted">{helperText}</p>
         )}
       </div>
     );
@@ -75,7 +75,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-[var(--text-primary)]">
+          <label htmlFor={inputId} className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
             {label}
           </label>
         )}
@@ -83,19 +83,19 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "w-full px-3 py-2.5 text-sm rounded-[10px] border transition-colors duration-150 resize-y min-h-[80px]",
-            "bg-[var(--surface)] text-[var(--text-primary)]",
-            "border-[var(--border)] placeholder:text-[var(--text-muted)]",
-            "hover:border-[var(--text-muted)]",
-            "focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-0 focus:border-[var(--primary)]",
+            "w-full px-3 py-2 text-sm rounded-xl border transition-all duration-150 resize-y min-h-[80px]",
+            "bg-surface text-text-primary shadow-xs",
+            "border-border placeholder:text-text-muted",
+            "hover:border-text-muted/50",
+            "focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary",
             "disabled:opacity-50 disabled:cursor-not-allowed",
-            error && "border-red-500 focus:ring-red-500",
+            error && "border-red-500 focus:ring-red-500/20 focus:border-red-500",
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-red-500">{error}</p>}
-        {helperText && !error && <p className="text-xs text-[var(--text-muted)]">{helperText}</p>}
+        {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+        {helperText && !error && <p className="text-xs text-text-muted">{helperText}</p>}
       </div>
     );
   }
@@ -114,7 +114,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-[var(--text-primary)]">
+          <label htmlFor={inputId} className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
             {label}
           </label>
         )}
@@ -122,21 +122,21 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "w-full h-9 px-3 text-sm rounded-[10px] border transition-colors duration-150",
-            "bg-[var(--surface)] text-[var(--text-primary)]",
-            "border-[var(--border)]",
-            "hover:border-[var(--text-muted)]",
-            "focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)]",
+            "w-full h-9 px-3 text-sm rounded-xl border transition-all duration-150",
+            "bg-surface text-text-primary shadow-xs",
+            "border-border",
+            "hover:border-text-muted/50",
+            "focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary",
             "disabled:opacity-50 disabled:cursor-not-allowed",
-            error && "border-red-500 focus:ring-red-500",
+            error && "border-red-500 focus:ring-red-500/20 focus:border-red-500",
             className
           )}
           {...props}
         >
           {children}
         </select>
-        {error && <p className="text-xs text-red-500">{error}</p>}
-        {helperText && !error && <p className="text-xs text-[var(--text-muted)]">{helperText}</p>}
+        {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+        {helperText && !error && <p className="text-xs text-text-muted">{helperText}</p>}
       </div>
     );
   }

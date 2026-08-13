@@ -11,7 +11,7 @@ export function Badge({ children, colorClass, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2 py-0.5 rounded-[6px] text-xs font-medium border",
+        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border transition-colors",
         colorClass,
         className
       )}
@@ -28,7 +28,7 @@ interface PriorityBadgeProps {
 }
 
 const priorityDots: Record<string, string> = {
-  CRITICAL: "bg-red-700",
+  CRITICAL: "bg-red-500 animate-pulse",
   URGENT: "bg-red-500",
   HIGH: "bg-orange-500",
   MEDIUM: "bg-amber-500",
@@ -62,6 +62,7 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <Badge colorClass={getStatusColor(status)} className={className}>
+      <span className="h-1.5 w-1.5 rounded-full mr-1.5 bg-current opacity-70 flex-shrink-0" />
       {getStatusLabel(status)}
     </Badge>
   );

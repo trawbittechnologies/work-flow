@@ -15,22 +15,22 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--text-primary)] shadow-sm border border-transparent",
+    "bg-primary hover:bg-primary-dark text-white shadow-sm border border-transparent active:scale-[0.98]",
   secondary:
-    "bg-[var(--surface)] hover:bg-[var(--background)] text-[var(--text-primary)] border border-[var(--border)] shadow-sm",
+    "bg-surface hover:bg-surface-alt text-text-primary border border-border shadow-xs hover:border-border/80 active:scale-[0.98]",
   ghost:
-    "bg-transparent hover:bg-[var(--background)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-transparent",
+    "bg-transparent hover:bg-surface-alt text-text-secondary hover:text-text-primary border border-transparent active:scale-[0.98]",
   danger:
-    "bg-red-500 hover:bg-red-600 text-white shadow-sm border border-transparent",
+    "bg-red-600 hover:bg-red-700 text-white shadow-sm border border-transparent active:scale-[0.98]",
   outline:
-    "bg-transparent hover:bg-[var(--primary-subtle)] text-[var(--primary)] border border-[var(--primary)] hover:border-[var(--primary-hover)]",
+    "bg-transparent hover:bg-primary-subtle text-primary border border-primary/30 hover:border-primary active:scale-[0.98]",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-7 px-2.5 text-xs gap-1.5 rounded-[8px]",
-  md: "h-9 px-3.5 text-sm gap-2 rounded-[10px]",
-  lg: "h-10 px-5 text-sm gap-2 rounded-[10px]",
-  icon: "h-8 w-8 rounded-[8px] flex-shrink-0",
+  sm: "h-7 px-2.5 text-xs gap-1.5 rounded-lg font-medium",
+  md: "h-9 px-3.5 text-sm gap-2 rounded-xl font-medium",
+  lg: "h-10 px-5 text-sm gap-2 rounded-xl font-semibold",
+  icon: "h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -53,9 +53,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          "inline-flex items-center justify-center font-medium transition-all duration-150",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]",
+          "inline-flex items-center justify-center transition-all duration-150 cursor-pointer",
+          "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-1",
           "select-none whitespace-nowrap",
           variantStyles[variant],
           sizeStyles[size],
@@ -64,7 +64,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {isLoading ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <Loader2 className="h-3.5 w-3.5 animate-spin flex-shrink-0" />
         ) : (
           leftIcon
         )}

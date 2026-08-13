@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -34,6 +34,11 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
   const [activeTask, setActiveTask] = useState<TaskWithDetails | null>(null);
   const { error: showError } = useToast();
 
+  // Sync tasks state whenever initialTasks prop changes (e.g. filter/search/updates)
+  useEffect(() => {
+    setTasks(initialTasks);
+  }, [initialTasks]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
@@ -57,6 +62,8 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
     const currentTask = tasks.find((t) => t.id === taskId);
     if (!currentTask || currentTask.status === newStatus) return;
 
+    const previousStatus = currentTask.status;
+
     // Optimistic Update
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
@@ -71,19 +78,23 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
       });
 
       if (!res.ok) {
-        // Revert on error
-        setTasks(initialTasks);
+        // Revert only affected task on failure
+        setTasks((prev) =>
+          prev.map((t) => (t.id === taskId ? { ...t, status: previousStatus } : t))
+        );
         showError("Failed to move task", "Changes were reverted.");
       }
     } catch {
-      setTasks(initialTasks);
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, status: previousStatus } : t))
+      );
       showError("Connection error", "Failed to update task status.");
     }
   }
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4 pt-1 items-start min-h-[500px]">
+      <div className="flex gap-4 overflow-x-auto pb-4 pt-1 items-start min-h-[550px] scrollbar-thin">
         {COLUMNS.map((col) => {
           const colTasks = tasks.filter((t) => t.status === col.id);
           return (
@@ -100,7 +111,11 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
       </div>
 
       <DragOverlay>
-        {activeTask ? <TaskCard task={activeTask} isDragging /> : null}
+        {activeTask ? (
+          <div className="transform rotate-2 scale-105 shadow-2xl transition-transform">
+            <TaskCard task={activeTask} isDragging />
+          </div>
+        ) : null}
       </DragOverlay>
     </DndContext>
   );

@@ -45,9 +45,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-[14px] p-6 shadow-sm">
-      <h2 className="text-base font-semibold text-[var(--text-primary)] mb-0.5">Create account</h2>
-      <p className="text-sm text-[var(--text-secondary)] mb-5">Get started with Flowdesk</p>
+    <div className="bg-surface border border-border rounded-2xl p-6 shadow-xl card-shadow">
+      <h2 className="text-lg font-extrabold text-text-primary tracking-tight">Create account</h2>
+      <p className="text-xs font-medium text-text-secondary mb-6 mt-0.5">Get started with Flowdesk today</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
@@ -82,7 +82,7 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+              className="text-text-muted hover:text-text-secondary transition-colors cursor-pointer"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -101,7 +101,7 @@ export default function RegisterPage() {
         />
 
         {serverError && (
-          <div className="text-sm text-red-600 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-[8px] px-3 py-2">
+          <div className="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800 rounded-xl px-3.5 py-2.5">
             {serverError}
           </div>
         )}
@@ -111,15 +111,15 @@ export default function RegisterPage() {
           variant="primary"
           size="lg"
           isLoading={isSubmitting}
-          className="w-full"
+          className="w-full shadow-md font-bold mt-2"
         >
           Create account
         </Button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-[var(--text-muted)]">
+      <p className="mt-6 text-center text-xs text-text-muted">
         Already have an account?{" "}
-        <Link href="/login" className="text-[var(--primary)] hover:text-[var(--primary-hover)] font-medium transition-colors">
+        <Link href="/login" className="text-primary hover:text-primary-dark font-bold transition-colors">
           Sign in
         </Link>
       </p>
