@@ -36,6 +36,7 @@ async function main() {
       email: "admin@flowdesk.io",
       passwordHash: adminPasswordHash,
       role: "ADMIN",
+      avatar: "/logo.png",
       onboardingComplete: true,
     },
   });

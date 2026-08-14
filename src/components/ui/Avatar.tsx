@@ -27,12 +27,13 @@ export function Avatar({ name, src, size = "md", className }: AvatarProps) {
   const [imageError, setImageError] = useState(false);
 
   const isSvg = src ? (src.includes(".svg") || src.includes("dicebear") || src.startsWith("data:image/svg+xml")) : false;
+  const isLocalPath = src ? src.startsWith("/") : false;
 
   if (src && !imageError) {
     return (
       <div
         className={cn(
-          "rounded-full overflow-hidden flex-shrink-0 ring-2 ring-[var(--surface)]",
+          "rounded-full overflow-hidden flex-shrink-0 ring-2 ring-[var(--surface)] bg-white",
           container,
           className
         )}
@@ -44,7 +45,7 @@ export function Avatar({ name, src, size = "md", className }: AvatarProps) {
           height={img}
           unoptimized={isSvg}
           onError={() => setImageError(true)}
-          className="object-cover w-full h-full"
+          className={cn("w-full h-full", isLocalPath ? "object-contain p-0.5" : "object-cover")}
         />
       </div>
     );
