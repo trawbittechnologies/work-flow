@@ -19,6 +19,7 @@ import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
 import { MobileDrawer } from "./MobileDrawer";
+import { useMobileMenu } from "@/lib/useMobileMenu";
 
 interface HeaderProps {
   user: {
@@ -34,7 +35,7 @@ export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const { toggle: toggleMobileMenu } = useMobileMenu();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
           {/* Mobile Hamburger Toggle */}
           <button
             type="button"
-            onClick={() => setMobileDrawerOpen(true)}
+            onClick={toggleMobileMenu}
             className="md:hidden h-9 w-9 rounded-xl bg-white border border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB] flex items-center justify-center transition-colors shadow-2xs cursor-pointer"
             aria-label="Open navigation menu"
           >
@@ -218,8 +219,6 @@ export function Header({ user, unreadNotifications = 0 }: HeaderProps) {
 
       {/* Slide-out Mobile Navigation Drawer */}
       <MobileDrawer
-        isOpen={mobileDrawerOpen}
-        onClose={() => setMobileDrawerOpen(false)}
         user={user}
         unreadNotifications={unreadNotifications}
       />

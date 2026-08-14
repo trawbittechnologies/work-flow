@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -19,14 +19,15 @@ import {
   X,
   LogOut,
   User as UserIcon,
+  MessageSquare,
+  Bell,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Avatar } from "@/components/ui/Avatar";
 import { cn } from "@/lib/utils";
+import { useMobileMenu } from "@/lib/useMobileMenu";
 
 interface MobileDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
   user: {
     name: string;
     email: string;
@@ -37,11 +38,12 @@ interface MobileDrawerProps {
 }
 
 export function MobileDrawer({
-  isOpen,
-  onClose,
   user,
+  unreadNotifications = 0,
 }: MobileDrawerProps) {
   const pathname = usePathname();
+  const { isOpen, close } = useMobileMenu();
+  const prevPathname = useRef(pathname);
 
   // Prevent background scrolling when drawer is open
   useEffect(() => {
@@ -55,10 +57,24 @@ export function MobileDrawer({
     };
   }, [isOpen]);
 
-  // Close drawer on route change
+  // Close drawer on route change (only when route actually changes, not on initial mount)
   useEffect(() => {
-    onClose();
-  }, [pathname, onClose]);
+    if (prevPathname.current !== pathname) {
+      prevPathname.current = pathname;
+      close();
+    }
+  }, [pathname, close]);
+
+  // Handle ESC key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        close();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, close]);
 
   if (!isOpen) return null;
 
@@ -75,6 +91,8 @@ export function MobileDrawer({
     { label: "Calendar", href: "/calendar", icon: Calendar },
     { label: "Time Tracking", href: "/time-tracking", icon: Clock },
     { label: "Reports", href: "/reports", icon: BarChart2 },
+    { label: "Chat & DMs", href: "/chat", icon: MessageSquare },
+    { label: "Notifications", href: "/notifications", icon: Bell, count: unreadNotifications },
     { label: "Members", href: "/team", icon: Users },
     { label: "Settings", href: "/settings", icon: Settings },
   ];
@@ -91,18 +109,18 @@ export function MobileDrawer({
   const displayRole = user.role === "ADMIN" ? "Admin" : "Member";
 
   return (
-    <div className="fixed inset-0 z-50 md:hidden flex" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-[100] md:hidden flex" role="dialog" aria-modal="true">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm animate-in transition-opacity"
-        onClick={onClose}
+        onClick={close}
       />
 
       {/* Slide-out Drawer Panel */}
       <div className="relative w-[300px] max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl slide-in-right overflow-hidden border-r border-[#EAEDF2]">
         {/* Brand Header & Close */}
         <div className="p-4 border-b border-[#EAEDF2] flex items-center justify-between bg-[#F8F9FA]">
-          <Link href="/dashboard" onClick={onClose} className="flex items-center gap-2.5">
+          <Link href="/dashboard" onClick={close} className="flex items-center gap-2.5">
             <div className="relative h-8 w-8 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs">
               <Image
                 src="/logo.png"
@@ -120,7 +138,7 @@ export function MobileDrawer({
           </Link>
 
           <button
-            onClick={onClose}
+            onClick={close}
             className="p-1.5 rounded-xl text-[#9CA3AF] hover:text-[#111827] hover:bg-white transition-colors cursor-pointer"
             aria-label="Close navigation menu"
           >
@@ -152,7 +170,7 @@ export function MobileDrawer({
             {user.role === "ADMIN" && (
               <Link
                 href="/admin"
-                onClick={onClose}
+                onClick={close}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all",
                   isActive("/admin")
@@ -171,21 +189,28 @@ export function MobileDrawer({
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={onClose}
+                  onClick={close}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all",
+                    "flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all",
                     active
                       ? "bg-[#F3F9DE] text-[#111827] font-bold"
                       : "text-[#6B7280] hover:bg-[#F7F8FA] hover:text-[#111827]"
                   )}
                 >
-                  <item.icon
-                    className={cn(
-                      "h-4 w-4 flex-shrink-0",
-                      active ? "text-[#88C315]" : "text-[#9CA3AF]"
-                    )}
-                  />
-                  <span>{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    <item.icon
+                      className={cn(
+                        "h-4 w-4 flex-shrink-0",
+                        active ? "text-[#88C315]" : "text-[#9CA3AF]"
+                      )}
+                    />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.count !== undefined && item.count > 0 && (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#88C315] text-white">
+                      {item.count}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -199,7 +224,7 @@ export function MobileDrawer({
               </span>
               <Link
                 href="/projects/new"
-                onClick={onClose}
+                onClick={close}
                 className="p-1 text-[#9CA3AF] hover:text-[#111827] rounded hover:bg-[#F3F4F6] transition-colors"
                 title="Add Project"
               >
@@ -211,7 +236,7 @@ export function MobileDrawer({
                 <Link
                   key={project.name}
                   href={project.href}
-                  onClick={onClose}
+                  onClick={close}
                   className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-[#4B5563] hover:bg-[#F7F8FA] hover:text-[#111827] transition-all"
                 >
                   <span className={cn("h-2 w-2 rounded-full shrink-0", project.color)} />
@@ -226,7 +251,7 @@ export function MobileDrawer({
         <div className="p-3 border-t border-[#EAEDF2] bg-[#F8F9FA] space-y-1">
           <Link
             href="/profile"
-            onClick={onClose}
+            onClick={close}
             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-[#4B5563] hover:bg-white transition-colors"
           >
             <UserIcon className="h-4 w-4 text-[#9CA3AF]" />
