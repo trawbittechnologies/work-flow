@@ -10,10 +10,17 @@ export const metadata: Metadata = { title: "Project Timeline" };
 type PageProps = { params: Promise<{ projectId: string }> };
 
 const STATUS_COLORS: Record<string, string> = {
-  TODO: "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200",
-  IN_PROGRESS: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200",
-  IN_REVIEW: "bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-200",
-  DONE: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-200",
+  PENDING: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+  TODO: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+  IN_PROGRESS: "bg-[#F3F9DE] text-[#659A08] dark:bg-lime-950 dark:text-lime-300",
+  TESTING: "bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300",
+  ON_HOLD: "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200",
+  IN_REVIEW: "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300",
+  REVIEW: "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300",
+  COMPLETED: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  DONE: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  REOPENED: "bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300",
+  CANCELLED: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
 };
 
 const PRIORITY_BAR_COLORS: Record<string, string> = {

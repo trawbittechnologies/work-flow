@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { Drawer } from "@/components/ui/Drawer";
 import { Avatar } from "@/components/ui/Avatar";
-import { PriorityBadge, StatusBadge } from "@/components/ui/Badge";
+import { PriorityBadge } from "@/components/ui/Badge";
+import { TaskStatusSelect, TaskStatusType } from "@/components/tasks/TaskStatusSelect";
 import { CalendarDays, AlertCircle, Trash2 } from "lucide-react";
 import { formatDueDate, isOverdue } from "@/lib/utils";
 import { CommentSection } from "./CommentSection";
@@ -111,7 +112,15 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
           <div className="px-6 pt-6 pb-4 border-b border-border">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <StatusBadge status={task.status} />
+                <TaskStatusSelect
+                  taskId={task.id}
+                  initialStatus={task.status}
+                  size="md"
+                  onStatusChange={(newStatus) => {
+                    setTask((prev: any) => prev ? { ...prev, status: newStatus } : null);
+                    onTaskUpdated?.();
+                  }}
+                />
                 <PriorityBadge priority={task.priority} />
               </div>
               <Button variant="ghost" size="icon" className="h-8 w-8 text-danger hover:bg-danger-subtle/50 hover:text-danger" onClick={handleDelete} isLoading={deleting}>

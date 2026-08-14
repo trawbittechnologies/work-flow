@@ -15,11 +15,14 @@ interface ProjectProgressChartProps {
 
 const STATUS_COLOR: Record<string, string> = {
   IN_PROGRESS: "#88C315",
+  PENDING: "#F59E0B",
   PLANNING: "#F59E0B",
   NOT_STARTED: "#9CA3AF",
-  ON_HOLD: "#F59E0B",
+  TESTING: "#06B6D4",
+  ON_HOLD: "#9CA3AF",
   REVIEW: "#7C3AED",
   COMPLETED: "#10B981",
+  REOPENED: "#F97316",
   ARCHIVED: "#6B7280",
   CANCELLED: "#EF4444",
 };

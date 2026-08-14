@@ -7,11 +7,14 @@ import { ProjectIcon } from "@/components/ui/ProjectIcon";
 
 const STATUS_BAR: Record<string, string> = {
   IN_PROGRESS: "bg-[#88C315]",
+  PENDING: "bg-[#F59E0B]",
   PLANNING: "bg-[#F59E0B]",
   NOT_STARTED: "bg-[#9CA3AF]",
-  ON_HOLD: "bg-[#F59E0B]",
+  TESTING: "bg-[#06B6D4]",
+  ON_HOLD: "bg-[#9CA3AF]",
   REVIEW: "bg-[#7C3AED]",
   COMPLETED: "bg-[#10B981]",
+  REOPENED: "bg-[#F97316]",
   ARCHIVED: "bg-[#6B7280]",
   CANCELLED: "bg-[#EF4444]",
 };

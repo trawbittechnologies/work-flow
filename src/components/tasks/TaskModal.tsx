@@ -9,13 +9,15 @@ import { Input, Textarea, Select } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 
+import { TaskStatusType } from "@/components/tasks/TaskStatusSelect";
+
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   projectId: string;
   members: { id: string; user: { id: string; name: string; avatar?: string | null } }[];
   onTaskCreated?: () => void;
-  defaultStatus?: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
+  defaultStatus?: TaskStatusType | string;
 }
 
 export function TaskModal({
@@ -24,7 +26,7 @@ export function TaskModal({
   projectId,
   members,
   onTaskCreated,
-  defaultStatus = "TODO",
+  defaultStatus = "PENDING",
 }: TaskModalProps) {
   const { success, error: showError } = useToast();
 
@@ -37,7 +39,7 @@ export function TaskModal({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
       projectId,
-      status: defaultStatus,
+      status: defaultStatus as any,
       priority: "MEDIUM",
     },
   });
@@ -46,7 +48,7 @@ export function TaskModal({
     if (isOpen) {
       reset({
         projectId,
-        status: defaultStatus,
+        status: defaultStatus as any,
         priority: "MEDIUM",
         title: "",
         description: "",
@@ -106,10 +108,14 @@ export function TaskModal({
 
         <div className="grid grid-cols-2 gap-3">
           <Select label="Status" id="task-status" {...register("status")}>
-            <option value="TODO">To Do</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="IN_REVIEW">In Review</option>
-            <option value="DONE">Done</option>
+            <option value="IN_PROGRESS">Progressing</option>
+            <option value="PENDING">Pending</option>
+            <option value="TESTING">Testing</option>
+            <option value="ON_HOLD">Hold</option>
+            <option value="IN_REVIEW">Review</option>
+            <option value="COMPLETED">Complete</option>
+            <option value="REOPENED">Re-Open</option>
+            <option value="CANCELLED">Cancel</option>
           </Select>
 
           <Select label="Priority" id="task-priority" {...register("priority")}>

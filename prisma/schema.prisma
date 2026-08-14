@@ -20,11 +20,14 @@ enum UserRole {
 enum ProjectStatus {
   PLANNING
   NOT_STARTED
+  PENDING
   IN_PROGRESS
+  TESTING
   ON_HOLD
   REVIEW
   COMPLETED
   ARCHIVED
+  REOPENED
   CANCELLED
 }
 
@@ -37,9 +40,15 @@ enum ProjectPriority {
 
 enum TaskStatus {
   TODO
+  PENDING
   IN_PROGRESS
+  TESTING
+  ON_HOLD
   IN_REVIEW
   DONE
+  COMPLETED
+  REOPENED
+  CANCELLED
 }
 
 enum TaskPriority {

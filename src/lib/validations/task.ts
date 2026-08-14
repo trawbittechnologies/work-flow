@@ -1,12 +1,25 @@
 import { z } from "zod";
 
+export const TASK_STATUSES = [
+  "PENDING",
+  "IN_PROGRESS",
+  "TESTING",
+  "ON_HOLD",
+  "IN_REVIEW",
+  "COMPLETED",
+  "REOPENED",
+  "CANCELLED",
+  "TODO",
+  "DONE",
+] as const;
+
 export const createTaskSchema = z.object({
   title: z.string().min(1, "Task title is required").max(200, "Title too long"),
   description: z.string().max(2000, "Description too long").optional().nullable(),
   projectId: z.string().min(1, "Invalid project"),
   assigneeId: z.string().optional().nullable(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
-  status: z.enum(["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"]).optional(),
+  status: z.enum(TASK_STATUSES).optional(),
   dueDate: z.string().optional().nullable(),
   labelIds: z.array(z.string()).optional(),
 });
@@ -16,7 +29,7 @@ export const updateTaskSchema = z.object({
   description: z.string().max(2000).optional().nullable(),
   assigneeId: z.string().optional().nullable(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
-  status: z.enum(["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"]).optional(),
+  status: z.enum(TASK_STATUSES).optional(),
   dueDate: z.string().optional().nullable(),
   labelIds: z.array(z.string()).optional(),
 });

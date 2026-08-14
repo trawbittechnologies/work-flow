@@ -15,18 +15,24 @@ import { TaskCard } from "@/components/tasks/TaskCard";
 import type { TaskWithDetails } from "@/types";
 import { useToast } from "@/components/ui/Toast";
 
+import { TaskStatusType } from "@/components/tasks/TaskStatusSelect";
+
 interface KanbanBoardProps {
   initialTasks: TaskWithDetails[];
   projectId: string;
-  onAddTask?: (status: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") => void;
+  onAddTask?: (status: TaskStatusType | string) => void;
   onTaskClick?: (task: TaskWithDetails) => void;
 }
 
-const COLUMNS: Array<{ id: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE"; title: string }> = [
-  { id: "TODO", title: "To Do" },
-  { id: "IN_PROGRESS", title: "In Progress" },
-  { id: "IN_REVIEW", title: "In Review" },
-  { id: "DONE", title: "Done" },
+const COLUMNS: Array<{ id: TaskStatusType; title: string }> = [
+  { id: "PENDING", title: "Pending" },
+  { id: "IN_PROGRESS", title: "Progressing" },
+  { id: "TESTING", title: "Testing" },
+  { id: "ON_HOLD", title: "Hold" },
+  { id: "IN_REVIEW", title: "Review" },
+  { id: "COMPLETED", title: "Complete" },
+  { id: "REOPENED", title: "Re-Open" },
+  { id: "CANCELLED", title: "Cancel" },
 ];
 
 export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }: KanbanBoardProps) {
@@ -58,7 +64,7 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
     if (!over) return;
 
     const taskId = active.id as string;
-    const newStatus = over.id as "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
+    const newStatus = over.id as TaskStatusType;
 
     const currentTask = tasks.find((t) => t.id === taskId);
     if (!currentTask || currentTask.status === newStatus) return;
@@ -67,7 +73,7 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
 
     // Optimistic Update
     setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
+      prev.map((t) => (t.id === taskId ? ({ ...t, status: newStatus as any }) : t))
     );
 
     // API update call
@@ -97,7 +103,12 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="flex gap-4 overflow-x-auto pb-6 pt-1 items-start min-h-[550px] scrollbar-thin snap-x snap-mandatory">
         {COLUMNS.map((col) => {
-          const colTasks = tasks.filter((t) => t.status === col.id);
+          const colTasks = tasks.filter((t) => {
+            if (col.id === "PENDING") return t.status === "PENDING" || t.status === "TODO";
+            if (col.id === "COMPLETED") return t.status === "COMPLETED" || t.status === "DONE";
+            if (col.id === "IN_REVIEW") return t.status === "IN_REVIEW" || t.status === "REVIEW";
+            return t.status === col.id;
+          });
           return (
             <KanbanColumn
               key={col.id}

@@ -9,16 +9,15 @@ import { useToast } from "@/components/ui/Toast";
 export type ProjectStatusType =
   | "PLANNING"
   | "NOT_STARTED"
+  | "PENDING"
   | "IN_PROGRESS"
+  | "TESTING"
   | "ON_HOLD"
   | "REVIEW"
   | "COMPLETED"
   | "ARCHIVED"
-  | "CANCELLED"
-  | "Pending"
-  | "In Progress"
-  | "On Hold"
-  | "Completed";
+  | "REOPENED"
+  | "CANCELLED";
 
 interface ProjectStatusSelectProps {
   projectId?: string;
@@ -27,6 +26,7 @@ interface ProjectStatusSelectProps {
   className?: string;
   size?: "sm" | "md";
   dropdownAlign?: "left" | "right";
+  disabled?: boolean;
 }
 
 const statusConfig: Record<
@@ -34,16 +34,22 @@ const statusConfig: Record<
   { label: string; badgeClass: string; dotClass: string; value: string }
 > = {
   IN_PROGRESS: {
-    label: "In Progress",
+    label: "Progressing",
     badgeClass: "bg-[#F3F9DE] text-[#659A08] hover:bg-[#EAF5CE]",
     dotClass: "bg-[#88C315]",
     value: "IN_PROGRESS",
   },
   "In Progress": {
-    label: "In Progress",
+    label: "Progressing",
     badgeClass: "bg-[#F3F9DE] text-[#659A08] hover:bg-[#EAF5CE]",
     dotClass: "bg-[#88C315]",
     value: "IN_PROGRESS",
+  },
+  PENDING: {
+    label: "Pending",
+    badgeClass: "bg-[#FFFBEB] text-[#D97706] hover:bg-[#FEF3C7]",
+    dotClass: "bg-[#F59E0B]",
+    value: "PENDING",
   },
   PLANNING: {
     label: "Pending",
@@ -58,56 +64,82 @@ const statusConfig: Record<
     value: "PLANNING",
   },
   NOT_STARTED: {
-    label: "Not Started",
+    label: "Pending",
     badgeClass: "bg-[#F3F4F6] text-[#4B5563] hover:bg-[#E5E7EB]",
     dotClass: "bg-[#9CA3AF]",
     value: "NOT_STARTED",
   },
+  TESTING: {
+    label: "Testing",
+    badgeClass: "bg-[#ECFEFF] text-[#0891B2] hover:bg-[#CFFAFE]",
+    dotClass: "bg-[#06B6D4]",
+    value: "TESTING",
+  },
   ON_HOLD: {
-    label: "On Hold",
+    label: "Hold",
     badgeClass: "bg-[#F3F4F6] text-[#6B7280] hover:bg-[#E5E7EB]",
     dotClass: "bg-[#9CA3AF]",
     value: "ON_HOLD",
   },
   "On Hold": {
-    label: "On Hold",
+    label: "Hold",
     badgeClass: "bg-[#F3F4F6] text-[#6B7280] hover:bg-[#E5E7EB]",
     dotClass: "bg-[#9CA3AF]",
     value: "ON_HOLD",
   },
   REVIEW: {
-    label: "In Review",
+    label: "Review",
+    badgeClass: "bg-[#EDE9FE] text-[#7C3AED] hover:bg-[#E4DEFD]",
+    dotClass: "bg-[#7C3AED]",
+    value: "REVIEW",
+  },
+  IN_REVIEW: {
+    label: "Review",
     badgeClass: "bg-[#EDE9FE] text-[#7C3AED] hover:bg-[#E4DEFD]",
     dotClass: "bg-[#7C3AED]",
     value: "REVIEW",
   },
   COMPLETED: {
-    label: "Completed",
+    label: "Complete",
     badgeClass: "bg-[#ECFDF5] text-[#10B981] hover:bg-[#D1FAE5]",
     dotClass: "bg-[#10B981]",
     value: "COMPLETED",
   },
   Completed: {
-    label: "Completed",
+    label: "Complete",
     badgeClass: "bg-[#ECFDF5] text-[#10B981] hover:bg-[#D1FAE5]",
     dotClass: "bg-[#10B981]",
     value: "COMPLETED",
   },
+  REOPENED: {
+    label: "Re-Open",
+    badgeClass: "bg-[#FFF7ED] text-[#EA580C] hover:bg-[#FFEDD5]",
+    dotClass: "bg-[#F97316]",
+    value: "REOPENED",
+  },
   CANCELLED: {
-    label: "Cancelled",
+    label: "Cancel",
     badgeClass: "bg-[#FEF2F2] text-[#EF4444] hover:bg-[#FEE2E2]",
     dotClass: "bg-[#EF4444]",
     value: "CANCELLED",
   },
+  ARCHIVED: {
+    label: "Archived",
+    badgeClass: "bg-[#F3F4F6] text-[#9CA3AF] hover:bg-[#E5E7EB]",
+    dotClass: "bg-[#9CA3AF]",
+    value: "ARCHIVED",
+  },
 };
 
 const selectableStatuses = [
-  { value: "IN_PROGRESS", label: "In Progress", dot: "bg-[#88C315]" },
-  { value: "PLANNING", label: "Pending / Planning", dot: "bg-[#F59E0B]" },
-  { value: "REVIEW", label: "In Review", dot: "bg-[#7C3AED]" },
-  { value: "ON_HOLD", label: "On Hold", dot: "bg-[#9CA3AF]" },
-  { value: "COMPLETED", label: "Completed", dot: "bg-[#10B981]" },
-  { value: "CANCELLED", label: "Cancelled", dot: "bg-[#EF4444]" },
+  { value: "IN_PROGRESS", label: "Progressing", dot: "bg-[#88C315]" },
+  { value: "PLANNING", label: "Pending", dot: "bg-[#F59E0B]" },
+  { value: "TESTING", label: "Testing", dot: "bg-[#06B6D4]" },
+  { value: "ON_HOLD", label: "Hold", dot: "bg-[#9CA3AF]" },
+  { value: "REVIEW", label: "Review", dot: "bg-[#7C3AED]" },
+  { value: "COMPLETED", label: "Complete", dot: "bg-[#10B981]" },
+  { value: "REOPENED", label: "Re-Open", dot: "bg-[#F97316]" },
+  { value: "CANCELLED", label: "Cancel", dot: "bg-[#EF4444]" },
 ];
 
 export function ProjectStatusSelect({

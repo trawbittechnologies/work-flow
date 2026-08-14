@@ -98,8 +98,14 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
         (p.lead?.name && p.lead.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      const matchesStatus =
-        statusFilter === "ALL" || p.status === statusFilter;
+      let matchesStatus = statusFilter === "ALL" || p.status === statusFilter;
+      if (statusFilter === "PLANNING" || statusFilter === "PENDING") {
+        matchesStatus = p.status === "PLANNING" || p.status === "PENDING" || p.status === "NOT_STARTED";
+      } else if (statusFilter === "IN_PROGRESS") {
+        matchesStatus = p.status === "IN_PROGRESS";
+      } else if (statusFilter === "COMPLETED") {
+        matchesStatus = p.status === "COMPLETED";
+      }
 
       const matchesPriority =
         priorityFilter === "ALL" || p.priority === priorityFilter;
@@ -112,7 +118,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
     const total = initialProjects.length;
     const inProgress = initialProjects.filter((p) => p.status === "IN_PROGRESS").length;
     const completed = initialProjects.filter((p) => p.status === "COMPLETED").length;
-    const planning = initialProjects.filter((p) => p.status === "PLANNING" || p.status === "NOT_STARTED").length;
+    const planning = initialProjects.filter((p) => p.status === "PLANNING" || p.status === "PENDING" || p.status === "NOT_STARTED").length;
     return { total, inProgress, completed, planning };
   }, [initialProjects]);
 
@@ -129,19 +135,23 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
               <Folder className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.total}</h3>
+          <div className="text-xl sm:text-2xl font-black text-[#111827] mt-2">
+            {stats.total}
+          </div>
         </div>
 
         <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
-              In Progress
+              Progressing
             </span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center">
-              <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#F3F9DE] text-[#659A08] flex items-center justify-center">
+              <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.inProgress}</h3>
+          <div className="text-xl sm:text-2xl font-black text-[#659A08] mt-2">
+            {stats.inProgress}
+          </div>
         </div>
 
         <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
@@ -153,19 +163,23 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
               <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.completed}</h3>
+          <div className="text-xl sm:text-2xl font-black text-[#10B981] mt-2">
+            {stats.completed}
+          </div>
         </div>
 
         <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
-              Planning / Hold
+              Pending
             </span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#FFFBEB] text-[#F59E0B] flex items-center justify-center">
-              <Layers className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#FFFBEB] text-[#D97706] flex items-center justify-center">
+              <AlertCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.planning}</h3>
+          <div className="text-xl sm:text-2xl font-black text-[#D97706] mt-2">
+            {stats.planning}
+          </div>
         </div>
       </div>
 
@@ -188,9 +202,14 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
           <div className="flex items-center bg-[#F4F5F7] p-1 rounded-xl gap-0.5 sm:gap-1 overflow-x-auto max-w-full">
             {[
               { label: "All", value: "ALL" },
-              { label: "In Progress", value: "IN_PROGRESS" },
-              { label: "Pending", value: "PLANNING" },
-              { label: "Done", value: "COMPLETED" },
+              { label: "Progressing", value: "IN_PROGRESS" },
+              { label: "Pending", value: "PENDING" },
+              { label: "Testing", value: "TESTING" },
+              { label: "Hold", value: "ON_HOLD" },
+              { label: "Review", value: "REVIEW" },
+              { label: "Complete", value: "COMPLETED" },
+              { label: "Re-Open", value: "REOPENED" },
+              { label: "Cancel", value: "CANCELLED" },
             ].map((tab) => (
               <button
                 key={tab.value}

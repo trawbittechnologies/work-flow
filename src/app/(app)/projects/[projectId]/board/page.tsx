@@ -21,7 +21,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
   const [members, setMembers] = useState<Array<{ id: string; user: { id: string; name: string; avatar?: string | null } }>>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalDefaultStatus, setModalDefaultStatus] = useState<"TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE">("TODO");
+  const [modalDefaultStatus, setModalDefaultStatus] = useState<string>("PENDING");
   const [drawerTaskId, setDrawerTaskId] = useState<string | null>(null);
 
   async function loadData() {
@@ -33,7 +33,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
 
       if (tasksRes.ok) {
         const data = await tasksRes.json();
-        setTasks(data.data || []);
+        setTasks(data.data || data.tasks || []);
       }
       if (membersRes.ok) {
         const data = await membersRes.json();
@@ -54,7 +54,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
         const res = await fetch(`/api/tasks?projectId=${projectId}`);
         if (res.ok) {
           const data = await res.json();
-          if (isMounted) setTasks(data.tasks || []);
+          if (isMounted) setTasks(data.data || data.tasks || []);
         }
         const memRes = await fetch(`/api/projects/${projectId}/members`);
         if (memRes.ok) {
@@ -74,7 +74,7 @@ export default function ProjectBoardPage({ params }: PageProps) {
     };
   }, [projectId, showError]);
 
-  function handleOpenModalWithStatus(status: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") {
+  function handleOpenModalWithStatus(status: string) {
     setModalDefaultStatus(status);
     setIsModalOpen(true);
   }

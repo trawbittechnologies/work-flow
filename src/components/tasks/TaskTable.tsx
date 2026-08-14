@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { cn, formatDueDate, isOverdue } from "@/lib/utils";
-import { PriorityBadge, StatusBadge } from "@/components/ui/Badge";
+import { PriorityBadge } from "@/components/ui/Badge";
+import { TaskStatusSelect, TaskStatusType } from "@/components/tasks/TaskStatusSelect";
 import { Avatar } from "@/components/ui/Avatar";
 import type { TaskWithDetails } from "@/types";
 import { CalendarDays, MessageSquare, MoreHorizontal, ArrowUpDown } from "lucide-react";
@@ -11,7 +12,7 @@ import { Button } from "@/components/ui/Button";
 interface TaskTableProps {
   tasks: TaskWithDetails[];
   onTaskClick?: (task: TaskWithDetails) => void;
-  onStatusChange?: (taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") => void;
+  onStatusChange?: (taskId: string, newStatus: TaskStatusType | string) => void;
 }
 
 export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps) {
@@ -71,7 +72,7 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
           </thead>
           <tbody className="divide-y divide-[#EAEDF2] font-medium text-[#111827]">
             {sortedTasks.map((task) => {
-              const isDone = task.status === "DONE";
+              const isDone = task.status === "DONE" || task.status === "COMPLETED";
               const overdue = task.dueDate ? isOverdue(task.dueDate) : false;
 
               return (
@@ -85,7 +86,7 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
                       type="checkbox"
                       checked={isDone}
                       onChange={(e) => {
-                        const newStatus = e.target.checked ? "DONE" : "TODO";
+                        const newStatus = e.target.checked ? "COMPLETED" : "PENDING";
                         onStatusChange?.(task.id, newStatus);
                       }}
                       className="h-4 w-4 rounded border-[#D1D5DB] text-[#88C315] focus:ring-[#88C315] cursor-pointer transition-colors"
@@ -104,8 +105,12 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
                       )}
                     </div>
                   </td>
-                  <td className="py-3.5 px-4">
-                    <StatusBadge status={task.status} />
+                  <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
+                    <TaskStatusSelect
+                      taskId={task.id}
+                      initialStatus={task.status}
+                      onStatusChange={(newStatus) => onStatusChange?.(task.id, newStatus)}
+                    />
                   </td>
                   <td className="py-3.5 px-4">
                     <PriorityBadge priority={task.priority as "LOW" | "MEDIUM" | "HIGH" | "URGENT"} />

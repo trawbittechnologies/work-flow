@@ -74,7 +74,7 @@ export default function ProjectTasksPage({ params }: PageProps) {
     }
   }
 
-  async function handleStatusChange(taskId: string, newStatus: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE") {
+  async function handleStatusChange(taskId: string, newStatus: string) {
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? ({ ...t, status: newStatus as TaskWithDetails["status"] }) : t))
     );
@@ -88,7 +88,14 @@ export default function ProjectTasksPage({ params }: PageProps) {
 
   const filteredTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus = statusFilter === "ALL" || t.status === statusFilter;
+    let matchesStatus = statusFilter === "ALL" || t.status === statusFilter;
+    if (statusFilter === "PENDING") {
+      matchesStatus = t.status === "PENDING" || t.status === "TODO";
+    } else if (statusFilter === "COMPLETED") {
+      matchesStatus = t.status === "COMPLETED" || t.status === "DONE";
+    } else if (statusFilter === "IN_REVIEW") {
+      matchesStatus = t.status === "IN_REVIEW" || t.status === "REVIEW";
+    }
     return matchesSearch && matchesStatus;
   });
 
@@ -114,10 +121,14 @@ export default function ProjectTasksPage({ params }: PageProps) {
             className="h-8 px-2.5 text-xs rounded-[8px] border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)]"
           >
             <option value="ALL">All Statuses</option>
-            <option value="TODO">To Do</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="IN_REVIEW">In Review</option>
-            <option value="DONE">Done</option>
+            <option value="IN_PROGRESS">Progressing</option>
+            <option value="PENDING">Pending</option>
+            <option value="TESTING">Testing</option>
+            <option value="ON_HOLD">Hold</option>
+            <option value="IN_REVIEW">Review</option>
+            <option value="COMPLETED">Complete</option>
+            <option value="REOPENED">Re-Open</option>
+            <option value="CANCELLED">Cancel</option>
           </select>
         </div>
 

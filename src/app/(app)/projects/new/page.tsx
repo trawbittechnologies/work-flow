@@ -131,11 +131,14 @@ export default function NewProjectPage() {
             {...register("status")}
             error={errors.status?.message}
           >
-            <option value="PLANNING">Planning</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="ON_HOLD">On Hold</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="CANCELLED">Cancelled</option>
+            <option value="IN_PROGRESS">Progressing</option>
+            <option value="PENDING">Pending</option>
+            <option value="TESTING">Testing</option>
+            <option value="ON_HOLD">Hold</option>
+            <option value="REVIEW">Review</option>
+            <option value="COMPLETED">Complete</option>
+            <option value="REOPENED">Re-Open</option>
+            <option value="CANCELLED">Cancel</option>
           </Select>
 
           <div className="flex gap-3 pt-1">

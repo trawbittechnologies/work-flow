@@ -12,7 +12,23 @@ async function getProjectAndVerifyAccess(projectId: string, userId: string) {
     where: { projectId_userId: { projectId, userId } },
     include: { project: true },
   });
-  return member;
+  if (member) return member;
+
+  const project = await prisma.project.findFirst({
+    where: {
+      id: projectId,
+      OR: [
+        { ownerId: userId },
+        { leadId: userId },
+        { tasks: { some: { assigneeId: userId } } },
+      ],
+    },
+  });
+
+  if (project) {
+    return { project, role: "MEMBER" as const, id: "access", projectId, userId, joinedAt: new Date() };
+  }
+  return null;
 }
 
 // GET /api/projects/[id]

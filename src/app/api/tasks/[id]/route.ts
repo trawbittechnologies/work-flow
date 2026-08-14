@@ -60,7 +60,13 @@ export async function PATCH(req: Request, { params }: RouteParams) {
     const isMember = await prisma.projectMember.findUnique({
       where: { projectId_userId: { projectId: existingTask.projectId, userId: session.user.id } },
     });
-    if (!isMember) return NextResponse.json({ error: "Task not found" }, { status: 404 });
+    const isAssignee = existingTask.assigneeId === session.user.id;
+    const isCreator = existingTask.createdById === session.user.id;
+    const isAdmin = (session.user as { role?: string })?.role === "ADMIN";
+
+    if (!isMember && !isAssignee && !isCreator && !isAdmin) {
+      return NextResponse.json({ error: "Unauthorized to update this task" }, { status: 403 });
+    }
 
     const body = await req.json();
     const parsed = updateTaskSchema.safeParse(body);
@@ -111,12 +117,12 @@ export async function PATCH(req: Request, { params }: RouteParams) {
         metadata: { taskId: id, taskTitle: task.title, from: existingTask.status, to: status },
       });
 
-      if (status === "DONE" && task.assigneeId && task.assigneeId !== session.user.id) {
+      if ((status === "DONE" || status === "COMPLETED") && task.assigneeId && task.assigneeId !== session.user.id) {
         await createNotification({
           userId: task.assigneeId,
           type: "TASK_COMPLETED",
           title: "Task completed",
-          message: `"${task.title}" was marked as done`,
+          message: `"${task.title}" was marked as completed`,
           projectId: task.projectId,
           taskId: id,
         });

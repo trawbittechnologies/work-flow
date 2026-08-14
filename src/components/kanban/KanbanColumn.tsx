@@ -8,7 +8,7 @@ import type { TaskWithDetails } from "@/types";
 import { cn } from "@/lib/utils";
 
 interface KanbanColumnProps {
-  id: "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
+  id: string;
   title: string;
   tasks: TaskWithDetails[];
   onAddTask?: () => void;
@@ -16,10 +16,17 @@ interface KanbanColumnProps {
 }
 
 const columnHeaderColors: Record<string, string> = {
-  TODO: "bg-[#9CA3AF]",
-  IN_PROGRESS: "bg-[#F59E0B]",
+  PENDING: "bg-[#F59E0B]",
+  TODO: "bg-[#F59E0B]",
+  IN_PROGRESS: "bg-[#88C315]",
+  TESTING: "bg-[#06B6D4]",
+  ON_HOLD: "bg-[#9CA3AF]",
   IN_REVIEW: "bg-[#7C3AED]",
-  DONE: "bg-[#88C315]",
+  REVIEW: "bg-[#7C3AED]",
+  COMPLETED: "bg-[#10B981]",
+  DONE: "bg-[#10B981]",
+  REOPENED: "bg-[#F97316]",
+  CANCELLED: "bg-[#EF4444]",
 };
 
 export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: KanbanColumnProps) {

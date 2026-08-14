@@ -218,13 +218,16 @@ export default function ProjectSettingsPage({ params }: PageProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <Select label="Status" id="settings-status" {...register("status")}>
+              <option value="IN_PROGRESS">Progressing</option>
+              <option value="PENDING">Pending</option>
+              <option value="TESTING">Testing</option>
+              <option value="ON_HOLD">Hold</option>
+              <option value="REVIEW">Review</option>
+              <option value="COMPLETED">Complete</option>
+              <option value="REOPENED">Re-Open</option>
+              <option value="CANCELLED">Cancel</option>
               <option value="PLANNING">Planning</option>
               <option value="NOT_STARTED">Not Started</option>
-              <option value="IN_PROGRESS">In Progress</option>
-              <option value="ON_HOLD">On Hold</option>
-              <option value="REVIEW">Review</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="CANCELLED">Cancelled</option>
             </Select>
 
             <Select label="Priority" id="settings-priority" {...register("priority")}>
