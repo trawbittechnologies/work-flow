@@ -13,10 +13,10 @@ import {
   Upload,
   ChevronRight,
   ChevronLeft,
-  Sparkles,
-  Shield,
-  Zap,
   RefreshCw,
+  UserCircle2,
+  ShieldCheck,
+  BadgeInfo
 } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -98,23 +98,23 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
           <div key={i} className="flex items-center">
             <div className="flex flex-col items-center gap-1.5">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 border-2 ${
                   done
-                    ? "bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-500/30"
+                    ? "bg-[#88C315] border-[#88C315] text-white"
                     : active
-                    ? "bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 scale-110"
-                    : "bg-[#1e2035] border border-[#2e3050]"
+                    ? "bg-white border-[#88C315] text-[#88C315] shadow-sm"
+                    : "bg-[#F9FAFB] border-[#E5E7EB] text-[#9CA3AF]"
                 }`}
               >
                 {done ? (
-                  <Check className="w-5 h-5 text-white" />
+                  <Check className="w-4 h-4" />
                 ) : (
-                  <Icon className={`w-4 h-4 ${active ? "text-white" : "text-[#5a5f7a]"}`} />
+                  <Icon className="w-4 h-4" />
                 )}
               </div>
               <span
-                className={`text-[10px] font-semibold tracking-wide ${
-                  active ? "text-white" : done ? "text-emerald-400" : "text-[#5a5f7a]"
+                className={`text-[10px] font-bold tracking-wide ${
+                  active ? "text-[#111827]" : done ? "text-[#4B5563]" : "text-[#9CA3AF]"
                 }`}
               >
                 {s.label}
@@ -122,8 +122,8 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
             </div>
             {i < steps.length - 1 && (
               <div
-                className={`w-14 h-0.5 mb-5 mx-1 transition-all duration-500 ${
-                  done ? "bg-gradient-to-r from-emerald-500 to-indigo-500" : "bg-[#2e3050]"
+                className={`w-12 sm:w-16 h-0.5 mb-4 mx-2 transition-all duration-300 ${
+                  done ? "bg-[#88C315]" : "bg-[#E5E7EB]"
                 }`}
               />
             )}
@@ -152,17 +152,16 @@ function Step1Designation({
   return (
     <div className="space-y-5">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 mb-3">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-          <span className="text-xs text-indigo-300 font-medium">Step 1 of 3</span>
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#F3F9DE] text-[#88C315] mb-2">
+          <BadgeInfo className="w-6 h-6" />
         </div>
-        <h2 className="text-2xl font-bold text-white">What&apos;s your role?</h2>
-        <p className="text-sm text-[#8892b0]">
+        <h2 className="text-xl sm:text-2xl font-black text-[#111827]">What&apos;s your role?</h2>
+        <p className="text-sm text-[#6B7280]">
           Select your designation or add a custom title
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
+      <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
         {DESIGNATIONS.map((d) => (
           <button
             key={d}
@@ -172,8 +171,8 @@ function Step1Designation({
             }}
             className={`px-3 py-2.5 rounded-xl text-xs font-semibold text-left transition-all duration-200 border ${
               value === d && !useCustom
-                ? "bg-gradient-to-r from-indigo-600 to-purple-600 border-indigo-400 text-white shadow-lg shadow-indigo-500/25"
-                : "bg-[#1e2035] border-[#2e3050] text-[#8892b0] hover:border-indigo-500/50 hover:text-white hover:bg-[#252840]"
+                ? "bg-[#F3F9DE] border-[#88C315] text-[#88C315] ring-1 ring-[#88C315]"
+                : "bg-white border-[#E5E7EB] text-[#4B5563] hover:border-[#D1D5DB] hover:bg-[#F9FAFB]"
             }`}
           >
             {d}
@@ -181,12 +180,12 @@ function Step1Designation({
         ))}
       </div>
 
-      <div className="border-t border-[#2e3050] pt-4">
+      <div className="border-t border-[#EAEDF2] pt-4 mt-2">
         <button
           onClick={() => setUseCustom((v) => !v)}
-          className="flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+          className="flex items-center gap-2 text-xs text-[#6B7280] hover:text-[#111827] font-semibold transition-colors"
         >
-          <span className={`w-4 h-4 rounded border transition-all ${useCustom ? "bg-indigo-500 border-indigo-400" : "border-[#4a5070]"} flex items-center justify-center`}>
+          <span className={`w-4 h-4 rounded border transition-all ${useCustom ? "bg-[#88C315] border-[#88C315]" : "border-[#D1D5DB]"} flex items-center justify-center`}>
             {useCustom && <Check className="w-2.5 h-2.5 text-white" />}
           </span>
           Use a custom title instead
@@ -202,7 +201,7 @@ function Step1Designation({
                 setCustom(e.target.value);
                 onChange(e.target.value);
               }}
-              className="w-full bg-[#1e2035] border border-[#2e3050] focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white placeholder-[#5a5f7a] outline-none transition-all"
+              className="w-full bg-white border border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] rounded-xl px-4 py-2.5 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none transition-all shadow-sm"
               autoFocus
             />
           </div>
@@ -260,12 +259,11 @@ function Step2Avatar({
   return (
     <div className="space-y-5">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-1.5 mb-3">
-          <Camera className="w-3.5 h-3.5 text-purple-400" />
-          <span className="text-xs text-purple-300 font-medium">Step 2 of 3</span>
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#F3F9DE] text-[#88C315] mb-2">
+          <UserCircle2 className="w-6 h-6" />
         </div>
-        <h2 className="text-2xl font-bold text-white">Choose your avatar</h2>
-        <p className="text-sm text-[#8892b0]">
+        <h2 className="text-xl sm:text-2xl font-black text-[#111827]">Choose your avatar</h2>
+        <p className="text-sm text-[#6B7280]">
           Pick a superhero or upload your own photo, {userName.split(" ")[0]}!
         </p>
       </div>
@@ -273,7 +271,7 @@ function Step2Avatar({
       {/* Preview */}
       <div className="flex justify-center">
         <div className="relative">
-          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/50 shadow-xl shadow-purple-500/20">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border border-[#E5E7EB] bg-white shadow-sm flex flex-shrink-0 items-center justify-center">
             {value ? (
               <Image
                 src={value}
@@ -284,21 +282,19 @@ function Step2Avatar({
                 className="object-cover w-full h-full"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center">
-                <User className="w-10 h-10 text-white/60" />
-              </div>
+              <User className="w-8 h-8 text-[#D1D5DB]" />
             )}
           </div>
           {value && (
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg">
-              <Check className="w-4 h-4 text-white" />
+            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#88C315] border-2 border-white rounded-full flex items-center justify-center shadow-sm">
+              <Check className="w-3.5 h-3.5 text-white" />
             </div>
           )}
         </div>
       </div>
 
       {/* Superhero grid */}
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-5 gap-2 pt-2">
         {SUPERHERO_AVATARS.map((hero) => (
           <button
             key={hero.id}
@@ -307,33 +303,28 @@ function Step2Avatar({
               setCustomPreview(null);
             }}
             title={hero.name}
-            className={`group relative rounded-xl overflow-hidden transition-all duration-200 aspect-square ${
+            className={`group relative rounded-xl overflow-hidden transition-all duration-200 aspect-square border ${
               value === hero.src
-                ? "ring-2 ring-purple-400 scale-95 shadow-lg"
-                : "hover:scale-105 hover:ring-2 hover:ring-purple-500/50"
+                ? "ring-2 ring-[#88C315] border-transparent"
+                : "border-[#E5E7EB] hover:border-[#D1D5DB]"
             }`}
           >
             <div
-              className="w-full h-full flex items-center justify-center"
-              style={{ background: `${hero.color}22` }}
+              className="w-full h-full flex items-center justify-center transition-transform group-hover:scale-110"
+              style={{ background: `${hero.color}15` }}
             >
               <Image
                 src={hero.src}
                 alt={hero.name}
-                width={64}
-                height={64}
+                width={48}
+                height={48}
                 unoptimized
-                className="w-full h-full object-cover"
+                className="w-[80%] h-[80%] object-contain"
               />
             </div>
             {value === hero.src && (
-              <div className="absolute inset-0 bg-purple-500/20 flex items-center justify-center">
-                <Check className="w-5 h-5 text-white drop-shadow" />
-              </div>
+              <div className="absolute inset-0 bg-[#88C315]/10 flex items-center justify-center" />
             )}
-            <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[8px] text-white text-center py-0.5 opacity-0 group-hover:opacity-100 transition-opacity font-medium truncate px-1">
-              {hero.name}
-            </div>
           </button>
         ))}
       </div>
@@ -343,11 +334,11 @@ function Step2Avatar({
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         onClick={() => fileRef.current?.click()}
-        className="border-2 border-dashed border-[#2e3050] hover:border-purple-500/50 rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all group"
+        className="border-2 border-dashed border-[#D1D5DB] hover:border-[#88C315] bg-[#F9FAFB] rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all group mt-2"
       >
-        <div className="w-10 h-10 rounded-lg bg-[#1e2035] flex items-center justify-center group-hover:bg-purple-500/10 transition-colors flex-shrink-0">
+        <div className="w-10 h-10 rounded-lg bg-white border border-[#E5E7EB] shadow-sm flex items-center justify-center flex-shrink-0 transition-colors group-hover:border-[#88C315]/50 group-hover:text-[#88C315]">
           {uploading ? (
-            <RefreshCw className="w-5 h-5 text-purple-400 animate-spin" />
+            <RefreshCw className="w-5 h-5 animate-spin" />
           ) : customPreview ? (
             <Image
               src={customPreview}
@@ -355,17 +346,17 @@ function Step2Avatar({
               width={40}
               height={40}
               unoptimized
-              className="w-10 h-10 rounded-lg object-cover"
+              className="w-full h-full rounded-lg object-cover"
             />
           ) : (
-            <Upload className="w-5 h-5 text-[#5a5f7a] group-hover:text-purple-400 transition-colors" />
+            <Upload className="w-5 h-5 text-[#9CA3AF] group-hover:text-[#88C315] transition-colors" />
           )}
         </div>
         <div>
-          <p className="text-sm font-semibold text-white">
-            {uploading ? "Uploading..." : customPreview ? "Custom photo selected ✓" : "Upload custom photo"}
+          <p className="text-sm font-semibold text-[#111827]">
+            {uploading ? "Uploading..." : customPreview ? "Custom photo selected" : "Upload custom photo"}
           </p>
-          <p className="text-xs text-[#5a5f7a]">PNG, JPG, WEBP · Drop or click</p>
+          <p className="text-xs text-[#6B7280]">PNG, JPG, WEBP · Drop or click</p>
         </div>
         <input
           ref={fileRef}
@@ -379,7 +370,7 @@ function Step2Avatar({
         />
       </div>
       {uploadError && (
-        <p className="text-xs text-red-400 text-center">{uploadError}</p>
+        <p className="text-xs text-red-500 font-medium text-center">{uploadError}</p>
       )}
     </div>
   );
@@ -429,80 +420,80 @@ function Step3Password({
   return (
     <div className="space-y-5">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-3">
-          <Shield className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-xs text-emerald-300 font-medium">Step 3 of 3</span>
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#F3F9DE] text-[#88C315] mb-2">
+          <ShieldCheck className="w-6 h-6" />
         </div>
-        <h2 className="text-2xl font-bold text-white">Secure your account</h2>
-        <p className="text-sm text-[#8892b0]">
-          Use the generated password or create your own
+        <h2 className="text-xl sm:text-2xl font-black text-[#111827]">Secure your account</h2>
+        <p className="text-sm text-[#6B7280]">
+          Use a generated password or create your own
         </p>
       </div>
 
       {/* Mode selector */}
-      <div className="grid grid-cols-2 gap-2 bg-[#141628] rounded-xl p-1.5 border border-[#2e3050]">
+      <div className="grid grid-cols-2 gap-2 bg-[#F9FAFB] rounded-xl p-1.5 border border-[#EAEDF2]">
         <button
           onClick={() => switchMode(true)}
-          className={`py-2.5 rounded-lg text-xs font-bold transition-all ${
+          className={`py-2 rounded-lg text-xs font-bold transition-all ${
             useGenerated
-              ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
-              : "text-[#5a5f7a] hover:text-white"
+              ? "bg-white border border-[#D1D5DB] text-[#111827] shadow-sm"
+              : "text-[#6B7280] hover:text-[#374151]"
           }`}
         >
-          <Zap className="inline w-3.5 h-3.5 mr-1.5" />
           Auto-Generate
         </button>
         <button
           onClick={() => switchMode(false)}
-          className={`py-2.5 rounded-lg text-xs font-bold transition-all ${
+          className={`py-2 rounded-lg text-xs font-bold transition-all ${
             !useGenerated
-              ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
-              : "text-[#5a5f7a] hover:text-white"
+              ? "bg-white border border-[#D1D5DB] text-[#111827] shadow-sm"
+              : "text-[#6B7280] hover:text-[#374151]"
           }`}
         >
-          <Lock className="inline w-3.5 h-3.5 mr-1.5" />
           Custom Password
         </button>
       </div>
 
       {useGenerated ? (
-        <div className="space-y-3">
-          <div className="bg-[#1e2035] border border-[#2e3050] rounded-xl p-4 flex items-center justify-between gap-3">
-            <code className="text-base font-mono text-emerald-300 tracking-widest flex-1 break-all">
+        <div className="space-y-4">
+          <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-4 flex items-center justify-between gap-3 shadow-sm">
+            <code className="text-base font-mono font-bold text-[#111827] tracking-widest flex-1 break-all">
               {generated}
             </code>
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={refreshPassword}
-                className="p-2 rounded-lg bg-[#252840] hover:bg-[#2e3050] text-[#5a5f7a] hover:text-white transition-all"
+                className="p-2 rounded-lg bg-white border border-[#E5E7EB] hover:bg-[#F3F4F6] text-[#4B5563] transition-colors shadow-sm"
                 title="Regenerate"
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
               <button
                 onClick={handleCopy}
-                className="p-2 rounded-lg bg-[#252840] hover:bg-emerald-500/20 text-[#5a5f7a] hover:text-emerald-400 transition-all"
+                className="p-2 rounded-lg bg-white border border-[#E5E7EB] hover:bg-[#F3F4F6] text-[#4B5563] transition-colors shadow-sm"
                 title="Copy password"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="w-4 h-4 text-[#88C315]" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
           </div>
 
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
-            <p className="text-xs text-amber-300 font-medium flex items-center gap-2">
-              <span className="text-lg">⚠️</span>
-              Save this password! You&apos;ll need it to sign in next time.
-            </p>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-3">
+            <div className="mt-0.5 text-amber-500">
+              <BadgeInfo className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-amber-800">Save this password!</p>
+              <p className="text-xs text-amber-700 mt-0.5">You will need this password to sign in next time.</p>
+            </div>
           </div>
 
           {/* Trigger onChange on mount for generated mode */}
           <input type="hidden" value={generated} onChange={() => {}} ref={(el) => { if (el && !value) onChange(generated); }} />
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="relative">
-            <label className="block text-xs font-semibold text-[#8892b0] mb-1.5">
+            <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">
               New Password
             </label>
             <input
@@ -513,16 +504,16 @@ function Step3Password({
                 setCustom(e.target.value);
                 onChange(e.target.value);
               }}
-              className={`w-full bg-[#1e2035] border rounded-xl px-4 py-3 text-sm text-white placeholder-[#5a5f7a] outline-none transition-all pr-12 ${
+              className={`w-full bg-white border rounded-xl px-4 py-2.5 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none transition-all pr-10 shadow-sm ${
                 custom.length > 0 && !customValid
-                  ? "border-red-500/50 focus:border-red-500"
-                  : "border-[#2e3050] focus:border-indigo-500"
+                  ? "border-red-300 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                  : "border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315]"
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPwd((v) => !v)}
-              className="absolute right-3 top-9 text-[#5a5f7a] hover:text-white transition-colors"
+              className="absolute right-3 top-8 text-[#9CA3AF] hover:text-[#4B5563] transition-colors"
             >
               {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -536,8 +527,8 @@ function Step3Password({
                   key={i}
                   className={`h-1 flex-1 rounded-full transition-all ${
                     custom.length >= threshold
-                      ? i < 2 ? "bg-red-400" : i === 2 ? "bg-amber-400" : "bg-emerald-400"
-                      : "bg-[#2e3050]"
+                      ? i < 2 ? "bg-red-400" : i === 2 ? "bg-amber-400" : "bg-[#88C315]"
+                      : "bg-[#E5E7EB]"
                   }`}
                 />
               ))}
@@ -545,7 +536,7 @@ function Step3Password({
           )}
 
           <div className="relative">
-            <label className="block text-xs font-semibold text-[#8892b0] mb-1.5">
+            <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">
               Confirm Password
             </label>
             <input
@@ -553,25 +544,25 @@ function Step3Password({
               placeholder="Repeat your password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className={`w-full bg-[#1e2035] border rounded-xl px-4 py-3 text-sm text-white placeholder-[#5a5f7a] outline-none transition-all pr-12 ${
+              className={`w-full bg-white border rounded-xl px-4 py-2.5 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none transition-all pr-10 shadow-sm ${
                 confirm.length > 0 && !passwordsMatch
-                  ? "border-red-500/50 focus:border-red-500"
+                  ? "border-red-300 focus:border-red-500 focus:ring-1 focus:ring-red-500"
                   : confirm.length > 0 && passwordsMatch
-                  ? "border-emerald-500/50 focus:border-emerald-500"
-                  : "border-[#2e3050] focus:border-indigo-500"
+                  ? "border-[#88C315] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315]"
+                  : "border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315]"
               }`}
             />
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
-              className="absolute right-3 top-9 text-[#5a5f7a] hover:text-white transition-colors"
+              className="absolute right-3 top-8 text-[#9CA3AF] hover:text-[#4B5563] transition-colors"
             >
               {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
 
           {confirm.length > 0 && !passwordsMatch && (
-            <p className="text-xs text-red-400">Passwords don&apos;t match</p>
+            <p className="text-xs text-red-500 font-medium">Passwords don&apos;t match</p>
           )}
         </div>
       )}
@@ -636,29 +627,18 @@ export function OnboardingWizard({
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: "rgba(8, 9, 26, 0.97)", backdropFilter: "blur(20px)" }}>
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "2s" }} />
-      </div>
-
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#F3F4F6]/80 backdrop-blur-sm">
+      
       {/* Card */}
-      <div className="relative w-full max-w-lg bg-[#0d0f1e] border border-[#1e2240] rounded-3xl shadow-2xl overflow-hidden">
-        {/* Top gradient bar */}
-        <div className="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-
-        <div className="p-8">
+      <div className="relative w-full max-w-lg bg-white border border-[#E5E7EB] rounded-3xl shadow-xl overflow-hidden">
+        
+        <div className="p-6 sm:p-8">
           {/* Welcome header */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 shadow-xl shadow-indigo-500/30 mb-4">
-              <Sparkles className="w-7 h-7 text-white" />
-            </div>
-            <h1 className="text-lg font-bold text-white">
-              Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Flowdesk</span>!
+            <h1 className="text-xl sm:text-2xl font-black text-[#111827]">
+              Welcome to <span className="text-[#88C315]">Flowdesk</span>!
             </h1>
-            <p className="text-xs text-[#5a6070] mt-1">
+            <p className="text-sm font-medium text-[#6B7280] mt-1">
               {userEmail}
             </p>
           </div>
@@ -681,18 +661,18 @@ export function OnboardingWizard({
 
           {/* Error */}
           {error && (
-            <div className="mt-4 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-400 font-medium">
+            <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-600 font-medium">
               {error}
             </div>
           )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between mt-6 pt-5 border-t border-[#1e2240]">
+          <div className="flex items-center justify-between mt-6 pt-5 border-t border-[#EAEDF2]">
             {step > 0 ? (
               <button
                 onClick={() => setStep((s) => s - 1)}
                 disabled={saving}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-[#8892b0] hover:text-white hover:bg-[#1e2035] transition-all disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6] transition-all disabled:opacity-50"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Back
@@ -705,10 +685,10 @@ export function OnboardingWizard({
               <button
                 onClick={() => setStep((s) => s + 1)}
                 disabled={!canNext}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 shadow-sm ${
                   canNext
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-105"
-                    : "bg-[#1e2035] text-[#3a4060] cursor-not-allowed"
+                    ? "bg-[#111827] hover:bg-[#374151] text-white"
+                    : "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
                 }`}
               >
                 Continue
@@ -718,10 +698,10 @@ export function OnboardingWizard({
               <button
                 onClick={handleComplete}
                 disabled={!canNext || saving}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 shadow-sm ${
                   canNext && !saving
-                    ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105"
-                    : "bg-[#1e2035] text-[#3a4060] cursor-not-allowed"
+                    ? "bg-[#88C315] hover:bg-[#77AB12] text-white"
+                    : "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
                 }`}
               >
                 {saving ? (
@@ -731,7 +711,7 @@ export function OnboardingWizard({
                   </>
                 ) : (
                   <>
-                    <Zap className="w-4 h-4" />
+                    <Check className="w-4 h-4" />
                     Enter Flowdesk
                   </>
                 )}
@@ -744,8 +724,8 @@ export function OnboardingWizard({
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #2e3050; border-radius: 2px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4a5080; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
       `}</style>
     </div>
   );
