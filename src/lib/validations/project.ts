@@ -8,9 +8,9 @@ export const createProjectSchema = z.object({
     .enum(["PLANNING", "NOT_STARTED", "IN_PROGRESS", "ON_HOLD", "REVIEW", "COMPLETED", "ARCHIVED", "CANCELLED"])
     .optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]).optional(),
-  leadId: z.string().optional().nullable(),
-  startDate: z.string().optional().nullable(),
-  deadline: z.string().optional().nullable(),
+  leadId: z.string().nullable().optional().transform(v => v === "" ? null : v),
+  startDate: z.string().nullable().optional().transform(v => v === "" ? null : v),
+  deadline: z.string().nullable().optional().transform(v => v === "" ? null : v),
 });
 
 export const updateProjectSchema = createProjectSchema.partial();
