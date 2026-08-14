@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { ProjectStatusSelect } from "@/components/projects/ProjectStatusSelect";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 import { cn } from "@/lib/utils";
 
 export interface ProjectTableItem {
