@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { Clock } from "lucide-react";
+import { TimeTrackingDashboard } from "./TimeTrackingDashboard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Time Tracking" };
@@ -8,6 +9,28 @@ export const metadata: Metadata = { title: "Time Tracking" };
 export default async function TimeTrackingPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
+
+  const userId = session.user.id;
+
+  // Fetch initial data for the dashboard
+  const [timeLogs, projects, tasks] = await Promise.all([
+    prisma.timeLog.findMany({
+      where: { userId },
+      include: {
+        project: { select: { id: true, name: true } },
+        task: { select: { id: true, title: true } },
+      },
+      orderBy: { startTime: "desc" },
+    }),
+    prisma.project.findMany({
+      where: { members: { some: { userId } } },
+      select: { id: true, name: true },
+    }),
+    prisma.task.findMany({
+      where: { assigneeId: userId, status: { not: "DONE" } },
+      select: { id: true, title: true, projectId: true },
+    }),
+  ]);
 
   return (
     <div className="space-y-5 sm:space-y-6 pb-12">
@@ -20,16 +43,11 @@ export default async function TimeTrackingPage() {
         </p>
       </div>
 
-      {/* Coming soon / empty state */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-10 shadow-2xs flex flex-col items-center justify-center text-center min-h-[360px]">
-        <div className="h-16 w-16 rounded-2xl bg-[#F3F9DE] flex items-center justify-center mb-4">
-          <Clock className="h-8 w-8 text-[#88C315]" />
-        </div>
-        <h2 className="text-base font-bold text-[#111827]">Time tracking coming soon</h2>
-        <p className="text-sm text-[#9CA3AF] mt-2 max-w-xs">
-          Log time against tasks and projects to measure productivity. This feature is under development.
-        </p>
-      </div>
+      <TimeTrackingDashboard
+        initialLogs={timeLogs}
+        projects={projects}
+        tasks={tasks}
+      />
     </div>
   );
 }
