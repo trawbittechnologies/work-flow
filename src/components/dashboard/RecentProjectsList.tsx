@@ -125,7 +125,6 @@ export function RecentProjectsList({ initialProjects }: RecentProjectsListProps)
       {/* Projects List */}
       <div className="space-y-3.5 sm:space-y-4">
         {projects.map((project) => {
-          const IconComp = project.icon || LayoutGrid;
           const iconBg = project.iconBg || "bg-[#88C315]";
           const barColor = project.barColor || "bg-[#88C315]";
 
@@ -139,7 +138,7 @@ export function RecentProjectsList({ initialProjects }: RecentProjectsListProps)
                 <div
                   className={`h-9 w-9 sm:h-10 sm:w-10 rounded-xl ${iconBg} text-white flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}
                 >
-                  <IconComp className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <ProjectIcon name={project.icon} className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <Link
