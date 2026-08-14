@@ -27,7 +27,14 @@ export async function GET() {
     const projects = await prisma.project.findMany({
       where: admin
         ? undefined // Admin sees all
-        : { members: { some: { userId: session.user.id } } },
+        : {
+            OR: [
+              { members: { some: { userId: session.user.id } } },
+              { ownerId: session.user.id },
+              { leadId: session.user.id },
+              { tasks: { some: { assigneeId: session.user.id } } },
+            ],
+          },
       include: {
         owner: { select: { id: true, name: true, email: true, avatar: true } },
         lead: { select: { id: true, name: true, email: true, avatar: true } },
@@ -36,7 +43,10 @@ export async function GET() {
             user: { select: { id: true, name: true, email: true, avatar: true } },
           },
         },
-        tasks: { select: { id: true, status: true } },
+        tasks: {
+          where: admin ? undefined : { assigneeId: session.user.id },
+          select: { id: true, status: true },
+        },
         _count: { select: { tasks: true, members: true } },
       },
       orderBy: { updatedAt: "desc" },

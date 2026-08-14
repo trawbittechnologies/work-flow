@@ -27,14 +27,15 @@ const addMemberSchema = z.union([
 // GET /api/projects/[id]/members
 export async function GET(_req: Request, { params }: RouteParams) {
   const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = session?.user?.id;
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
 
   try {
-    const admin = await isAdmin(session.user.id);
+    const admin = await isAdmin(userId);
     const isMember = await prisma.projectMember.findUnique({
-      where: { projectId_userId: { projectId: id, userId: session.user.id } },
+      where: { projectId_userId: { projectId: id, userId } },
     });
     if (!admin && !isMember) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
@@ -53,18 +54,23 @@ export async function GET(_req: Request, { params }: RouteParams) {
       _count: true,
     });
 
-    // Get the project to know the lead
+    // Get the project to know the lead & owner
     const project = await prisma.project.findUnique({
       where: { id },
-      select: { leadId: true },
+      select: { leadId: true, ownerId: true },
     });
+
+    const currentMember = members.find((m) => m.userId === userId);
+    const isOwner = currentMember?.role === "OWNER" || project?.ownerId === userId;
+    const isLead = project?.leadId === userId;
+    const canManage = admin || isOwner || isLead;
 
     const enriched = members.map((m: Record<string, unknown> & { userId: string }) => {
       const assigned = taskCounts
         .filter((t: { assigneeId: string | null }) => t.assigneeId === m.userId)
         .reduce((acc: number, t: { _count: number }) => acc + t._count, 0);
       const completed = taskCounts
-        .filter((t: { assigneeId: string | null; status: string }) => t.assigneeId === m.userId && t.status === "DONE")
+        .filter((t: { assigneeId: string | null; status: string }) => t.assigneeId === m.userId && (t.status === "DONE" || t.status === "COMPLETED"))
         .reduce((acc: number, t: { _count: number }) => acc + t._count, 0);
       return {
         ...m,
@@ -74,7 +80,12 @@ export async function GET(_req: Request, { params }: RouteParams) {
       };
     });
 
-    return NextResponse.json({ success: true, data: enriched });
+    return NextResponse.json({
+      success: true,
+      data: enriched,
+      canManage,
+      currentUserRole: admin ? "ADMIN" : (isOwner ? "OWNER" : "MEMBER"),
+    });
   } catch (error) {
     console.error("[GET /api/projects/[id]/members]", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -90,12 +101,20 @@ export async function POST(req: Request, { params }: RouteParams) {
 
   try {
     const admin = await isAdmin(session.user.id);
+    const project = await prisma.project.findUnique({
+      where: { id },
+      select: { name: true, ownerId: true, leadId: true },
+    });
+
     const ownerMember = await prisma.projectMember.findUnique({
       where: { projectId_userId: { projectId: id, userId: session.user.id } },
     });
 
-    if (!admin && (!ownerMember || ownerMember.role !== "OWNER")) {
-      return NextResponse.json({ error: "Only project owners can add members" }, { status: 403 });
+    const isOwner = ownerMember?.role === "OWNER" || project?.ownerId === session.user.id;
+    const isLead = project?.leadId === session.user.id;
+
+    if (!admin && !isOwner && !isLead) {
+      return NextResponse.json({ error: "Only project managers or admins can add members" }, { status: 403 });
     }
 
     const body = await req.json();
@@ -147,11 +166,6 @@ export async function POST(req: Request, { params }: RouteParams) {
     if (existing) {
       return NextResponse.json({ error: "User is already a member of this project" }, { status: 409 });
     }
-
-    const project = await prisma.project.findUnique({
-      where: { id },
-      select: { name: true },
-    });
 
     const member = await prisma.projectMember.create({
       data: { projectId: id, userId: targetUser.id, role: "MEMBER" },

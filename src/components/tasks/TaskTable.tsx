@@ -55,7 +55,7 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
                   Title <ArrowUpDown className="h-3.5 w-3.5 opacity-70" />
                 </div>
               </th>
-              <th className="py-3.5 px-4">Status</th>
+              <th className="py-3.5 px-4 min-w-[140px]">Status</th>
               <th className="py-3.5 px-4 cursor-pointer hover:text-[#111827] transition-colors" onClick={() => toggleSort("priority")}>
                 <div className="flex items-center gap-1.5">
                   Priority <ArrowUpDown className="h-3.5 w-3.5 opacity-70" />
@@ -105,7 +105,7 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
                       )}
                     </div>
                   </td>
-                  <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3.5 px-4 min-w-[140px]" onClick={(e) => e.stopPropagation()}>
                     <TaskStatusSelect
                       taskId={task.id}
                       initialStatus={task.status}

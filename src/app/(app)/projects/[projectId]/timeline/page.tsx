@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import { cn, formatDate, isOverdue } from "@/lib/utils";
 import { CalendarRange, Calendar, AlertTriangle } from "lucide-react";
+import { isAdmin } from "@/lib/role";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Project Timeline" };
@@ -36,11 +37,11 @@ export default async function ProjectTimelinePage({ params }: PageProps) {
   if (!session?.user?.id) redirect("/login");
 
   const { projectId } = await params;
-
+  const admin = await isAdmin(session.user.id);
   const isMember = await prisma.projectMember.findUnique({
     where: { projectId_userId: { projectId, userId: session.user.id } },
   });
-  if (!isMember) notFound();
+  if (!isMember && !admin) notFound();
 
   const project = await prisma.project.findUnique({
     where: { id: projectId },
@@ -48,7 +49,10 @@ export default async function ProjectTimelinePage({ params }: PageProps) {
   });
 
   const tasks = await prisma.task.findMany({
-    where: { projectId },
+    where: {
+      projectId,
+      ...(!admin ? { assigneeId: session.user.id } : {}),
+    },
     include: {
       assignee: { select: { id: true, name: true, avatar: true } },
     },

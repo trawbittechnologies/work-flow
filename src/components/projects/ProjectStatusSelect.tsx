@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Loader2, ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -149,40 +150,82 @@ export function ProjectStatusSelect({
   className,
   size = "sm",
   dropdownAlign = "left",
+  disabled = false,
 }: ProjectStatusSelectProps) {
   const router = useRouter();
   const { success, error: errToast } = useToast();
+  const [prevInitial, setPrevInitial] = useState(initialStatus);
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
+
+  if (prevInitial !== initialStatus) {
+    setPrevInitial(initialStatus);
+    setCurrentStatus(initialStatus);
+  }
+
   const [isOpen, setIsOpen] = useState(false);
-  const [openUpwards, setOpenUpwards] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isPending, startTransition] = useTransition();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const [coords, setCoords] = useState<{
+    top: number;
+    left: number;
+    openUpwards: boolean;
+  }>({
+    top: 0,
+    left: 0,
+    openUpwards: false,
+  });
+
+  const updateCoords = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const openUp = spaceBelow < 280 && rect.top > 280;
+      setCoords({
+        top: openUp ? rect.top : rect.bottom,
+        left: dropdownAlign === "right" ? rect.right - 190 : rect.left,
+        openUpwards: openUp,
+      });
+    }
+  };
+
   useEffect(() => {
+    if (!isOpen) return;
+    function handleScrollOrResize() {
+      updateCoords();
+    }
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
     function handleClickOutside(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     }
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Determine if dropdown should open upwards when close to bottom of screen
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      if (spaceBelow < 260) {
-        setOpenUpwards(true);
-      } else {
-        setOpenUpwards(false);
-      }
+    if (disabled || isUpdating || isPending) return;
+    if (!isOpen) {
+      updateCoords();
     }
     setIsOpen((prev) => !prev);
   };
@@ -239,11 +282,11 @@ export function ProjectStatusSelect({
   const isLoading = isUpdating || isPending;
 
   return (
-    <div className="relative inline-block" ref={menuRef}>
+    <div className={cn("relative inline-flex items-center", className)}>
       <button
         ref={buttonRef}
         type="button"
-        disabled={isLoading}
+        disabled={disabled || isLoading}
         onClick={handleToggle}
         title="Click to update project status"
         className={cn(
@@ -251,6 +294,7 @@ export function ProjectStatusSelect({
           size === "sm" ? "text-[11px] px-2.5 py-1" : "text-xs px-3 py-1.5",
           config.badgeClass,
           isLoading && "opacity-75 cursor-wait",
+          disabled && "opacity-60 cursor-not-allowed",
           className
         )}
       >
@@ -263,49 +307,59 @@ export function ProjectStatusSelect({
         <ChevronDown className="h-3 w-3 opacity-60 ml-0.5" />
       </button>
 
-      {isOpen && (
-        <div
-          className={cn(
-            "absolute w-52 bg-white border border-[#E5E7EB] rounded-2xl shadow-2xl z-[100] py-2 text-xs animate-in font-medium",
-            dropdownAlign === "right" ? "right-0" : "left-0",
-            openUpwards ? "bottom-full mb-2" : "top-full mt-2"
-          )}
-        >
-          <div className="px-3.5 py-1 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider border-b border-[#F3F4F6] mb-1">
-            Update Status
-          </div>
-          <div className="space-y-0.5 px-1">
-            {selectableStatuses.map((item) => {
-              const isSelected =
-                currentStatus === item.value ||
-                (config.label === item.label);
+      {isOpen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={{
+              position: "fixed",
+              top: coords.openUpwards ? "auto" : `${coords.top + 6}px`,
+              bottom: coords.openUpwards
+                ? `${window.innerHeight - coords.top + 6}px`
+                : "auto",
+              left: `${Math.max(8, Math.min(window.innerWidth - 200, coords.left))}px`,
+              zIndex: 99999,
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-52 bg-white dark:bg-[#1C1F26] border border-[#E5E7EB] dark:border-[#2D3139] rounded-2xl shadow-2xl p-2 text-xs font-semibold animate-in fade-in-50 zoom-in-95 duration-150"
+          >
+            <div className="px-3.5 py-1 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider border-b border-[#F3F4F6] dark:border-[#2D3139] mb-1">
+              Update Status
+            </div>
+            <div className="space-y-0.5 px-1 max-h-64 overflow-y-auto scrollbar-thin">
+              {selectableStatuses.map((item) => {
+                const isSelected =
+                  currentStatus === item.value ||
+                  (config.label === item.label);
 
-              return (
-                <button
-                  key={item.value}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleStatusSelect(item.value);
-                  }}
-                  className={cn(
-                    "w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-colors cursor-pointer",
-                    isSelected
-                      ? "bg-[#F3F9DE] text-[#111827] font-bold"
-                      : "hover:bg-[#F3F4F6] text-[#374151]"
-                  )}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className={cn("h-2 w-2 rounded-full flex-shrink-0", item.dot)} />
-                    <span>{item.label}</span>
-                  </div>
-                  {isSelected && <Check className="h-3.5 w-3.5 text-[#88C315] flex-shrink-0" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
+                return (
+                  <button
+                    key={item.value}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleStatusSelect(item.value);
+                    }}
+                    className={cn(
+                      "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer text-xs",
+                      isSelected
+                        ? "bg-[#F3F9DE] text-[#659A08] font-bold dark:bg-lime-950/50 dark:text-lime-400"
+                        : "text-[#374151] dark:text-[#E5E7EB] hover:bg-[#F3F4F6] dark:hover:bg-[#282C35] font-medium"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={cn("h-2 w-2 rounded-full flex-shrink-0", item.dot)} />
+                      <span>{item.label}</span>
+                    </span>
+                    {isSelected && <Check className="h-3.5 w-3.5 text-[#659A08] dark:text-lime-400 flex-shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

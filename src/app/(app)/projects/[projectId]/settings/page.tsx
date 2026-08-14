@@ -71,8 +71,13 @@ export default function ProjectSettingsPage({ params }: PageProps) {
           }
         }
         if (membersRes.ok) {
-          const { data } = await membersRes.json();
-          if (!ignore) setMembers(data || []);
+          const membersData = await membersRes.json();
+          if (membersData.canManage === false) {
+            showError("Access Denied", "Only project managers and admins can edit project settings.");
+            router.replace(`/projects/${projectId}`);
+            return;
+          }
+          if (!ignore) setMembers(membersData.data || []);
         }
       } catch {
         if (!ignore) showError("Error", "Could not load project settings.");
@@ -82,7 +87,7 @@ export default function ProjectSettingsPage({ params }: PageProps) {
     }
     loadData();
     return () => { ignore = true; };
-  }, [projectId, reset, showError]);
+  }, [projectId, reset, router, showError]);
 
   async function onSubmit(data: UpdateProjectInput) {
     try {

@@ -9,6 +9,8 @@ import Link from "next/link";
 import { ArrowRight, Plus } from "lucide-react";
 import type { Metadata } from "next";
 
+import { isAdmin } from "@/lib/role";
+
 export const metadata: Metadata = { title: "Project Overview" };
 
 type PageProps = {
@@ -20,6 +22,8 @@ export default async function ProjectOverviewPage({ params }: PageProps) {
   if (!session?.user?.id) redirect("/login");
 
   const { projectId } = await params;
+  const userId = session.user.id;
+  const admin = await isAdmin(userId);
 
   const project = await prisma.project.findUnique({
     where: { id: projectId },
@@ -45,18 +49,20 @@ export default async function ProjectOverviewPage({ params }: PageProps) {
 
   if (!project) notFound();
 
-  const userId = session.user.id;
   const isMember = project.members.some((m) => m.userId === userId);
-  if (!isMember) notFound();
+  if (!isMember && !admin) notFound();
 
-  const totalTasks = project.tasks.length;
-  const completedTasks = project.tasks.filter((t) => t.status === "DONE").length;
-  const inProgressTasks = project.tasks.filter((t) => t.status === "IN_PROGRESS").length;
-  const overdueTasks = project.tasks.filter(
-    (t) => t.status !== "DONE" && t.dueDate && new Date(t.dueDate) < new Date()
+  // If member, only view their assigned tasks
+  const visibleTasks = admin ? project.tasks : project.tasks.filter((t) => t.assigneeId === userId);
+
+  const totalTasks = visibleTasks.length;
+  const completedTasks = visibleTasks.filter((t) => (t.status as string) === "DONE" || (t.status as string) === "COMPLETED").length;
+  const inProgressTasks = visibleTasks.filter((t) => (t.status as string) === "IN_PROGRESS").length;
+  const overdueTasks = visibleTasks.filter(
+    (t) => (t.status as string) !== "DONE" && (t.status as string) !== "COMPLETED" && t.dueDate && new Date(t.dueDate) < new Date()
   ).length;
 
-  const recentTasks = project.tasks.slice(0, 5);
+  const recentTasks = visibleTasks.slice(0, 5);
 
   return (
     <div className="space-y-6">

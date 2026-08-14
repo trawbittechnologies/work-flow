@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdmin } from "@/lib/role";
 
 export async function GET(req: Request) {
   const session = await auth();
@@ -13,14 +14,28 @@ export async function GET(req: Request) {
 
   try {
     const userId = session.user.id;
+    const admin = await isAdmin(userId);
 
     const [projects, tasks, users] = await Promise.all([
       prisma.project.findMany({
         where: {
-          members: { some: { userId } },
-          OR: [
-            { name: { contains: q } },
-            { description: { contains: q } },
+          ...(admin
+            ? {}
+            : {
+                OR: [
+                  { members: { some: { userId } } },
+                  { ownerId: userId },
+                  { leadId: userId },
+                  { tasks: { some: { assigneeId: userId } } },
+                ],
+              }),
+          AND: [
+            {
+              OR: [
+                { name: { contains: q, mode: "insensitive" as const } },
+                { description: { contains: q, mode: "insensitive" as const } },
+              ],
+            },
           ],
         },
         select: { id: true, name: true, description: true, icon: true, status: true },
@@ -29,10 +44,14 @@ export async function GET(req: Request) {
 
       prisma.task.findMany({
         where: {
-          project: { members: { some: { userId } } },
-          OR: [
-            { title: { contains: q } },
-            { description: { contains: q } },
+          ...(admin ? {} : { assigneeId: userId }),
+          AND: [
+            {
+              OR: [
+                { title: { contains: q, mode: "insensitive" as const } },
+                { description: { contains: q, mode: "insensitive" as const } },
+              ],
+            },
           ],
         },
         select: {

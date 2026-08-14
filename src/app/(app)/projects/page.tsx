@@ -16,7 +16,16 @@ export default async function ProjectsPage() {
   const admin = await isAdmin(userId);
 
   const projects = await prisma.project.findMany({
-    where: admin ? undefined : { members: { some: { userId } } },
+    where: admin
+      ? undefined
+      : {
+          OR: [
+            { members: { some: { userId } } },
+            { ownerId: userId },
+            { leadId: userId },
+            { tasks: { some: { assigneeId: userId } } },
+          ],
+        },
     include: {
       owner: { select: { id: true, name: true, email: true, avatar: true } },
       lead: { select: { id: true, name: true, email: true, avatar: true } },
@@ -25,14 +34,19 @@ export default async function ProjectsPage() {
           user: { select: { id: true, name: true, email: true, avatar: true } },
         },
       },
-      tasks: { select: { id: true, status: true } },
+      tasks: {
+        where: admin ? undefined : { assigneeId: userId },
+        select: { id: true, status: true },
+      },
       _count: { select: { tasks: true, members: true } },
     },
     orderBy: { updatedAt: "desc" },
   });
 
   const withProgress = projects.map((p) => {
-    const completedTasks = p.tasks.filter((t) => t.status === "DONE").length;
+    const completedTasks = p.tasks.filter(
+      (t) => (t.status as string) === "DONE" || (t.status as string) === "COMPLETED"
+    ).length;
     const totalTasks = p.tasks.length;
     return {
       ...p,

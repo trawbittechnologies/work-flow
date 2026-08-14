@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Mail, CheckSquare } from "lucide-react";
 import { ProjectIcon } from "@/components/ui/ProjectIcon";
+import { isAdmin } from "@/lib/role";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Team" };
@@ -38,17 +39,17 @@ export default async function GlobalTeamPage() {
   if (!session?.user?.id) redirect("/login");
 
   const currentUserId = session.user.id;
-  const isSuperAdmin = (session.user as any).role === "ADMIN";
+  const admin = await isAdmin(currentUserId);
 
   // Find all projects current user belongs to
   const myProjects = await prisma.project.findMany({
-    where: { members: { some: { userId: currentUserId } } },
+    where: admin ? undefined : { members: { some: { userId: currentUserId } } },
     select: { id: true, name: true, icon: true },
   });
 
   const projectIds = myProjects.map((p: { id: string }) => p.id);
 
-  // Find all members in the workspace (exclude super admin)
+  // Find all members in the workspace (exclude admin)
   const teamMembers = await prisma.user.findMany({
     where: { role: "MEMBER" },
     include: {
@@ -75,13 +76,13 @@ export default async function GlobalTeamPage() {
             All members in your workspace ({teamMembers.length})
           </p>
         </div>
-        <AddMemberButton />
+        {admin && <AddMemberButton />}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {teamMembers.map((member: TeamMember) => {
           const assignedCount = member.assignedTasks.length;
-          const completedCount = member.assignedTasks.filter((t: MemberTask) => t.status === "DONE").length;
+          const completedCount = member.assignedTasks.filter((t: MemberTask) => (t.status as string) === "DONE" || (t.status as string) === "COMPLETED").length;
           const isCurrentUser = member.id === currentUserId;
 
           return (
@@ -107,7 +108,7 @@ export default async function GlobalTeamPage() {
                     {member.email}
                   </p>
                 </div>
-                {isSuperAdmin && !isCurrentUser && (
+                {admin && !isCurrentUser && (
                   <div className="ml-auto">
                     <DeleteMemberButton memberId={member.id} memberName={member.name} />
                   </div>

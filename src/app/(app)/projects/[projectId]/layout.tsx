@@ -35,7 +35,10 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
           members: {
             include: { user: { select: { id: true, name: true, email: true, avatar: true } } },
           },
-          tasks: { select: { id: true, status: true } },
+          tasks: {
+            where: admin ? undefined : { assigneeId: session.user.id },
+            select: { id: true, status: true },
+          },
         },
       },
     },
@@ -53,17 +56,20 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
       members: {
         include: { user: { select: { id: true, name: true, email: true, avatar: true } } },
       },
-      tasks: { select: { id: true, status: true } },
+      tasks: {
+        where: admin ? undefined : { assigneeId: session.user.id },
+        select: { id: true, status: true },
+      },
     },
   });
 
   if (!project) notFound();
 
-  const completedTasks = project.tasks.filter((t: { status: string }) => t.status === "DONE").length;
+  const completedTasks = project.tasks.filter((t: { status: string }) => t.status === "DONE" || t.status === "COMPLETED").length;
   const totalTasks = project.tasks.length;
   const progress = calculateProgress(completedTasks, totalTasks);
   const overdueDeadline = project.deadline ? isOverdue(project.deadline) : false;
-  const userRole = (member?.role as "OWNER" | "MEMBER") ?? "MEMBER";
+  const userRole = (admin || member?.role === "OWNER" || project.ownerId === session.user.id || project.leadId === session.user.id) ? "OWNER" : "MEMBER";
 
   return (
     <div className="space-y-5 sm:space-y-6">

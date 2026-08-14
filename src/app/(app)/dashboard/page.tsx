@@ -15,6 +15,7 @@ import { ProjectProgressChart } from "@/components/dashboard/ProjectProgressChar
 import { TasksOverviewChart } from "@/components/dashboard/TasksOverviewChart";
 import { RecentProjectsList } from "@/components/dashboard/RecentProjectsList";
 import { RecentActivityList } from "@/components/dashboard/RecentActivityList";
+import { isAdmin } from "@/lib/role";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -23,13 +24,35 @@ export default async function DashboardPage() {
   if (!session?.user?.id) redirect("/login");
 
   const userId = session.user.id;
+  const admin = await isAdmin(userId);
+
+  const projectFilter = admin
+    ? undefined
+    : {
+        OR: [
+          { members: { some: { userId } } },
+          { ownerId: userId },
+          { leadId: userId },
+          { tasks: { some: { assigneeId: userId } } },
+        ],
+      };
 
   const [user, totalProjects, completedTasks, inProgressTasks, totalMembers, recentActivities, recentProjects] =
     await Promise.all([
       prisma.user.findUnique({ where: { id: userId }, select: { name: true } }),
-      prisma.project.count({ where: { members: { some: { userId } } } }),
-      prisma.task.count({ where: { assigneeId: userId, status: "DONE" } }),
-      prisma.task.count({ where: { assigneeId: userId, status: "IN_PROGRESS" } }),
+      prisma.project.count({ where: projectFilter }),
+      prisma.task.count({
+        where: {
+          ...(admin ? {} : { assigneeId: userId }),
+          status: { in: ["DONE", "COMPLETED"] as never },
+        },
+      }),
+      prisma.task.count({
+        where: {
+          ...(admin ? {} : { assigneeId: userId }),
+          status: "IN_PROGRESS",
+        },
+      }),
       prisma.user.count({ where: { isActive: true } }),
       prisma.activity.findMany({
         include: { user: { select: { name: true, avatar: true } } },
@@ -37,8 +60,13 @@ export default async function DashboardPage() {
         take: 5,
       }),
       prisma.project.findMany({
-        where: { members: { some: { userId } } },
-        include: { tasks: { select: { status: true } } },
+        where: projectFilter,
+        include: {
+          tasks: {
+            where: admin ? undefined : { assigneeId: userId },
+            select: { status: true },
+          },
+        },
         orderBy: { updatedAt: "desc" },
         take: 5,
       }),
@@ -48,8 +76,18 @@ export default async function DashboardPage() {
 
   // Build real stat for task breakdown
   const [todoTasks, inReviewTasks] = await Promise.all([
-    prisma.task.count({ where: { assigneeId: userId, status: "TODO" } }),
-    prisma.task.count({ where: { assigneeId: userId, status: "IN_REVIEW" } }),
+    prisma.task.count({
+      where: {
+        ...(admin ? {} : { assigneeId: userId }),
+        status: { in: ["TODO", "PENDING"] as never },
+      },
+    }),
+    prisma.task.count({
+      where: {
+        ...(admin ? {} : { assigneeId: userId }),
+        status: { in: ["IN_REVIEW", "REVIEW"] as never },
+      },
+    }),
   ]);
 
   const taskStats = {
@@ -63,7 +101,7 @@ export default async function DashboardPage() {
   // Map projects for the list
   const projectItems = recentProjects.map((p) => {
     const total = p.tasks.length;
-    const done = p.tasks.filter((t) => t.status === "DONE").length;
+    const done = p.tasks.filter((t) => (t.status as string) === "DONE" || (t.status as string) === "COMPLETED").length;
     const progress = total > 0 ? Math.round((done / total) * 100) : 0;
     return {
       id: p.id,

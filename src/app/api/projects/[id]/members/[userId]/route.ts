@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { logActivity } from "@/lib/activity";
+import { isAdmin } from "@/lib/role";
 
 type RouteParams = { params: Promise<{ id: string; userId: string }> };
 
@@ -13,20 +14,26 @@ export async function DELETE(_req: Request, { params }: RouteParams) {
   const { id, userId } = await params;
 
   try {
+    const admin = await isAdmin(session.user.id);
     const currentMember = await prisma.projectMember.findUnique({
       where: { projectId_userId: { projectId: id, userId: session.user.id } },
     });
 
-    if (!currentMember) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const project = await prisma.project.findUnique({ where: { id }, select: { ownerId: true, leadId: true } });
 
-    // Only owners can remove others; members can remove themselves
-    if (currentMember.role !== "OWNER" && session.user.id !== userId) {
+    if (!admin && !currentMember) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    const isOwner = currentMember?.role === "OWNER" || project?.ownerId === session.user.id;
+    const isLead = project?.leadId === session.user.id;
+    const isSelf = session.user.id === userId;
+
+    // Only admins, owners, leads can remove others; members can remove themselves
+    if (!admin && !isOwner && !isLead && !isSelf) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Can't remove the project owner
-    const project = await prisma.project.findUnique({ where: { id }, select: { ownerId: true } });
-    if (project?.ownerId === userId) {
+    if (project?.ownerId === userId && !admin) {
       return NextResponse.json({ error: "Cannot remove the project owner" }, { status: 400 });
     }
 

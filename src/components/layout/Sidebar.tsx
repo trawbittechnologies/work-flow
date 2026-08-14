@@ -14,6 +14,7 @@ import {
   BarChart2,
   Users,
   Settings,
+  ShieldCheck,
   Plus,
   Loader2,
 } from "lucide-react";
@@ -29,7 +30,7 @@ interface SidebarProps {
   unreadNotifications?: number;
 }
 
-export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications = 0 }: SidebarProps) {
+export function Sidebar({ user, unreadNotifications: _unreadNotifications = 0 }: SidebarProps) {
   const pathname = usePathname();
   const [navigatingHref, setNavigatingHref] = useState<string | null>(null);
 
@@ -96,6 +97,21 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
       <nav className="flex-1 px-4 py-2 space-y-6 overflow-y-auto">
         {/* MAIN MENU */}
         <div className="space-y-1">
+          {user?.role === "ADMIN" && (
+            <Link
+              href="/admin"
+              onClick={() => setNavigatingHref("/admin")}
+              className={cn(
+                "group flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-150 relative mb-1.5",
+                isActive("/admin")
+                  ? "bg-[#F3F9DE] text-[#111827] shadow-2xs border border-[#88C315]/20"
+                  : "text-[#4B5563] hover:bg-[#F7F8FA] hover:text-[#111827]"
+              )}
+            >
+              <ShieldCheck className="h-4 w-4 text-[#88C315] flex-shrink-0" />
+              <span className="flex-1 truncate">Admin Portal</span>
+            </Link>
+          )}
           {mainNav.map((item) => {
             const active = isActive(item.href);
             const isNavigating = navigatingHref === item.href && pathname !== item.href;

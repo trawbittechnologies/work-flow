@@ -27,6 +27,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
   const { projectId } = use(params);
   const { success, error: showError } = useToast();
   const [members, setMembers] = useState<(MemberWithUser & { isLead?: boolean })[]>([]);
+  const [canManage, setCanManage] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
 
@@ -53,7 +54,10 @@ export default function ProjectTeamPage({ params }: PageProps) {
         const res = await fetch(`/api/projects/${projectId}/members`);
         if (res.ok) {
           const data = await res.json();
-          if (!ignore) setMembers(data.data || []);
+          if (!ignore) {
+            setMembers(data.data || []);
+            setCanManage(!!data.canManage);
+          }
         }
       } catch {
         if (!ignore) showError("Error", "Could not fetch project members.");
@@ -71,6 +75,7 @@ export default function ProjectTeamPage({ params }: PageProps) {
       if (res.ok) {
         const data = await res.json();
         setMembers(data.data || []);
+        setCanManage(!!data.canManage);
       }
     } catch {
       showError("Error", "Could not fetch project members.");
@@ -218,14 +223,16 @@ export default function ProjectTeamPage({ params }: PageProps) {
           <p className="text-xs text-[var(--text-muted)]">People who have access to this project</p>
         </div>
 
-        <Button
-          variant="primary"
-          size="sm"
-          leftIcon={<UserPlus className="h-3.5 w-3.5" />}
-          onClick={handleOpenModal}
-        >
-          Add Teammate
-        </Button>
+        {canManage && (
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon={<UserPlus className="h-3.5 w-3.5" />}
+            onClick={handleOpenModal}
+          >
+            Add Teammate
+          </Button>
+        )}
       </div>
 
       {/* Members Grid */}
@@ -276,25 +283,27 @@ export default function ProjectTeamPage({ params }: PageProps) {
                   <span className="font-semibold text-[var(--text-primary)]">{member.completedTasks}</span> completed
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleSetLead(member.userId, !!member.isLead)}
-                    className={`p-1 rounded transition-colors ${member.isLead ? "text-amber-500" : "text-[var(--text-muted)] hover:text-amber-500"}`}
-                    title={member.isLead ? "Remove as Lead" : "Make Project Lead"}
-                  >
-                    <Star className={`h-3.5 w-3.5 ${member.isLead ? "fill-amber-500" : ""}`} />
-                  </button>
-
-                  {member.role !== "OWNER" && (
+                {canManage && (
+                  <div className="flex items-center gap-1">
                     <button
-                      onClick={() => setRemoveMemberId(member.userId)}
-                      className="text-[var(--text-muted)] hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
-                      title="Remove member"
+                      onClick={() => handleSetLead(member.userId, !!member.isLead)}
+                      className={`p-1 rounded transition-colors ${member.isLead ? "text-amber-500" : "text-[var(--text-muted)] hover:text-amber-500"}`}
+                      title={member.isLead ? "Remove as Lead" : "Make Project Lead"}
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Star className={`h-3.5 w-3.5 ${member.isLead ? "fill-amber-500" : ""}`} />
                     </button>
-                  )}
-                </div>
+
+                    {member.role !== "OWNER" && (
+                      <button
+                        onClick={() => setRemoveMemberId(member.userId)}
+                        className="text-[var(--text-muted)] hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                        title="Remove member"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { createTaskSchema } from "@/lib/validations/task";
 import { logActivity } from "@/lib/activity";
 import { createNotification } from "@/lib/notifications";
+import { isAdmin } from "@/lib/role";
 
 // GET /api/tasks — my tasks or tasks by project
 export async function GET(req: Request) {
@@ -18,8 +19,10 @@ export async function GET(req: Request) {
   const myTasks = url.searchParams.get("myTasks") === "true";
 
   try {
-    // If projectId specified, verify membership
-    if (projectId) {
+    const admin = await isAdmin(session.user.id);
+
+    // If projectId specified and not admin, verify membership
+    if (projectId && !admin) {
       const isMember = await prisma.projectMember.findUnique({
         where: { projectId_userId: { projectId, userId: session.user.id } },
       });
@@ -29,12 +32,17 @@ export async function GET(req: Request) {
     const tasks = await prisma.task.findMany({
       where: {
         ...(projectId && { projectId }),
-        ...(myTasks && { assigneeId: session.user.id }),
-        ...(assigneeId && { assigneeId }),
         ...(status && { status: status as never }),
         ...(priority && { priority: priority as never }),
+        // If non-admin member, ONLY show their assigned tasks
+        ...(!admin
+          ? { assigneeId: session.user.id }
+          : {
+              ...(myTasks && { assigneeId: session.user.id }),
+              ...(assigneeId && { assigneeId }),
+            }),
         // If no projectId, only show tasks from projects user belongs to
-        ...(!projectId && {
+        ...(!projectId && !admin && {
           project: { members: { some: { userId: session.user.id } } },
         }),
       },

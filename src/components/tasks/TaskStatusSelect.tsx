@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Loader2, ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -34,67 +35,67 @@ const statusConfig: Record<
 > = {
   IN_PROGRESS: {
     label: "Progressing",
-    badgeClass: "bg-[#F3F9DE] text-[#659A08] hover:bg-[#EAF5CE] border-[#D7ECC0]/50",
+    badgeClass: "bg-[#F3F9DE] text-[#659A08] hover:bg-[#EAF5CE] border-[#D7ECC0]/60",
     dotClass: "bg-[#88C315]",
     value: "IN_PROGRESS",
   },
   PENDING: {
     label: "Pending",
-    badgeClass: "bg-[#FFFBEB] text-[#D97706] hover:bg-[#FEF3C7] border-[#FDE68A]/50",
+    badgeClass: "bg-[#FFFBEB] text-[#D97706] hover:bg-[#FEF3C7] border-[#FDE68A]/60",
     dotClass: "bg-[#F59E0B]",
     value: "PENDING",
   },
   TODO: {
     label: "Pending",
-    badgeClass: "bg-[#FFFBEB] text-[#D97706] hover:bg-[#FEF3C7] border-[#FDE68A]/50",
+    badgeClass: "bg-[#FFFBEB] text-[#D97706] hover:bg-[#FEF3C7] border-[#FDE68A]/60",
     dotClass: "bg-[#F59E0B]",
     value: "PENDING",
   },
   TESTING: {
     label: "Testing",
-    badgeClass: "bg-[#ECFEFF] text-[#0891B2] hover:bg-[#CFFAFE] border-[#A5F3FC]/50",
+    badgeClass: "bg-[#ECFEFF] text-[#0891B2] hover:bg-[#CFFAFE] border-[#A5F3FC]/60",
     dotClass: "bg-[#06B6D4]",
     value: "TESTING",
   },
   ON_HOLD: {
     label: "Hold",
-    badgeClass: "bg-[#F3F4F6] text-[#6B7280] hover:bg-[#E5E7EB] border-[#E5E7EB]/50",
+    badgeClass: "bg-[#F3F4F6] text-[#6B7280] hover:bg-[#E5E7EB] border-[#E5E7EB]/60",
     dotClass: "bg-[#9CA3AF]",
     value: "ON_HOLD",
   },
   IN_REVIEW: {
     label: "Review",
-    badgeClass: "bg-[#EDE9FE] text-[#7C3AED] hover:bg-[#E4DEFD] border-[#DDD6FE]/50",
+    badgeClass: "bg-[#EDE9FE] text-[#7C3AED] hover:bg-[#E4DEFD] border-[#DDD6FE]/60",
     dotClass: "bg-[#7C3AED]",
     value: "IN_REVIEW",
   },
   REVIEW: {
     label: "Review",
-    badgeClass: "bg-[#EDE9FE] text-[#7C3AED] hover:bg-[#E4DEFD] border-[#DDD6FE]/50",
+    badgeClass: "bg-[#EDE9FE] text-[#7C3AED] hover:bg-[#E4DEFD] border-[#DDD6FE]/60",
     dotClass: "bg-[#7C3AED]",
     value: "IN_REVIEW",
   },
   COMPLETED: {
     label: "Complete",
-    badgeClass: "bg-[#ECFDF5] text-[#10B981] hover:bg-[#D1FAE5] border-[#A7F3D0]/50",
+    badgeClass: "bg-[#ECFDF5] text-[#10B981] hover:bg-[#D1FAE5] border-[#A7F3D0]/60",
     dotClass: "bg-[#10B981]",
     value: "COMPLETED",
   },
   DONE: {
     label: "Complete",
-    badgeClass: "bg-[#ECFDF5] text-[#10B981] hover:bg-[#D1FAE5] border-[#A7F3D0]/50",
+    badgeClass: "bg-[#ECFDF5] text-[#10B981] hover:bg-[#D1FAE5] border-[#A7F3D0]/60",
     dotClass: "bg-[#10B981]",
     value: "COMPLETED",
   },
   REOPENED: {
     label: "Re-Open",
-    badgeClass: "bg-[#FFF7ED] text-[#EA580C] hover:bg-[#FFEDD5] border-[#FED7AA]/50",
+    badgeClass: "bg-[#FFF7ED] text-[#EA580C] hover:bg-[#FFEDD5] border-[#FED7AA]/60",
     dotClass: "bg-[#F97316]",
     value: "REOPENED",
   },
   CANCELLED: {
     label: "Cancel",
-    badgeClass: "bg-[#FEF2F2] text-[#EF4444] hover:bg-[#FEE2E2] border-[#FECACA]/50",
+    badgeClass: "bg-[#FEF2F2] text-[#EF4444] hover:bg-[#FEE2E2] border-[#FECACA]/60",
     dotClass: "bg-[#EF4444]",
     value: "CANCELLED",
   },
@@ -133,36 +134,69 @@ export function TaskStatusSelect({
   }
 
   const [isOpen, setIsOpen] = useState(false);
-  const [openUpwards, setOpenUpwards] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [, startTransition] = useTransition();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const [coords, setCoords] = useState<{
+    top: number;
+    left: number;
+    openUpwards: boolean;
+  }>({
+    top: 0,
+    left: 0,
+    openUpwards: false,
+  });
+
+  const updateCoords = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const openUp = spaceBelow < 280 && rect.top > 280;
+      setCoords({
+        top: openUp ? rect.top : rect.bottom,
+        left: dropdownAlign === "right" ? rect.right - 180 : rect.left,
+        openUpwards: openUp,
+      });
+    }
+  };
+
   useEffect(() => {
+    if (!isOpen) return;
+    function handleScrollOrResize() {
+      updateCoords();
+    }
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
     function handleClickOutside(e: MouseEvent) {
+      const target = e.target as Node;
       if (
         menuRef.current &&
-        !menuRef.current.contains(e.target as Node) &&
+        !menuRef.current.contains(target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(e.target as Node)
+        !buttonRef.current.contains(target)
       ) {
         setIsOpen(false);
       }
     }
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (disabled) return;
-    if (!isOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      setOpenUpwards(spaceBelow < 280);
+    if (!isOpen) {
+      updateCoords();
     }
     setIsOpen((prev) => !prev);
   };
@@ -199,10 +233,7 @@ export function TaskStatusSelect({
 
         const displayLabel =
           statusConfig[newStatus]?.label || newStatus.replace(/_/g, " ");
-        success(
-          "Status Updated",
-          `Task status changed to "${displayLabel}"`
-        );
+        success("Status Updated", `Task status changed to "${displayLabel}"`);
 
         startTransition(() => {
           router.refresh();
@@ -210,7 +241,8 @@ export function TaskStatusSelect({
       } catch (err: unknown) {
         setCurrentStatus(previousStatus);
         onStatusChange?.(previousStatus);
-        const message = err instanceof Error ? err.message : "Could not update status.";
+        const message =
+          err instanceof Error ? err.message : "Could not update status.";
         errToast("Update Failed", message);
       } finally {
         setIsUpdating(false);
@@ -221,7 +253,7 @@ export function TaskStatusSelect({
   const isSmall = size === "sm";
 
   return (
-    <div className={cn("relative inline-block text-left", className)} ref={menuRef}>
+    <div className={cn("relative inline-flex items-center", className)}>
       <button
         ref={buttonRef}
         type="button"
@@ -230,9 +262,7 @@ export function TaskStatusSelect({
         title="Click to update task status"
         className={cn(
           "inline-flex items-center gap-1.5 rounded-full font-bold tracking-tight border transition-all duration-150 select-none shadow-2xs",
-          isSmall
-            ? "text-[11px] px-2.5 py-1"
-            : "text-xs px-3 py-1.5",
+          isSmall ? "text-[11px] px-2.5 py-1" : "text-xs px-3 py-1.5",
           config.badgeClass,
           disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer active:scale-95",
           isOpen && "ring-2 ring-primary/30"
@@ -261,49 +291,63 @@ export function TaskStatusSelect({
         )}
       </button>
 
-      {isOpen && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className={cn(
-            "absolute z-50 min-w-[170px] rounded-xl bg-white dark:bg-surface border border-border shadow-xl p-1.5 text-xs font-semibold animate-in fade-in-50 zoom-in-95 duration-100",
-            dropdownAlign === "right" ? "right-0" : "left-0",
-            openUpwards ? "bottom-full mb-1.5" : "top-full mt-1.5"
-          )}
-        >
-          <div className="px-2 py-1 text-[10px] font-black uppercase tracking-wider text-text-muted border-b border-border/60 mb-1">
-            Update Status
-          </div>
-          <div className="space-y-0.5 max-h-64 overflow-y-auto scrollbar-thin">
-            {selectableStatuses.map((s) => {
-              const isSelected =
-                currentStatus === s.value ||
-                (s.value === "PENDING" && (currentStatus as string) === "TODO") ||
-                (s.value === "COMPLETED" && (currentStatus as string) === "DONE") ||
-                (s.value === "IN_REVIEW" && (currentStatus as string) === "REVIEW");
+      {isOpen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={{
+              position: "fixed",
+              top: coords.openUpwards ? "auto" : `${coords.top + 6}px`,
+              bottom: coords.openUpwards
+                ? `${window.innerHeight - coords.top + 6}px`
+                : "auto",
+              left: `${Math.max(8, Math.min(window.innerWidth - 188, coords.left))}px`,
+              zIndex: 99999,
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-[180px] rounded-2xl bg-white dark:bg-[#1C1F26] border border-[#EAEDF2] dark:border-[#2D3139] shadow-2xl p-1.5 text-xs font-semibold animate-in fade-in-50 zoom-in-95 duration-150"
+          >
+            <div className="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] border-b border-[#EAEDF2] dark:border-[#2D3139] mb-1">
+              Change Status
+            </div>
+            <div className="space-y-0.5 max-h-64 overflow-y-auto scrollbar-thin">
+              {selectableStatuses.map((s) => {
+                const isSelected =
+                  currentStatus === s.value ||
+                  (s.value === "PENDING" &&
+                    (currentStatus as string) === "TODO") ||
+                  (s.value === "COMPLETED" &&
+                    (currentStatus as string) === "DONE") ||
+                  (s.value === "IN_REVIEW" &&
+                    (currentStatus as string) === "REVIEW");
 
-              return (
-                <button
-                  key={s.value}
-                  type="button"
-                  onClick={() => handleStatusSelect(s.value)}
-                  className={cn(
-                    "w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left transition-colors cursor-pointer",
-                    isSelected
-                      ? "bg-primary/10 text-primary font-bold"
-                      : "text-text-primary hover:bg-surface-alt font-medium"
-                  )}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className={cn("h-2 w-2 rounded-full shrink-0", s.dot)} />
-                    <span>{s.label}</span>
-                  </span>
-                  {isSelected && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
+                return (
+                  <button
+                    key={s.value}
+                    type="button"
+                    onClick={() => handleStatusSelect(s.value)}
+                    className={cn(
+                      "w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl text-left transition-colors cursor-pointer text-xs",
+                      isSelected
+                        ? "bg-[#F3F9DE] text-[#659A08] font-bold dark:bg-lime-950/50 dark:text-lime-400"
+                        : "text-[#374151] dark:text-[#E5E7EB] hover:bg-[#F3F4F6] dark:hover:bg-[#282C35] font-medium"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={cn("h-2 w-2 rounded-full shrink-0", s.dot)} />
+                      <span>{s.label}</span>
+                    </span>
+                    {isSelected && (
+                      <Check className="h-3.5 w-3.5 text-[#659A08] dark:text-lime-400 shrink-0" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
