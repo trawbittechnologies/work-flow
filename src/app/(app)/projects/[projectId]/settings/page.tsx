@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProjectSchema, type UpdateProjectInput } from "@/lib/validations/project";
@@ -15,12 +15,9 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/utils";
 
-type PageProps = {
-  params: Promise<{ projectId: string }>;
-};
-
-export default function ProjectSettingsPage({ params }: PageProps) {
-  const { projectId } = use(params);
+export default function ProjectSettingsPage() {
+  const routeParams = useParams();
+  const projectId = (routeParams?.projectId as string) || "";
   const router = useRouter();
   const { success, error: showError } = useToast();
   const [selectedIcon, setSelectedIcon] = useState("Clipboard");

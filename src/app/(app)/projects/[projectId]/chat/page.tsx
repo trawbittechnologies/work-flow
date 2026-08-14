@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils";
@@ -9,12 +10,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { useToast } from "@/components/ui/Toast";
 import type { MessageWithUser } from "@/types";
 
-type PageProps = {
-  params: Promise<{ projectId: string }>;
-};
-
-export default function ProjectChatPage({ params }: PageProps) {
-  const { projectId } = use(params);
+export default function ProjectChatPage() {
+  const routeParams = useParams();
+  const projectId = (routeParams?.projectId as string) || "";
   const { error: showError } = useToast();
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
   const [content, setContent] = useState("");

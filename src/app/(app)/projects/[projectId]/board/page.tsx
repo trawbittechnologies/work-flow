@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { TaskModal } from "@/components/tasks/TaskModal";
 import { TaskDrawer } from "@/components/tasks/TaskDrawer";
@@ -10,12 +11,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import type { TaskWithDetails } from "@/types";
 import { useToast } from "@/components/ui/Toast";
 
-type PageProps = {
-  params: Promise<{ projectId: string }>;
-};
-
-export default function ProjectBoardPage({ params }: PageProps) {
-  const { projectId } = use(params);
+export default function ProjectBoardPage() {
+  const routeParams = useParams();
+  const projectId = (routeParams?.projectId as string) || "";
   const { error: showError } = useToast();
   const [tasks, setTasks] = useState<TaskWithDetails[]>([]);
   const [members, setMembers] = useState<Array<{ id: string; user: { id: string; name: string; avatar?: string | null } }>>([]);

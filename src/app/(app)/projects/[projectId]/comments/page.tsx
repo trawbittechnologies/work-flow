@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -10,8 +11,6 @@ import { ConfirmDialog } from "@/components/ui/Modal";
 import { MessagesSquare, Send, Reply, Pencil, Trash2, ChevronDown, ChevronRight, X, Check } from "lucide-react";
 import { formatRelative } from "@/lib/utils";
 import { cn } from "@/lib/utils";
-
-type PageProps = { params: Promise<{ projectId: string }> };
 
 interface CommentUser { id: string; name: string; avatar?: string | null; }
 interface ProjectCommentData {
@@ -217,8 +216,9 @@ function CommentCard({ comment, currentUserId, projectId, onRefresh, isReply }: 
   );
 }
 
-export default function ProjectCommentsPage({ params }: PageProps) {
-  const { projectId } = use(params);
+export default function ProjectCommentsPage() {
+  const routeParams = useParams();
+  const projectId = (routeParams?.projectId as string) || "";
   const { error: showError } = useToast();
   const [comments, setComments] = useState<ProjectCommentData[]>([]);
   const [loading, setLoading] = useState(true);

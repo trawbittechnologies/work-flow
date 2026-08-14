@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
@@ -173,7 +174,9 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
       </div>
 
       {/* Main Content View */}
-      <div>{children}</div>
+      <Suspense fallback={<div className="p-8 text-center text-sm text-[var(--text-muted)]">Loading project view...</div>}>
+        {children}
+      </Suspense>
     </div>
   );
 }

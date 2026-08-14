@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -11,10 +12,6 @@ import { UserPlus, Trash2, Mail, Star, Search, Check } from "lucide-react";
 import type { MemberWithUser } from "@/types";
 import { cn } from "@/lib/utils";
 
-type PageProps = {
-  params: Promise<{ projectId: string }>;
-};
-
 interface WorkspaceUser {
   id: string;
   name: string;
@@ -23,8 +20,9 @@ interface WorkspaceUser {
   role: "ADMIN" | "MEMBER";
 }
 
-export default function ProjectTeamPage({ params }: PageProps) {
-  const { projectId } = use(params);
+export default function ProjectTeamPage() {
+  const routeParams = useParams();
+  const projectId = (routeParams?.projectId as string) || "";
   const { success, error: showError } = useToast();
   const [members, setMembers] = useState<(MemberWithUser & { isLead?: boolean })[]>([]);
   const [canManage, setCanManage] = useState(false);
