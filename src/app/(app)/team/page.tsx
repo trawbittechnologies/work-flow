@@ -31,12 +31,14 @@ interface TeamMember {
 }
 
 import { AddMemberButton } from "./AddMemberButton";
+import { DeleteMemberButton } from "./DeleteMemberButton";
 
 export default async function GlobalTeamPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
   const currentUserId = session.user.id;
+  const isSuperAdmin = (session.user as any).role === "ADMIN";
 
   // Find all projects current user belongs to
   const myProjects = await prisma.project.findMany({
@@ -46,8 +48,9 @@ export default async function GlobalTeamPage() {
 
   const projectIds = myProjects.map((p: { id: string }) => p.id);
 
-  // Find all members in the workspace
+  // Find all members in the workspace (exclude super admin)
   const teamMembers = await prisma.user.findMany({
+    where: { role: "MEMBER" },
     include: {
       projectMembships: {
         where: { projectId: { in: projectIds } },
@@ -104,6 +107,11 @@ export default async function GlobalTeamPage() {
                     {member.email}
                   </p>
                 </div>
+                {isSuperAdmin && !isCurrentUser && (
+                  <div className="ml-auto">
+                    <DeleteMemberButton memberId={member.id} memberName={member.name} />
+                  </div>
+                )}
               </div>
 
               {/* Shared Projects Chips */}
