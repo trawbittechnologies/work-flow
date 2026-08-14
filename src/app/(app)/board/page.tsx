@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { LayoutGrid, Plus } from "lucide-react";
 import Link from "next/link";
+import { LayoutGrid, Plus } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Board" };
@@ -10,12 +11,23 @@ export default async function BoardPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
+  const userId = session.user.id;
+
+  const [todo, inProgress, inReview, done] = await Promise.all([
+    prisma.task.count({ where: { assigneeId: userId, status: "TODO" } }),
+    prisma.task.count({ where: { assigneeId: userId, status: "IN_PROGRESS" } }),
+    prisma.task.count({ where: { assigneeId: userId, status: "IN_REVIEW" } }),
+    prisma.task.count({ where: { assigneeId: userId, status: "DONE" } }),
+  ]);
+
   const columns = [
-    { title: "To Do", count: 4, color: "bg-[#9CA3AF]" },
-    { title: "In Progress", count: 3, color: "bg-[#F59E0B]" },
-    { title: "In Review", count: 2, color: "bg-[#7C3AED]" },
-    { title: "Done", count: 8, color: "bg-[#88C315]" },
+    { title: "To Do", count: todo, color: "bg-[#9CA3AF]" },
+    { title: "In Progress", count: inProgress, color: "bg-[#F59E0B]" },
+    { title: "In Review", count: inReview, color: "bg-[#7C3AED]" },
+    { title: "Done", count: done, color: "bg-[#88C315]" },
   ];
+
+  const total = todo + inProgress + inReview + done;
 
   return (
     <div className="space-y-5 sm:space-y-6 pb-12">
@@ -25,7 +37,9 @@ export default async function BoardPage() {
             Kanban Board
           </h1>
           <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
-            Visualize workflow, track progress, and move tasks across columns.
+            {total === 0
+              ? "No tasks assigned yet — create a task to get started"
+              : `${total} task${total !== 1 ? "s" : ""} across ${columns.filter((c) => c.count > 0).length} column${columns.filter((c) => c.count > 0).length !== 1 ? "s" : ""}`}
           </p>
         </div>
         <Link
@@ -54,7 +68,9 @@ export default async function BoardPage() {
             <div className="flex-1 flex flex-col items-center justify-center text-center p-4 border border-dashed border-[#D1D5DB] rounded-xl bg-white/50">
               <LayoutGrid className="h-7 w-7 sm:h-8 sm:w-8 text-[#9CA3AF] mb-2 stroke-[1.5]" />
               <p className="text-xs font-medium text-[#6B7280]">
-                Interactive tasks synced with project backlog
+                {col.count === 0
+                  ? "No tasks here"
+                  : `${col.count} task${col.count !== 1 ? "s" : ""} — open a project board`}
               </p>
             </div>
           </div>

@@ -7,17 +7,47 @@ interface DashboardHeaderProps {
   userName: string;
 }
 
+function getDateRangeOptions() {
+  const now = new Date();
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+  // This week (Mon–Sun)
+  const dow = now.getDay(); // 0=Sun
+  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + mondayOffset);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+
+  // Last week
+  const lastMonday = new Date(monday);
+  lastMonday.setDate(monday.getDate() - 7);
+  const lastSunday = new Date(lastMonday);
+  lastSunday.setDate(lastMonday.getDate() + 6);
+
+  // This month
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  // This quarter
+  const qMonth = Math.floor(now.getMonth() / 3) * 3;
+  const qStart = new Date(now.getFullYear(), qMonth, 1);
+  const qEnd = new Date(now.getFullYear(), qMonth + 3, 0);
+
+  return [
+    `${fmt(monday)} – ${fmt(sunday)}`,
+    `${fmt(lastMonday)} – ${fmt(lastSunday)}`,
+    `${now.toLocaleDateString("en-US", { month: "long", year: "numeric" })}`,
+    `Q${Math.floor(now.getMonth() / 3) + 1} ${now.getFullYear()} (${fmt(qStart)} – ${fmt(qEnd)})`,
+  ];
+}
+
 export function DashboardHeader({ userName }: DashboardHeaderProps) {
-  const [selectedRange, setSelectedRange] = useState("May 12 - May 18, 2025");
+  const options = getDateRangeOptions();
+  const [selectedRange, setSelectedRange] = useState(options[0]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-
-  const options = [
-    "May 12 - May 18, 2025",
-    "May 5 - May 11, 2025",
-    "Apr 28 - May 4, 2025",
-    "Current Month (May 2025)",
-  ];
 
   const handleSelect = (range: string) => {
     setDropdownOpen(false);
@@ -33,7 +63,7 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
           Dashboard
         </h1>
         <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
-          Welcome back, {userName}
+          Welcome back, {userName} 👋
         </p>
       </div>
 
@@ -55,7 +85,7 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
         </button>
 
         {dropdownOpen && (
-          <div className="absolute right-0 top-full mt-1.5 w-60 bg-white border border-[#E5E7EB] rounded-xl shadow-xl z-20 py-1.5 text-xs font-medium animate-in">
+          <div className="absolute right-0 top-full mt-1.5 w-72 bg-white border border-[#E5E7EB] rounded-xl shadow-xl z-20 py-1.5 text-xs font-medium animate-in">
             {options.map((opt) => (
               <button
                 key={opt}
