@@ -114,8 +114,8 @@ export default async function DashboardPage() {
   // Map activities
   const activityItems = recentActivities.map((a) => ({
     id: a.id,
-    userName: a.user.name,
-    userAvatar: a.user.avatar,
+    userName: a.user?.name || "Member",
+    userAvatar: a.user?.avatar || null,
     type: a.type,
     metadata: a.metadata as Record<string, unknown>,
     createdAt: a.createdAt.toISOString(),

@@ -81,8 +81,10 @@ export default async function GlobalTeamPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {teamMembers.map((member: TeamMember) => {
-          const assignedCount = member.assignedTasks.length;
-          const completedCount = member.assignedTasks.filter((t: MemberTask) => (t.status as string) === "DONE" || (t.status as string) === "COMPLETED").length;
+          const memberships = member.projectMembships || [];
+          const tasks = member.assignedTasks || [];
+          const assignedCount = tasks.length;
+          const completedCount = tasks.filter((t: MemberTask) => (t.status as string) === "DONE" || (t.status as string) === "COMPLETED").length;
           const isCurrentUser = member.id === currentUserId;
 
           return (
@@ -118,13 +120,13 @@ export default async function GlobalTeamPage() {
               {/* Shared Projects Chips */}
               <div>
                 <span className="text-[10px] uppercase font-bold text-[#9CA3AF] block mb-1.5">
-                  Projects ({member.projectMembships.length})
+                  Projects ({memberships.length})
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {member.projectMembships.length === 0 ? (
+                  {memberships.length === 0 ? (
                     <span className="text-xs text-[#9CA3AF] italic">No active projects</span>
                   ) : (
-                    member.projectMembships.map((pm: MemberProjectMembership) => (
+                    memberships.map((pm: MemberProjectMembership) => (
                       <span
                         key={pm.project.id}
                         className="inline-flex items-center gap-1 text-[11px] bg-[#F9FAFB] border border-[#EAEDF2] px-2 py-0.5 rounded-lg text-[#4B5563] font-medium"

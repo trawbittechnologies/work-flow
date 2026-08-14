@@ -138,14 +138,14 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
         <div className="flex flex-wrap items-center gap-y-2 gap-x-4 sm:gap-x-6 text-[11px] sm:text-xs font-medium text-[#6B7280] pt-2.5 sm:pt-3 border-t border-[#EAEDF2] relative z-10">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 text-[#88C315]" />
-            <span>Owner: <strong className="text-[#111827] font-semibold">{project.owner.name}</strong></span>
+            <span>Owner: <strong className="text-[#111827] font-semibold">{project.owner?.name || "Workspace"}</strong></span>
           </div>
 
           {/* Project Lead */}
           {project.lead && (
             <div className="flex items-center gap-1.5">
               <Star className="h-3.5 w-3.5 text-amber-500" />
-              <span>Lead: <strong className="text-[#111827] font-semibold">{project.lead.name}</strong></span>
+              <span>Lead: <strong className="text-[#111827] font-semibold">{project.lead?.name || "Team Lead"}</strong></span>
             </div>
           )}
 
