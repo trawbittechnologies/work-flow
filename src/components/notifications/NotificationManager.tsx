@@ -110,19 +110,27 @@ export function NotificationManager({ userId, vapidPublicKey }: NotificationMana
   if (!showPrompt) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-50 p-4 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl shadow-lg max-w-sm">
-      <h3 className="font-semibold text-[#111827] text-sm">Enable background notifications</h3>
-      <p className="text-xs text-[#64748B] mt-1 mb-3">
-        Receive chat, project, and task notifications even when your browser or tab is closed.
-      </p>
-      <div className="flex gap-2">
-        <Button size="sm" onClick={handleEnablePush} className="bg-[#BFD437] text-[#111827] hover:bg-[#AFC62F] font-semibold text-xs">
-          Enable notifications
-        </Button>
-        <Button size="sm" variant="ghost" onClick={() => setShowPrompt(false)} className="text-xs text-[#64748B]">
-          Not now
-        </Button>
+    <>
+      {/* Backdrop */}
+      <div className="fixed inset-0 z-40 bg-[#111827]/40 backdrop-blur-sm" />
+      {/* Modal */}
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 p-6 bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl shadow-2xl max-w-sm w-full text-center">
+        <div className="h-12 w-12 rounded-full bg-[#F3F9DE] flex items-center justify-center mx-auto mb-4">
+          <svg className="w-6 h-6 text-[#88C315]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+        </div>
+        <h3 className="font-bold text-[#111827] text-lg">Enable Notifications</h3>
+        <p className="text-sm text-[#64748B] mt-2 mb-6">
+          Receive chat, project, and task notifications even when your browser or tab is closed.
+        </p>
+        <div className="flex gap-3 justify-center w-full">
+          <Button size="sm" variant="ghost" onClick={() => setShowPrompt(false)} className="text-sm text-[#64748B] flex-1">
+            Not now
+          </Button>
+          <Button size="sm" onClick={handleEnablePush} className="bg-[#88C315] text-white hover:bg-[#77AB12] font-bold text-sm flex-1 shadow-md shadow-[#88C315]/20">
+            Enable
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -154,7 +154,7 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
   const filteredMembers = users.filter((u) => u.name.toLowerCase().includes(memberSearch.toLowerCase()) || u.email.toLowerCase().includes(memberSearch.toLowerCase()));
 
   return (
-    <div className="flex h-[calc(100vh-var(--header-height)-4.5rem)] md:h-[calc(100vh-var(--header-height)-1.5rem)] overflow-hidden bg-white border border-[#EAEDF2] rounded-2xl shadow-xs">
+    <div className="-m-3.5 sm:-m-6 lg:-m-8 flex h-[calc(100vh-var(--header-height)-1px)] overflow-hidden bg-white border-t border-[#EAEDF2]">
       {/* Sidebar List (Full-width on mobile if no active chat selected or when toggled) */}
       <div
         className={cn(
