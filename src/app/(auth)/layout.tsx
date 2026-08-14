@@ -11,13 +11,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="relative h-12 w-12 rounded-full overflow-hidden flex items-center justify-center mb-3 shadow-md">
+          <div className="relative h-12 w-12 rounded-xl overflow-hidden flex items-center justify-center mb-3 shadow-md">
             <Image
-              src="/logo-icon.png"
+              src="/logo.png"
               alt="Trawbit FlowDesk"
               width={48}
               height={48}
-              className="h-12 w-12 object-contain"
+              className="h-12 w-12 object-cover rounded-xl"
               priority
             />
           </div>

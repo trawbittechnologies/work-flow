@@ -71,13 +71,13 @@ export function Sidebar({ user: _user, unreadNotifications: _unreadNotifications
           className="flex items-center gap-3 group"
         >
           {/* Trawbit Official Emblem Icon */}
-          <div className="relative h-8 w-8 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+          <div className="relative h-8 w-8 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
             <Image
-              src="/logo-icon.png"
+              src="/logo.png"
               alt="Trawbit Logo"
               width={32}
               height={32}
-              className="h-8 w-8 object-contain"
+              className="h-8 w-8 object-cover rounded-lg"
               priority
             />
           </div>
