@@ -122,19 +122,22 @@ export function TaskStatusSelect({
 }: TaskStatusSelectProps) {
   const router = useRouter();
   const { success, error: errToast } = useToast();
+  const [prevInitial, setPrevInitial] = useState(initialStatus);
   const [currentStatus, setCurrentStatus] = useState<TaskStatusType>(
     (initialStatus as TaskStatusType) || "PENDING"
   );
+
+  if (prevInitial !== initialStatus) {
+    setPrevInitial(initialStatus);
+    setCurrentStatus((initialStatus as TaskStatusType) || "PENDING");
+  }
+
   const [isOpen, setIsOpen] = useState(false);
   const [openUpwards, setOpenUpwards] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [, startTransition] = useTransition();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setCurrentStatus((initialStatus as TaskStatusType) || "PENDING");
-  }, [initialStatus]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -194,7 +197,6 @@ export function TaskStatusSelect({
           throw new Error(errData.error || "Failed to update task status");
         }
 
-        const data = await res.json();
         const displayLabel =
           statusConfig[newStatus]?.label || newStatus.replace(/_/g, " ");
         success(
@@ -205,10 +207,11 @@ export function TaskStatusSelect({
         startTransition(() => {
           router.refresh();
         });
-      } catch (err: any) {
+      } catch (err: unknown) {
         setCurrentStatus(previousStatus);
         onStatusChange?.(previousStatus);
-        errToast("Update Failed", err.message || "Could not update status.");
+        const message = err instanceof Error ? err.message : "Could not update status.";
+        errToast("Update Failed", message);
       } finally {
         setIsUpdating(false);
       }

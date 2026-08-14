@@ -115,7 +115,7 @@ export async function PATCH(req: Request, { params }: RouteParams) {
         ...(parsed.data.name && { name: parsed.data.name.trim() }),
         ...(parsed.data.description !== undefined && { description: parsed.data.description }),
         ...(parsed.data.icon && { icon: parsed.data.icon }),
-        ...(parsed.data.status && { status: parsed.data.status }),
+        ...(parsed.data.status && { status: parsed.data.status as any }),
         ...(parsed.data.priority && { priority: parsed.data.priority }),
         ...(parsed.data.leadId !== undefined && { leadId: parsed.data.leadId }),
         ...(parsed.data.startDate !== undefined && {
@@ -124,7 +124,7 @@ export async function PATCH(req: Request, { params }: RouteParams) {
         ...(parsed.data.deadline !== undefined && {
           deadline: parsed.data.deadline ? new Date(parsed.data.deadline) : null,
         }),
-      },
+      } as any,
     });
 
     const actorId = session.user.id;

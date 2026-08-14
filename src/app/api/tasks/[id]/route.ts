@@ -83,7 +83,7 @@ export async function PATCH(req: Request, { params }: RouteParams) {
         ...(description !== undefined && { description }),
         ...(assigneeId !== undefined && { assigneeId }),
         ...(priority && { priority }),
-        ...(status && { status }),
+        ...(status && { status: status as any }),
         ...(dueDate !== undefined && {
           dueDate: dueDate ? new Date(dueDate) : null,
         }),
@@ -93,7 +93,7 @@ export async function PATCH(req: Request, { params }: RouteParams) {
             create: labelIds.map((labelId) => ({ labelId })),
           },
         }),
-      },
+      } as any,
       include: {
         assignee: { select: { id: true, name: true, email: true, avatar: true } },
         createdBy: { select: { id: true, name: true, avatar: true } },

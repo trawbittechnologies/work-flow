@@ -88,13 +88,14 @@ export default function ProjectTasksPage({ params }: PageProps) {
 
   const filteredTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase());
-    let matchesStatus = statusFilter === "ALL" || t.status === statusFilter;
+    const statusStr = t.status as string;
+    let matchesStatus = statusFilter === "ALL" || statusStr === statusFilter;
     if (statusFilter === "PENDING") {
-      matchesStatus = t.status === "PENDING" || t.status === "TODO";
+      matchesStatus = statusStr === "PENDING" || statusStr === "TODO";
     } else if (statusFilter === "COMPLETED") {
-      matchesStatus = t.status === "COMPLETED" || t.status === "DONE";
+      matchesStatus = statusStr === "COMPLETED" || statusStr === "DONE";
     } else if (statusFilter === "IN_REVIEW") {
-      matchesStatus = t.status === "IN_REVIEW" || (t.status as string) === "REVIEW";
+      matchesStatus = statusStr === "IN_REVIEW" || statusStr === "REVIEW";
     }
     return matchesSearch && matchesStatus;
   });

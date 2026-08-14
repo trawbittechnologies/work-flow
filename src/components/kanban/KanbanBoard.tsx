@@ -35,7 +35,7 @@ const COLUMNS: Array<{ id: TaskStatusType; title: string }> = [
   { id: "CANCELLED", title: "Cancel" },
 ];
 
-export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }: KanbanBoardProps) {
+export function KanbanBoard({ initialTasks, projectId: _projectId, onAddTask, onTaskClick }: KanbanBoardProps) {
   const [tasks, setTasks] = useState<TaskWithDetails[]>(initialTasks);
   const [activeTask, setActiveTask] = useState<TaskWithDetails | null>(null);
   const { error: showError } = useToast();
@@ -73,7 +73,7 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
 
     // Optimistic Update
     setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? ({ ...t, status: newStatus as any }) : t))
+      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus as TaskWithDetails["status"] } : t))
     );
 
     // API update call
@@ -104,10 +104,11 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
       <div className="flex gap-4 overflow-x-auto pb-6 pt-1 items-start min-h-[550px] scrollbar-thin snap-x snap-mandatory">
         {COLUMNS.map((col) => {
           const colTasks = tasks.filter((t) => {
-            if (col.id === "PENDING") return t.status === "PENDING" || t.status === "TODO";
-            if (col.id === "COMPLETED") return t.status === "COMPLETED" || t.status === "DONE";
-            if (col.id === "IN_REVIEW") return t.status === "IN_REVIEW" || (t.status as string) === "REVIEW";
-            return t.status === col.id;
+            const statusStr = t.status as string;
+            if (col.id === "PENDING") return statusStr === "PENDING" || statusStr === "TODO";
+            if (col.id === "COMPLETED") return statusStr === "COMPLETED" || statusStr === "DONE";
+            if (col.id === "IN_REVIEW") return statusStr === "IN_REVIEW" || statusStr === "REVIEW";
+            return statusStr === col.id;
           });
           return (
             <KanbanColumn

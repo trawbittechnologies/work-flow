@@ -72,7 +72,7 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
           </thead>
           <tbody className="divide-y divide-[#EAEDF2] font-medium text-[#111827]">
             {sortedTasks.map((task) => {
-              const isDone = task.status === "DONE" || task.status === "COMPLETED";
+              const isDone = (task.status as string) === "DONE" || (task.status as string) === "COMPLETED";
               const overdue = task.dueDate ? isOverdue(task.dueDate) : false;
 
               return (

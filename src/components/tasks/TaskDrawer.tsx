@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Drawer } from "@/components/ui/Drawer";
 import { Avatar } from "@/components/ui/Avatar";
 import { PriorityBadge } from "@/components/ui/Badge";
-import { TaskStatusSelect, TaskStatusType } from "@/components/tasks/TaskStatusSelect";
+import { TaskStatusSelect } from "@/components/tasks/TaskStatusSelect";
 import { CalendarDays, AlertCircle, Trash2 } from "lucide-react";
 import { formatDueDate, isOverdue } from "@/lib/utils";
 import { CommentSection } from "./CommentSection";
@@ -117,7 +117,7 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
                   initialStatus={task.status}
                   size="md"
                   onStatusChange={(newStatus) => {
-                    setTask((prev: any) => prev ? { ...prev, status: newStatus } : null);
+                    setTask((prev: typeof task) => (prev ? { ...prev, status: newStatus } : null));
                     onTaskUpdated?.();
                   }}
                 />
