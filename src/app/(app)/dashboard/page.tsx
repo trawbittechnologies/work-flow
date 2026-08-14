@@ -6,8 +6,6 @@ import {
   CheckCircle2,
   Clock,
   Users,
-  Calendar,
-  ChevronDown,
 } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -26,72 +24,123 @@ export default async function DashboardPage() {
 
   const userId = session.user.id;
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { name: true },
+  const [user, totalProjects, completedTasks, inProgressTasks, totalMembers, recentActivities, recentProjects] =
+    await Promise.all([
+      prisma.user.findUnique({ where: { id: userId }, select: { name: true } }),
+      prisma.project.count({ where: { members: { some: { userId } } } }),
+      prisma.task.count({ where: { assigneeId: userId, status: "DONE" } }),
+      prisma.task.count({ where: { assigneeId: userId, status: "IN_PROGRESS" } }),
+      prisma.user.count({ where: { isActive: true } }),
+      prisma.activity.findMany({
+        include: { user: { select: { name: true, avatar: true } } },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+      prisma.project.findMany({
+        where: { members: { some: { userId } } },
+        include: { tasks: { select: { status: true } } },
+        orderBy: { updatedAt: "desc" },
+        take: 5,
+      }),
+    ]);
+
+  const userName = user?.name || "there";
+
+  // Build real stat for task breakdown
+  const [todoTasks, inReviewTasks] = await Promise.all([
+    prisma.task.count({ where: { assigneeId: userId, status: "TODO" } }),
+    prisma.task.count({ where: { assigneeId: userId, status: "IN_REVIEW" } }),
+  ]);
+
+  const taskStats = {
+    completed: completedTasks,
+    inProgress: inProgressTasks,
+    todo: todoTasks,
+    inReview: inReviewTasks,
+    total: completedTasks + inProgressTasks + todoTasks + inReviewTasks,
+  };
+
+  // Map projects for the list
+  const projectItems = recentProjects.map((p) => {
+    const total = p.tasks.length;
+    const done = p.tasks.filter((t) => t.status === "DONE").length;
+    const progress = total > 0 ? Math.round((done / total) * 100) : 0;
+    return {
+      id: p.id,
+      name: p.name,
+      progress,
+      status: p.status,
+    };
   });
 
-  const userName = user?.name || "Athul Krishna";
+  // Map activities
+  const activityItems = recentActivities.map((a) => ({
+    id: a.id,
+    userName: a.user.name,
+    userAvatar: a.user.avatar,
+    type: a.type,
+    metadata: a.metadata as Record<string, unknown>,
+    createdAt: a.createdAt.toISOString(),
+  }));
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top Greeting Header with interactive date selector & loading */}
       <DashboardHeader userName={userName} />
 
       {/* Row 1: 4 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <StatCard
-          label="Total Projects"
-          value={12}
+          label="My Projects"
+          value={totalProjects}
           icon={<FolderKanban className="h-6 w-6 text-[#88C315]" />}
           iconBg="bg-[#F3F9DE]"
-          trendText="2 new this week"
+          trendText={totalProjects === 0 ? "No projects yet" : `${totalProjects} active`}
           trendType="positive"
-          showArrow={true}
+          showArrow={false}
         />
         <StatCard
           label="Tasks Completed"
-          value={34}
+          value={completedTasks}
           icon={<CheckCircle2 className="h-6 w-6 text-[#10B981]" />}
           iconBg="bg-[#ECFDF5]"
-          trendText="+12% from last week"
+          trendText={completedTasks === 0 ? "No tasks done yet" : "Great progress!"}
           trendType="positive"
-          showArrow={true}
+          showArrow={false}
         />
         <StatCard
           label="In Progress"
-          value={18}
+          value={inProgressTasks}
           icon={<Clock className="h-6 w-6 text-[#F59E0B]" />}
           iconBg="bg-[#FFFBEB]"
-          trendText="3 behind schedule"
-          trendType="negative"
+          trendText={inProgressTasks === 0 ? "Nothing in progress" : `${inProgressTasks} active tasks`}
+          trendType={inProgressTasks > 0 ? "positive" : "neutral"}
           showArrow={false}
         />
         <StatCard
           label="Team Members"
-          value={24}
+          value={totalMembers}
           icon={<Users className="h-6 w-6 text-[#9333EA]" />}
           iconBg="bg-[#F3E8FF]"
-          trendText="2 new members"
+          trendText={totalMembers === 1 ? "Just you so far" : `${totalMembers} members`}
           trendType="positive"
-          showArrow={true}
+          showArrow={false}
         />
       </div>
 
-      {/* Row 2: Charts (Project Progress + Tasks Overview) */}
+      {/* Row 2: Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7">
-          <ProjectProgressChart />
+          <ProjectProgressChart projects={projectItems} />
         </div>
         <div className="lg:col-span-5">
-          <TasksOverviewChart />
+          <TasksOverviewChart stats={taskStats} />
         </div>
       </div>
 
-      {/* Row 3: Lists (Recent Projects + Recent Activity) */}
+      {/* Row 3: Lists */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RecentProjectsList />
-        <RecentActivityList />
+        <RecentProjectsList projects={projectItems} />
+        <RecentActivityList activities={activityItems} />
       </div>
     </div>
   );
