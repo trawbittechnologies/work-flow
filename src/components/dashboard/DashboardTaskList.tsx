@@ -17,7 +17,7 @@ export function DashboardTaskList({ tasks }: DashboardTaskListProps) {
   if (tasks.length === 0) {
     return (
       <div className="bg-surface border border-border rounded-2xl px-6 py-10 text-center card-shadow">
-        <p className="text-sm font-bold text-text-muted">No pending tasks. You&apos;re all caught up! 🎉</p>
+        <p className="text-sm font-bold text-text-muted">No pending tasks. You&apos;re all caught up!</p>
       </div>
     );
   }

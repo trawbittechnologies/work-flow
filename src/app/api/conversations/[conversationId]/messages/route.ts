@@ -155,8 +155,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ con
     const convName = conversation.name || conversation.project?.name || "Chat";
 
     const notifTitle = conversation.type === "DIRECT" 
-      ? `💬 DM from ${senderName}`
-      : `💬 ${convName}`;
+      ? `DM from ${senderName}`
+      : `${convName}`;
 
     const notifMessage = conversation.type === "DIRECT"
       ? previewText

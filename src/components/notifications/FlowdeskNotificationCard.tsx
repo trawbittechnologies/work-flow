@@ -17,11 +17,11 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export type FlowdeskNotificationType = 
-  | "MEMBER_ACTIVITY"  // 👤 Project/member activity
-  | "TASK_ACTIVITY"    // 📋 Task activity
-  | "COMMENT"          // 💬 Comment / Chat
-  | "MENTION"          // @ Mention
-  | "GENERAL";         // 🔔 General notification
+  | "MEMBER_ACTIVITY"  // Project/member activity
+  | "TASK_ACTIVITY"    // Task activity
+  | "COMMENT"          // Comment / Chat
+  | "MENTION"          // Mention
+  | "GENERAL";         // General notification
 
 export interface FlowdeskNotificationProps {
   id: string;
@@ -55,7 +55,7 @@ export function FlowdeskBrandMark({ className }: { className?: string }) {
 }
 
 /**
- * Contextual Badge Icon (👤, 📋, 💬, @, 🔔)
+ * Contextual Badge Icon (Lucide Icons)
  * Accent: Electric Lime (#C3D946) & Midnight Navy (#0A1237)
  */
 function ContextualIcon({ type }: { type: FlowdeskNotificationType }) {

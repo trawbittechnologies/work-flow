@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import { cn, formatDate, isOverdue } from "@/lib/utils";
-import { CalendarRange, Calendar } from "lucide-react";
+import { CalendarRange, Calendar, AlertTriangle } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Project Timeline" };
@@ -120,10 +120,11 @@ export default async function ProjectTimelinePage({ params }: PageProps) {
                           {task.status.replace("_", " ")}
                         </span>
                         <span className={cn(
-                          "text-xs font-medium",
+                          "text-xs font-medium flex items-center gap-1",
                           overdue ? "text-red-500 font-semibold" : "text-text-muted"
                         )}>
-                          {formatDate(task.dueDate)} {overdue && "⚠"}
+                          <span>{formatDate(task.dueDate)}</span>
+                          {overdue && <AlertTriangle className="h-3 w-3 text-red-500 flex-shrink-0" />}
                         </span>
                       </div>
                     </div>

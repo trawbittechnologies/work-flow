@@ -33,7 +33,7 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
           Dashboard
         </h1>
         <p className="text-[13px] font-medium text-[#6B7280] mt-0.5">
-          Welcome back, {userName} 👋
+          Welcome back, {userName}
         </p>
       </div>
 

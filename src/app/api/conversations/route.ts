@@ -117,7 +117,7 @@ export async function POST(request: Request) {
         createNotification({
           userId: targetUserId,
           type: "MESSAGE",
-          title: `💬 New Direct Message`,
+          title: `New Direct Message`,
           message: `${senderUser.name} started a direct message conversation with you`,
           link: `/chat?conversationId=${conversation.id}`,
           senderAvatar: senderUser.avatar || undefined,

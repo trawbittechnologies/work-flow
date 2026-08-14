@@ -88,7 +88,7 @@ export async function POST(req: Request, { params }: RouteParams) {
       createNotification({
         userId: targetUserId,
         type: "NEW_COMMENT",
-        title: `💬 New comment on "${task.title}"`,
+        title: `New comment on "${task.title}"`,
         message: `${authorName}: "${comment.content.slice(0, 100)}"`,
         projectId: task.projectId,
         taskId: task.id,

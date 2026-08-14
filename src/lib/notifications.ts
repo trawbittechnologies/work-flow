@@ -71,22 +71,7 @@ export async function createNotification({
     if (subscriptions.length > 0) {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://work-flow-three-xi.vercel.app";
 
-      // Contextual Icon Prefix for Push Body
-      let prefix = "🔔";
-      const typeStr = String(type);
-      if (typeStr.includes("PROJECT") || typeStr.includes("MEMBER") || typeStr.includes("INVITE")) {
-        prefix = "👤";
-      } else if (typeStr.includes("TASK")) {
-        prefix = "📋";
-      } else if (typeStr.includes("COMMENT") || typeStr.includes("MESSAGE")) {
-        prefix = "💬";
-      } else if (typeStr.includes("MENTION")) {
-        prefix = "@";
-      }
-
-      const formattedBody = message.startsWith("👤") || message.startsWith("📋") || message.startsWith("💬") || message.startsWith("@")
-        ? message
-        : `${prefix} ${message}`;
+      const formattedBody = message;
 
       const iconUrl = senderAvatar && senderAvatar.startsWith("http")
         ? senderAvatar
@@ -99,7 +84,7 @@ export async function createNotification({
         badge: `${baseUrl}/badge-72.png`,
         url: link || "/chat",
         notificationId: notification.id,
-        tag: `flowdesk-${typeStr.toLowerCase()}`,
+        tag: `flowdesk-${String(type).toLowerCase()}`,
         actions: [
           { action: "open", title: "Open Flowdesk" },
           { action: "dismiss", title: "Dismiss" },
