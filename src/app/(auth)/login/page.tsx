@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, ShieldCheck, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Sparkles } from "lucide-react";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -21,7 +21,6 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -44,10 +43,6 @@ function LoginForm() {
     router.refresh();
   }
 
-  function handleFillAdminCredentials() {
-    setValue("email", "admin@flowdesk.io");
-    setValue("password", "adminpassword123");
-  }
 
   return (
     <div className="space-y-4">
@@ -58,27 +53,6 @@ function LoginForm() {
           <span>Account created successfully! You can now sign in below.</span>
         </div>
       )}
-
-      {/* Default Admin Quick Login Card */}
-      <div className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 dark:from-indigo-950/40 dark:to-purple-950/40 border border-indigo-200/80 dark:border-indigo-800/40 rounded-2xl p-4 flex items-center justify-between shadow-xs">
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs font-extrabold text-indigo-700 dark:text-indigo-300 uppercase tracking-wider">
-            <ShieldCheck className="h-4 w-4" /> Demo Admin Access
-          </div>
-          <p className="text-[11px] font-mono text-text-secondary">
-            <code className="bg-surface px-1.5 py-0.5 rounded border border-border text-[10px]">admin@flowdesk.io</code> / <code className="bg-surface px-1.5 py-0.5 rounded border border-border text-[10px]">adminpassword123</code>
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          onClick={handleFillAdminCredentials}
-          className="text-xs shrink-0 font-bold border-indigo-200 dark:border-indigo-800 hover:bg-indigo-600 hover:text-white"
-        >
-          Auto Fill
-        </Button>
-      </div>
 
       <div className="bg-surface border border-border rounded-2xl p-6 shadow-xl card-shadow">
         <h2 className="text-lg font-extrabold text-text-primary tracking-tight">Welcome back</h2>
