@@ -274,9 +274,9 @@ export function TaskStatusSelect({
             {selectableStatuses.map((s) => {
               const isSelected =
                 currentStatus === s.value ||
-                (s.value === "PENDING" && currentStatus === "TODO") ||
-                (s.value === "COMPLETED" && currentStatus === "DONE") ||
-                (s.value === "IN_REVIEW" && currentStatus === "REVIEW");
+                (s.value === "PENDING" && (currentStatus as string) === "TODO") ||
+                (s.value === "COMPLETED" && (currentStatus as string) === "DONE") ||
+                (s.value === "IN_REVIEW" && (currentStatus as string) === "REVIEW");
 
               return (
                 <button

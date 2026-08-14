@@ -106,7 +106,7 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
           const colTasks = tasks.filter((t) => {
             if (col.id === "PENDING") return t.status === "PENDING" || t.status === "TODO";
             if (col.id === "COMPLETED") return t.status === "COMPLETED" || t.status === "DONE";
-            if (col.id === "IN_REVIEW") return t.status === "IN_REVIEW" || t.status === "REVIEW";
+            if (col.id === "IN_REVIEW") return t.status === "IN_REVIEW" || (t.status as string) === "REVIEW";
             return t.status === col.id;
           });
           return (

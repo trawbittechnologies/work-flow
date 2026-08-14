@@ -14,6 +14,8 @@ import {
   CheckCircle2,
   TrendingUp,
   LayoutGrid,
+  Clock,
+  AlertCircle,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { ProjectStatusSelect } from "@/components/projects/ProjectStatusSelect";

@@ -94,7 +94,7 @@ export default function ProjectTasksPage({ params }: PageProps) {
     } else if (statusFilter === "COMPLETED") {
       matchesStatus = t.status === "COMPLETED" || t.status === "DONE";
     } else if (statusFilter === "IN_REVIEW") {
-      matchesStatus = t.status === "IN_REVIEW" || t.status === "REVIEW";
+      matchesStatus = t.status === "IN_REVIEW" || (t.status as string) === "REVIEW";
     }
     return matchesSearch && matchesStatus;
   });

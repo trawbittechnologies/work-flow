@@ -63,7 +63,7 @@ export default function MyTasksPage() {
     } else if (statusFilter === "COMPLETED") {
       matchesStatus = t.status === "COMPLETED" || t.status === "DONE";
     } else if (statusFilter === "IN_REVIEW") {
-      matchesStatus = t.status === "IN_REVIEW" || t.status === "REVIEW";
+      matchesStatus = t.status === "IN_REVIEW" || (t.status as string) === "REVIEW";
     }
     const matchesPriority = priorityFilter === "ALL" || t.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
