@@ -117,7 +117,7 @@ export function MobileDrawer({
       />
 
       {/* Slide-out Drawer Panel */}
-      <div className="relative w-[300px] max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl slide-in-right overflow-hidden border-r border-[#EAEDF2]">
+      <div className="relative w-[300px] max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl slide-in-left overflow-hidden border-r border-[#EAEDF2]">
         {/* Brand Header & Close */}
         <div className="p-4 border-b border-[#EAEDF2] flex items-center justify-between bg-[#F8F9FA]">
           <Link href="/dashboard" onClick={close} className="flex items-center gap-2.5">
