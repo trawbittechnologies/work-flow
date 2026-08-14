@@ -63,24 +63,24 @@ export default function MyTasksPage() {
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 pb-12">
       <div>
-        <h1 className="text-xl font-bold text-[var(--text-primary)]">My Tasks</h1>
-        <p className="text-xs text-[var(--text-muted)] mt-0.5">
+        <h1 className="text-xl sm:text-2xl font-black text-[#111827] tracking-tight">My Tasks</h1>
+        <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
           Tasks assigned to you across all active projects
         </p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[var(--surface)] border border-[var(--border)] p-3 rounded-[12px]">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white border border-[#EAEDF2] p-3 sm:p-4 rounded-2xl shadow-2xs">
         <div className="relative w-full sm:w-72">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[var(--text-muted)]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#9CA3AF]" />
           <input
             type="text"
             placeholder="Search my tasks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-8 pl-8 pr-3 text-xs rounded-[8px] border border-[var(--border)] bg-[var(--background)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-[var(--text-primary)]"
+            className="w-full h-8.5 pl-8.5 pr-3 text-xs rounded-xl border border-[#EAEDF2] bg-[#F9FAFB] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 focus:border-[#88C315]"
           />
         </div>
 
@@ -88,7 +88,7 @@ export default function MyTasksPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-8 px-2.5 text-xs rounded-[8px] border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)]"
+            className="flex-1 sm:flex-none h-8.5 px-3 text-xs font-semibold rounded-xl border border-[#EAEDF2] bg-white text-[#4B5563] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="TODO">To Do</option>
@@ -100,7 +100,7 @@ export default function MyTasksPage() {
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="h-8 px-2.5 text-xs rounded-[8px] border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)]"
+            className="flex-1 sm:flex-none h-8.5 px-3 text-xs font-semibold rounded-xl border border-[#EAEDF2] bg-white text-[#4B5563] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 cursor-pointer"
           >
             <option value="ALL">All Priorities</option>
             <option value="URGENT">Urgent</option>
@@ -113,9 +113,9 @@ export default function MyTasksPage() {
 
       {/* Table view */}
       {loading ? (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {[...Array(5)].map((_, i) => (
-            <Skeleton key={i} className="h-12 w-full rounded-[10px]" />
+            <Skeleton key={i} className="h-12 w-full rounded-xl" />
           ))}
         </div>
       ) : filteredTasks.length > 0 ? (

@@ -16,10 +16,10 @@ interface KanbanColumnProps {
 }
 
 const columnHeaderColors: Record<string, string> = {
-  TODO: "bg-slate-500",
-  IN_PROGRESS: "bg-[#0A1237]",
-  IN_REVIEW: "bg-purple-600",
-  DONE: "bg-[#C3D946]",
+  TODO: "bg-[#9CA3AF]",
+  IN_PROGRESS: "bg-[#F59E0B]",
+  IN_REVIEW: "bg-[#7C3AED]",
+  DONE: "bg-[#88C315]",
 };
 
 export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: KanbanColumnProps) {
@@ -29,18 +29,18 @@ export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: Kanba
     <div
       ref={setNodeRef}
       className={cn(
-        "flex flex-col bg-surface-alt/60 border border-border rounded-2xl p-3.5 min-w-[280px] w-full max-w-[340px] flex-shrink-0 transition-all",
-        isOver && "border-[#C3D946] bg-[#F3F8D7]/60 glow-lime"
+        "flex flex-col bg-[#F8F9FA] border border-[#EAEDF2] rounded-2xl p-3.5 w-[82vw] sm:w-[300px] lg:w-[320px] max-w-[340px] shrink-0 snap-center transition-all",
+        isOver && "border-[#88C315] bg-[#F3F9DE]/50"
       )}
     >
       {/* Column Header */}
-      <div className="flex items-center justify-between pb-3 px-1 border-b border-border-subtle mb-3">
-        <div className="flex items-center gap-2.5">
-          <span className={cn("h-2.5 w-2.5 rounded-full", columnHeaderColors[id])} />
-          <h3 className="text-sm font-black text-[#0A1237] dark:text-white tracking-tight">
+      <div className="flex items-center justify-between pb-3 px-1 border-b border-[#EAEDF2] mb-3">
+        <div className="flex items-center gap-2">
+          <span className={cn("h-2.5 w-2.5 rounded-full shrink-0", columnHeaderColors[id])} />
+          <h3 className="text-xs sm:text-sm font-black text-[#111827] tracking-tight">
             {title}
           </h3>
-          <span className="h-5 px-2.5 rounded-full bg-[#0A1237] text-[#C3D946] text-[11px] font-black flex items-center justify-center shadow-xs">
+          <span className="h-5 px-2 rounded-full bg-white border border-[#E5E7EB] text-[#6B7280] text-[11px] font-bold flex items-center justify-center shadow-2xs">
             {tasks.length}
           </span>
         </div>
@@ -48,7 +48,7 @@ export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: Kanba
         <Button
           variant="ghost"
           size="icon"
-          className="h-7 w-7 text-text-muted hover:text-[#0A1237] hover:bg-surface"
+          className="h-7 w-7 text-[#9CA3AF] hover:text-[#111827] hover:bg-white cursor-pointer"
           onClick={onAddTask}
           aria-label={`Add task to ${title}`}
         >
@@ -57,13 +57,13 @@ export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: Kanba
       </div>
 
       {/* Task List container */}
-      <div className="flex-1 space-y-3 overflow-y-auto min-h-[400px]">
+      <div className="flex-1 space-y-3 overflow-y-auto min-h-[380px]">
         {tasks.map((task) => (
           <TaskCard key={task.id} task={task} onClick={() => onTaskClick?.(task)} />
         ))}
 
         {tasks.length === 0 && (
-          <div className="h-28 border-2 border-dashed border-border rounded-xl flex items-center justify-center text-xs font-bold text-text-muted bg-surface/40">
+          <div className="h-28 border-2 border-dashed border-[#D1D5DB] rounded-xl flex items-center justify-center text-xs font-bold text-[#9CA3AF] bg-white/40">
             Drop tasks here
           </div>
         )}

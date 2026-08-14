@@ -58,10 +58,10 @@ const activities = [
 
 export function RecentActivityList() {
   return (
-    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-6 shadow-2xs">
+    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-6 shadow-2xs">
       {/* Header */}
-      <div className="flex items-center justify-between mb-5">
-        <h3 className="text-[15px] font-bold text-[#111827]">
+      <div className="flex items-center justify-between mb-4 sm:mb-5">
+        <h3 className="text-sm sm:text-[15px] font-bold text-[#111827]">
           Recent Activity
         </h3>
         <Link
@@ -73,17 +73,17 @@ export function RecentActivityList() {
       </div>
 
       {/* Activity Items */}
-      <div className="space-y-4">
+      <div className="space-y-3.5 sm:space-y-4">
         {activities.map((act) => (
-          <div key={act.id} className="flex items-start gap-3.5 py-1">
+          <div key={act.id} className="flex items-start gap-3 sm:gap-3.5 py-1">
             <Avatar
               name={act.user.name}
               src={act.user.avatar}
               size="sm"
-              className="h-9 w-9 rounded-full ring-1 ring-border flex-shrink-0"
+              className="h-8 w-8 sm:h-9 sm:w-9 rounded-full ring-1 ring-border flex-shrink-0"
             />
             <div className="min-w-0 flex-1">
-              <p className="text-[13px] text-[#4B5563] leading-snug">
+              <p className="text-xs sm:text-[13px] text-[#4B5563] leading-snug break-words">
                 <span className="font-bold text-[#111827]">
                   {act.user.name}
                 </span>{" "}
@@ -92,7 +92,7 @@ export function RecentActivityList() {
                   {act.targetText}
                 </span>
               </p>
-              <p className="text-[11px] text-[#9CA3AF] mt-0.5">{act.time}</p>
+              <p className="text-[10px] sm:text-[11px] text-[#9CA3AF] mt-0.5">{act.time}</p>
             </div>
           </div>
         ))}

@@ -27,12 +27,12 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
       <div>
-        <h1 className="text-2xl font-black tracking-tight text-[#111827]">
+        <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#111827]">
           Dashboard
         </h1>
-        <p className="text-[13px] font-medium text-[#6B7280] mt-0.5">
+        <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
           Welcome back, {userName}
         </p>
       </div>
@@ -41,14 +41,16 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
       <div className="relative">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#374151] hover:bg-[#F9FAFB] active:scale-95 shadow-2xs transition-all cursor-pointer"
+          className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto px-3.5 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#374151] hover:bg-[#F9FAFB] active:scale-95 shadow-2xs transition-all cursor-pointer"
         >
-          {isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin text-[#88C315]" />
-          ) : (
-            <Calendar className="h-4 w-4 text-[#6B7280]" />
-          )}
-          <span>{selectedRange}</span>
+          <div className="flex items-center gap-2">
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin text-[#88C315]" />
+            ) : (
+              <Calendar className="h-4 w-4 text-[#6B7280]" />
+            )}
+            <span>{selectedRange}</span>
+          </div>
           <ChevronDown className="h-3.5 w-3.5 text-[#9CA3AF]" />
         </button>
 

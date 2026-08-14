@@ -13,15 +13,15 @@ const totalTasks = 84;
 
 export function TasksOverviewChart() {
   return (
-    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-6 shadow-2xs h-full flex flex-col justify-between">
+    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-6 shadow-2xs h-full flex flex-col justify-between">
       {/* Header */}
-      <h3 className="text-[15px] font-bold text-[#111827] mb-2">
+      <h3 className="text-sm sm:text-[15px] font-bold text-[#111827] mb-2">
         Tasks Overview
       </h3>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 my-auto">
+      <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-6 my-auto">
         {/* Donut Chart with Center Total */}
-        <div className="relative h-48 w-48 flex-shrink-0 flex items-center justify-center">
+        <div className="relative h-40 w-40 sm:h-48 sm:w-48 flex-shrink-0 flex items-center justify-center">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -30,8 +30,8 @@ export function TasksOverviewChart() {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                innerRadius={55}
-                outerRadius={74}
+                innerRadius={48}
+                outerRadius={68}
                 paddingAngle={3}
                 stroke="none"
               >
@@ -44,23 +44,23 @@ export function TasksOverviewChart() {
 
           {/* Centered Text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-2.5xl font-black text-[#111827] leading-none">
+            <span className="text-xl sm:text-2.5xl font-black text-[#111827] leading-none">
               {totalTasks}
             </span>
-            <span className="text-[11px] font-semibold text-[#9CA3AF] mt-1">
+            <span className="text-[10px] sm:text-[11px] font-semibold text-[#9CA3AF] mt-0.5">
               Total Tasks
             </span>
           </div>
         </div>
 
         {/* Legend Breakdown */}
-        <div className="flex-1 space-y-3 w-full">
+        <div className="flex-1 space-y-2.5 sm:space-y-3 w-full">
           {data.map((item) => (
             <div
               key={item.name}
               className="flex items-center justify-between text-xs"
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <span
                   className={`h-2.5 w-2.5 rounded-sm flex-shrink-0 ${item.bgClass}`}
                 />

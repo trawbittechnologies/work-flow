@@ -43,33 +43,33 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
   });
 
   return (
-    <div className="bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse text-xs">
+    <div className="bg-white border border-[#EAEDF2] rounded-2xl overflow-hidden shadow-2xs">
+      <div className="overflow-x-auto scrollbar-thin">
+        <table className="w-full text-left border-collapse text-xs min-w-[650px]">
           <thead>
-            <tr className="bg-surface-alt border-b border-border text-text-muted uppercase tracking-wider font-bold">
-              <th className="py-3 px-4 w-10">Done</th>
-              <th className="py-3 px-4 cursor-pointer hover:text-text-primary transition-colors" onClick={() => toggleSort("title")}>
+            <tr className="bg-[#F8F9FA] border-b border-[#EAEDF2] text-[#6B7280] uppercase tracking-wider font-extrabold text-[11px]">
+              <th className="py-3.5 px-4 w-10">Done</th>
+              <th className="py-3.5 px-4 cursor-pointer hover:text-[#111827] transition-colors" onClick={() => toggleSort("title")}>
                 <div className="flex items-center gap-1.5">
                   Title <ArrowUpDown className="h-3.5 w-3.5 opacity-70" />
                 </div>
               </th>
-              <th className="py-3 px-4">Status</th>
-              <th className="py-3 px-4 cursor-pointer hover:text-text-primary transition-colors" onClick={() => toggleSort("priority")}>
+              <th className="py-3.5 px-4">Status</th>
+              <th className="py-3.5 px-4 cursor-pointer hover:text-[#111827] transition-colors" onClick={() => toggleSort("priority")}>
                 <div className="flex items-center gap-1.5">
                   Priority <ArrowUpDown className="h-3.5 w-3.5 opacity-70" />
                 </div>
               </th>
-              <th className="py-3 px-4">Assignee</th>
-              <th className="py-3 px-4 cursor-pointer hover:text-text-primary transition-colors" onClick={() => toggleSort("dueDate")}>
+              <th className="py-3.5 px-4">Assignee</th>
+              <th className="py-3.5 px-4 cursor-pointer hover:text-[#111827] transition-colors" onClick={() => toggleSort("dueDate")}>
                 <div className="flex items-center gap-1.5">
                   Due Date <ArrowUpDown className="h-3.5 w-3.5 opacity-70" />
                 </div>
               </th>
-              <th className="py-3 px-4 w-12"></th>
+              <th className="py-3.5 px-4 w-12 text-right"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border-subtle font-medium text-text-primary">
+          <tbody className="divide-y divide-[#EAEDF2] font-medium text-[#111827]">
             {sortedTasks.map((task) => {
               const isDone = task.status === "DONE";
               const overdue = task.dueDate ? isOverdue(task.dueDate) : false;
@@ -77,10 +77,10 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
               return (
                 <tr
                   key={task.id}
-                  className="hover:bg-surface-alt/50 transition-colors group cursor-pointer"
+                  className="hover:bg-[#F9FAFB] transition-colors group cursor-pointer"
                   onClick={() => onTaskClick?.(task)}
                 >
-                  <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
                     <input
                       type="checkbox"
                       checked={isDone}
@@ -88,50 +88,50 @@ export function TaskTable({ tasks, onTaskClick, onStatusChange }: TaskTableProps
                         const newStatus = e.target.checked ? "DONE" : "TODO";
                         onStatusChange?.(task.id, newStatus);
                       }}
-                      className="h-4 w-4 rounded border-border text-primary focus:ring-primary cursor-pointer transition-colors"
+                      className="h-4 w-4 rounded border-[#D1D5DB] text-[#88C315] focus:ring-[#88C315] cursor-pointer transition-colors"
                     />
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     <div className="flex items-center gap-2.5">
-                      <span className={cn("font-semibold truncate max-w-xs sm:max-w-md transition-colors", isDone && "line-through text-text-muted")}>
+                      <span className={cn("font-bold text-[13px] truncate max-w-xs sm:max-w-md transition-colors", isDone && "line-through text-[#9CA3AF]")}>
                         {task.title}
                       </span>
                       {task._count?.comments > 0 && (
-                        <span className="flex items-center gap-1 text-[11px] text-text-muted bg-surface-alt px-1.5 py-0.5 rounded">
+                        <span className="flex items-center gap-1 text-[11px] font-semibold text-[#6B7280] bg-[#F3F4F6] px-1.5 py-0.5 rounded">
                           <MessageSquare className="h-3 w-3" />
                           {task._count.comments}
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     <StatusBadge status={task.status} />
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     <PriorityBadge priority={task.priority as "LOW" | "MEDIUM" | "HIGH" | "URGENT"} />
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     {task.assignee ? (
                       <div className="flex items-center gap-2">
-                        <Avatar name={task.assignee.name} src={task.assignee.avatar} size="xs" className="ring-0" />
-                        <span className="text-xs truncate max-w-[100px] text-text-secondary">{task.assignee.name}</span>
+                        <Avatar name={task.assignee.name} src={task.assignee.avatar} size="xs" className="ring-1 ring-border" />
+                        <span className="text-xs truncate max-w-[100px] text-[#4B5563] font-semibold">{task.assignee.name}</span>
                       </div>
                     ) : (
-                      <span className="text-xs text-text-muted font-normal italic">Unassigned</span>
+                      <span className="text-xs text-[#9CA3AF] font-normal italic">Unassigned</span>
                     )}
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     {task.dueDate ? (
-                      <span className={cn("flex items-center gap-1.5 text-xs", overdue && !isDone ? "text-danger font-bold bg-danger-subtle px-1.5 py-0.5 rounded inline-flex w-fit" : "text-text-muted")}>
+                      <span className={cn("flex items-center gap-1.5 text-xs font-semibold", overdue && !isDone ? "text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded inline-flex w-fit" : "text-[#6B7280]")}>
                         <CalendarDays className="h-3.5 w-3.5" />
                         {formatDueDate(task.dueDate)}
                       </span>
                     ) : (
-                      <span className="text-xs text-text-muted font-normal">—</span>
+                      <span className="text-xs text-[#9CA3AF] font-normal">—</span>
                     )}
                   </td>
-                  <td className="py-3 px-4 text-right" onClick={(e) => e.stopPropagation()}>
-                    <Button variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-text-muted hover:text-text-primary">
+                  <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                    <Button variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-[#9CA3AF] hover:text-[#111827]">
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </td>

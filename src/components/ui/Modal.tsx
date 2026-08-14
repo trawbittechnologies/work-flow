@@ -16,10 +16,10 @@ interface ModalProps {
 }
 
 const sizeMap = {
-  sm: "max-w-sm",
-  md: "max-w-md",
-  lg: "max-w-lg",
-  xl: "max-w-2xl",
+  sm: "sm:max-w-sm",
+  md: "sm:max-w-md",
+  lg: "sm:max-w-lg",
+  xl: "sm:max-w-2xl",
 };
 
 export function Modal({
@@ -50,7 +50,7 @@ export function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? "modal-title" : undefined}
@@ -64,22 +64,22 @@ export function Modal({
       <div
         ref={ref}
         className={cn(
-          "relative w-full z-10 bg-surface rounded-2xl shadow-2xl border border-border overflow-hidden",
+          "relative w-full max-w-[calc(100vw-1.5rem)] z-10 bg-white rounded-2xl shadow-2xl border border-[#EAEDF2] overflow-hidden flex flex-col max-h-[90vh]",
           "scale-in",
           sizeMap[size],
           className
         )}
       >
         {(title || description) && (
-          <div className="flex items-start justify-between p-5 border-b border-border bg-surface-alt/40">
+          <div className="flex items-start justify-between p-4 sm:p-5 border-b border-[#EAEDF2] bg-[#F8F9FA] shrink-0">
             <div>
               {title && (
-                <h2 id="modal-title" className="text-base font-bold text-text-primary tracking-tight">
+                <h2 id="modal-title" className="text-sm sm:text-base font-bold text-[#111827] tracking-tight">
                   {title}
                 </h2>
               )}
               {description && (
-                <p className="text-xs text-text-secondary mt-0.5 leading-relaxed">{description}</p>
+                <p className="text-[11px] sm:text-xs text-[#6B7280] mt-0.5 leading-relaxed">{description}</p>
               )}
             </div>
             <Button
@@ -87,13 +87,13 @@ export function Modal({
               size="icon"
               onClick={onClose}
               aria-label="Close dialog"
-              className="ml-4 flex-shrink-0 text-text-muted hover:text-text-primary"
+              className="ml-3 sm:ml-4 shrink-0 text-[#9CA3AF] hover:text-[#111827] hover:bg-white"
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         )}
-        <div className="p-5">{children}</div>
+        <div className="p-4 sm:p-5 overflow-y-auto flex-1">{children}</div>
       </div>
     </div>
   );
@@ -122,11 +122,11 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} description={description} size="sm">
-      <div className="flex gap-3 justify-end pt-2">
-        <Button variant="ghost" onClick={onClose} disabled={isLoading}>
+      <div className="flex gap-2.5 sm:gap-3 justify-end pt-2">
+        <Button variant="ghost" onClick={onClose} disabled={isLoading} className="text-xs">
           Cancel
         </Button>
-        <Button variant="danger" onClick={onConfirm} isLoading={isLoading}>
+        <Button variant="danger" onClick={onConfirm} isLoading={isLoading} className="text-xs">
           {confirmLabel}
         </Button>
       </div>

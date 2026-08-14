@@ -18,41 +18,41 @@ export default async function BoardPage() {
   ];
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex items-center justify-between">
+    <div className="space-y-5 sm:space-y-6 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-black tracking-tight text-[#111827]">
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#111827]">
             Kanban Board
           </h1>
-          <p className="text-[13px] font-medium text-[#6B7280] mt-0.5">
+          <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
             Visualize workflow, track progress, and move tasks across columns.
           </p>
         </div>
         <Link
           href="/tasks"
-          className="inline-flex items-center gap-2 h-9 px-4 text-xs font-bold rounded-xl bg-[#88C315] hover:bg-[#77AB12] text-white transition-colors shadow-2xs"
+          className="inline-flex items-center justify-center gap-2 h-9 px-4 text-xs font-bold rounded-xl bg-[#88C315] hover:bg-[#77AB12] text-white transition-colors shadow-2xs self-start sm:self-auto"
         >
           <Plus className="h-4 w-4" /> New Task
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {columns.map((col) => (
           <div
             key={col.title}
-            className="bg-[#F8F9FA] border border-[#EAEDF2] rounded-2xl p-4 min-h-[450px] flex flex-col"
+            className="bg-[#F8F9FA] border border-[#EAEDF2] rounded-2xl p-4 min-h-[360px] sm:min-h-[450px] flex flex-col"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className={`h-2.5 w-2.5 rounded-full ${col.color}`} />
-                <h3 className="text-xs font-bold text-[#111827]">{col.title}</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-[#111827]">{col.title}</h3>
               </div>
               <span className="text-xs font-bold text-[#6B7280] bg-white px-2 py-0.5 rounded-md border border-[#E5E7EB]">
                 {col.count}
               </span>
             </div>
             <div className="flex-1 flex flex-col items-center justify-center text-center p-4 border border-dashed border-[#D1D5DB] rounded-xl bg-white/50">
-              <LayoutGrid className="h-8 w-8 text-[#9CA3AF] mb-2 stroke-[1.5]" />
+              <LayoutGrid className="h-7 w-7 sm:h-8 sm:w-8 text-[#9CA3AF] mb-2 stroke-[1.5]" />
               <p className="text-xs font-medium text-[#6B7280]">
                 Interactive tasks synced with project backlog
               </p>

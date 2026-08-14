@@ -116,60 +116,60 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
   }, [initialProjects]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Header Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 shadow-2xs">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
               Total Projects
             </span>
-            <div className="h-8 w-8 rounded-xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center">
-              <Folder className="h-4 w-4" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center">
+              <Folder className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-2xl font-black text-[#111827] mt-1">{stats.total}</h3>
+          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.total}</h3>
         </div>
 
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 shadow-2xs">
+        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
               In Progress
             </span>
-            <div className="h-8 w-8 rounded-xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center">
-              <TrendingUp className="h-4 w-4" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center">
+              <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-2xl font-black text-[#111827] mt-1">{stats.inProgress}</h3>
+          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.inProgress}</h3>
         </div>
 
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 shadow-2xs">
+        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
               Completed
             </span>
-            <div className="h-8 w-8 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center">
-              <CheckCircle2 className="h-4 w-4" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center">
+              <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-2xl font-black text-[#111827] mt-1">{stats.completed}</h3>
+          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.completed}</h3>
         </div>
 
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 shadow-2xs">
+        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
-              Planning / Pending
+            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+              Planning / Hold
             </span>
-            <div className="h-8 w-8 rounded-xl bg-[#FFFBEB] text-[#F59E0B] flex items-center justify-center">
-              <Layers className="h-4 w-4" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#FFFBEB] text-[#F59E0B] flex items-center justify-center">
+              <Layers className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <h3 className="text-2xl font-black text-[#111827] mt-1">{stats.planning}</h3>
+          <h3 className="text-xl sm:text-2xl font-black text-[#111827] mt-1">{stats.planning}</h3>
         </div>
       </div>
 
       {/* Modern Filter Toolbar */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3 sm:p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
         {/* Search Bar */}
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
@@ -183,19 +183,19 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
         </div>
 
         {/* Status Filters & Actions */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <div className="flex items-center bg-[#F4F5F7] p-1 rounded-xl gap-1">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <div className="flex items-center bg-[#F4F5F7] p-1 rounded-xl gap-0.5 sm:gap-1 overflow-x-auto max-w-full">
             {[
               { label: "All", value: "ALL" },
               { label: "In Progress", value: "IN_PROGRESS" },
               { label: "Pending", value: "PLANNING" },
-              { label: "Completed", value: "COMPLETED" },
+              { label: "Done", value: "COMPLETED" },
             ].map((tab) => (
               <button
                 key={tab.value}
                 onClick={() => setStatusFilter(tab.value)}
                 className={cn(
-                  "px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer",
+                  "px-2.5 sm:px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap",
                   statusFilter === tab.value
                     ? "bg-white text-[#111827] shadow-2xs"
                     : "text-[#6B7280] hover:text-[#111827]"
@@ -211,7 +211,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="h-8 px-3 text-xs font-semibold rounded-xl border border-[#E5E7EB] bg-white text-[#4B5563] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 cursor-pointer"
+              className="h-8 px-2.5 sm:px-3 text-xs font-semibold rounded-xl border border-[#E5E7EB] bg-white text-[#4B5563] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 cursor-pointer"
             >
               <option value="ALL">All Priorities</option>
               <option value="HIGH">High Priority</option>
@@ -223,7 +223,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
 
           <Link
             href="/projects/new"
-            className="inline-flex items-center gap-2 h-8 px-3.5 text-xs font-bold rounded-xl bg-[#88C315] hover:bg-[#77AB12] text-white transition-colors shadow-2xs cursor-pointer ml-auto"
+            className="inline-flex items-center gap-1.5 sm:gap-2 h-8 px-3 sm:px-3.5 text-xs font-bold rounded-xl bg-[#88C315] hover:bg-[#77AB12] text-white transition-colors shadow-2xs cursor-pointer ml-auto"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>New Project</span>
@@ -231,20 +231,20 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
         </div>
       </div>
 
-      {/* Main Table Container with ample min-height so dropdowns never get clipped */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl shadow-2xs min-h-[360px] pb-12">
-        <div className="overflow-x-visible">
-          <table className="w-full text-left border-collapse">
+      {/* Main Table Container with smooth horizontal scrolling */}
+      <div className="bg-white border border-[#EAEDF2] rounded-2xl shadow-2xs min-h-[360px] pb-8 overflow-hidden">
+        <div className="overflow-x-auto scrollbar-thin">
+          <table className="w-full text-left border-collapse min-w-[760px]">
             <thead>
               <tr className="bg-[#F8F9FA] border-b border-[#EAEDF2] text-[11px] font-extrabold uppercase tracking-wider text-[#6B7280]">
-                <th className="py-3.5 pl-6 pr-4 rounded-tl-2xl">Project</th>
+                <th className="py-3.5 pl-6 pr-4">Project</th>
                 <th className="py-3.5 px-4">Status</th>
                 <th className="py-3.5 px-4">Progress</th>
                 <th className="py-3.5 px-4">Priority</th>
                 <th className="py-3.5 px-4">Lead</th>
                 <th className="py-3.5 px-4">Team</th>
                 <th className="py-3.5 px-4">Deadline</th>
-                <th className="py-3.5 pr-6 pl-4 text-right rounded-tr-2xl">Actions</th>
+                <th className="py-3.5 pr-6 pl-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#EAEDF2] text-xs">
@@ -277,25 +277,25 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       className="hover:bg-[#F9FAFC] transition-colors group"
                     >
                       {/* Project Name & Key */}
-                      <td className="py-4.5 pl-6 pr-4">
-                        <div className="flex items-center gap-3.5">
-                          <div className="h-10 w-10 rounded-xl bg-[#88C315] text-white flex items-center justify-center flex-shrink-0 shadow-2xs font-bold text-sm group-hover:scale-105 transition-transform">
+                      <td className="py-4 pl-6 pr-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-[#88C315] text-white flex items-center justify-center shrink-0 shadow-2xs font-bold text-xs sm:text-sm group-hover:scale-105 transition-transform">
                             {project.key.slice(0, 2).toUpperCase()}
                           </div>
                           <div className="min-w-0">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 sm:gap-2">
                               <Link
                                 href={`/projects/${project.id}`}
-                                className="font-bold text-[13px] text-[#111827] hover:text-[#88C315] transition-colors truncate"
+                                className="font-bold text-xs sm:text-[13px] text-[#111827] hover:text-[#88C315] transition-colors truncate max-w-[150px] sm:max-w-[200px]"
                               >
                                 {project.name}
                               </Link>
-                              <span className="text-[10px] font-extrabold px-1.5 py-0.5 bg-[#F3F4F6] text-[#4B5563] rounded border border-[#E5E7EB]">
+                              <span className="text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 bg-[#F3F4F6] text-[#4B5563] rounded border border-[#E5E7EB]">
                                 {project.key}
                               </span>
                             </div>
                             {project.description && (
-                              <p className="text-[11px] text-[#9CA3AF] truncate max-w-xs mt-0.5">
+                              <p className="text-[10px] sm:text-[11px] text-[#9CA3AF] truncate max-w-xs mt-0.5">
                                 {project.description}
                               </p>
                             )}
@@ -304,7 +304,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Interactive Status Badge Dropdown */}
-                      <td className="py-4.5 px-4 relative">
+                      <td className="py-4 px-4 relative">
                         <ProjectStatusSelect
                           projectId={project.id}
                           initialStatus={project.status}
@@ -312,13 +312,13 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Progress Bar & Tasks */}
-                      <td className="py-4.5 px-4 min-w-[160px]">
+                      <td className="py-4 px-4 min-w-[140px] sm:min-w-[160px]">
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between text-[11px]">
                             <span className="font-bold text-[#111827]">
                               {project.progress}%
                             </span>
-                            <span className="text-[#9CA3AF] font-medium">
+                            <span className="text-[#9CA3AF] font-medium text-[10px] sm:text-[11px]">
                               {project.completedTasks}/{project.totalTasks} tasks
                             </span>
                           </div>
@@ -332,7 +332,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Priority */}
-                      <td className="py-4.5 px-4">
+                      <td className="py-4 px-4">
                         <span
                           className={cn(
                             "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border border-transparent",
@@ -342,7 +342,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                         >
                           <span
                             className={cn(
-                              "h-1.5 w-1.5 rounded-full flex-shrink-0",
+                              "h-1.5 w-1.5 rounded-full shrink-0",
                               priority.dot
                             )}
                           />
@@ -351,7 +351,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Lead */}
-                      <td className="py-4.5 px-4">
+                      <td className="py-4 px-4">
                         {project.lead ? (
                           <div className="flex items-center gap-2">
                             <Avatar
@@ -360,7 +360,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                               size="xs"
                               className="h-6 w-6 rounded-full ring-1 ring-border"
                             />
-                            <span className="font-semibold text-[#374151] truncate max-w-[100px]">
+                            <span className="font-semibold text-[#374151] truncate max-w-[90px]">
                               {project.lead.name}
                             </span>
                           </div>
@@ -370,7 +370,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Team Avatars Stack */}
-                      <td className="py-4.5 px-4">
+                      <td className="py-4 px-4">
                         <div className="flex items-center -space-x-1.5 overflow-hidden">
                           {project.members?.slice(0, 3).map((m, i) => (
                             <Avatar
@@ -390,7 +390,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Deadline */}
-                      <td className="py-4.5 px-4">
+                      <td className="py-4 px-4">
                         <div className="flex items-center gap-1.5 text-[#6B7280]">
                           <Calendar className="h-3.5 w-3.5 text-[#9CA3AF]" />
                           <span className="font-medium">{formattedDeadline}</span>
@@ -398,7 +398,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       </td>
 
                       {/* Actions */}
-                      <td className="py-4.5 pr-6 pl-4 text-right relative">
+                      <td className="py-4 pr-6 pl-4 text-right relative">
                         <div className="relative inline-block" ref={activeActionMenu === project.id ? actionMenuRef : undefined}>
                           <button
                             type="button"

@@ -29,7 +29,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <AblyProvider>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#F6F8FA] antialiased text-[#111827]">
         <Suspense fallback={null}>
           <TopProgressBar />
         </Suspense>
@@ -37,10 +37,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <Header user={user} unreadNotifications={unreadCount} />
         <CommandCenter />
         <main
-          className="md:ml-[var(--sidebar-width)] pt-[var(--header-height)] pb-16 md:pb-0 min-h-screen transition-all duration-200 ease-in-out"
+          className="md:ml-[var(--sidebar-width)] pt-[var(--header-height)] pb-24 md:pb-12 min-h-screen transition-all duration-200 ease-in-out"
           id="main-content"
         >
-          <div className="p-4 md:p-8 max-w-[1600px] mx-auto animate-in">
+          <div className="p-3.5 sm:p-6 lg:p-8 max-w-[1600px] mx-auto animate-in">
             {children}
           </div>
         </main>

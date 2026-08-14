@@ -6,7 +6,6 @@ import {
   CheckCheck, 
   UserPlus, 
   ClipboardList, 
-  MessageSquare, 
   AtSign, 
   Sparkles,
   Layers,
@@ -196,23 +195,23 @@ export default function NotificationsPage() {
   });
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 pb-12">
+    <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6 pb-12">
       {/* Brand Header & Action Toolbar */}
-      <div className="bg-surface border border-border rounded-2xl p-6 card-shadow flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <FlowdeskBrandMark className="w-10 h-10 rounded-2xl" />
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-black text-[#0A1237] dark:text-white tracking-tight">
+      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 sm:gap-3.5">
+          <FlowdeskBrandMark className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl shrink-0" />
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg sm:text-xl font-black text-[#111827] tracking-tight truncate">
                 Notifications
               </h1>
               {unreadCount > 0 && (
-                <span className="px-2.5 py-0.5 rounded-full bg-[#C3D946] text-[#0A1237] text-xs font-black glow-lime">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#88C315] text-white text-[11px] sm:text-xs font-black shadow-2xs">
                   {unreadCount} new
                 </span>
               )}
             </div>
-            <p className="text-xs font-semibold text-text-muted mt-0.5">
+            <p className="text-[11px] sm:text-xs font-medium text-[#6B7280] mt-0.5 truncate">
               Real-time activity stream & updates for Flowdesk Workspace
             </p>
           </div>
@@ -223,7 +222,7 @@ export default function NotificationsPage() {
             variant="primary"
             size="sm"
             onClick={handleMarkAllRead}
-            className="self-start md:self-auto shadow-xs"
+            className="self-start md:self-auto shadow-2xs text-xs"
           >
             <CheckCheck className="h-4 w-4 mr-1.5" />
             <span>Mark all read</span>
@@ -232,64 +231,64 @@ export default function NotificationsPage() {
       </div>
 
       {/* Filter Tabs Toolbar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-border">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-thin border-b border-[#EAEDF2]">
         <button
           onClick={() => setActiveTab("ALL")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "ALL"
-              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
-              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
+              ? "bg-[#111827] text-white shadow-2xs"
+              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
           }`}
         >
-          <Layers className="h-4 w-4" />
+          <Layers className="h-3.5 w-3.5" />
           <span>All ({notifications.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab("UNREAD")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "UNREAD"
-              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
-              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
+              ? "bg-[#111827] text-white shadow-2xs"
+              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
           }`}
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-3.5 w-3.5" />
           <span>Unread ({unreadCount})</span>
         </button>
 
         <button
           onClick={() => setActiveTab("PROJECT")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "PROJECT"
-              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
-              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
+              ? "bg-[#111827] text-white shadow-2xs"
+              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
           }`}
         >
-          <UserPlus className="h-4 w-4" />
+          <UserPlus className="h-3.5 w-3.5" />
           <span>Projects</span>
         </button>
 
         <button
           onClick={() => setActiveTab("TASK")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "TASK"
-              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
-              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
+              ? "bg-[#111827] text-white shadow-2xs"
+              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
           }`}
         >
-          <ClipboardList className="h-4 w-4" />
+          <ClipboardList className="h-3.5 w-3.5" />
           <span>Tasks</span>
         </button>
 
         <button
           onClick={() => setActiveTab("MENTION")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "MENTION"
-              ? "bg-[#0A1237] text-[#C3D946] shadow-xs"
-              : "text-text-secondary hover:text-text-primary hover:bg-surface-alt"
+              ? "bg-[#111827] text-white shadow-2xs"
+              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
           }`}
         >
-          <AtSign className="h-4 w-4" />
+          <AtSign className="h-3.5 w-3.5" />
           <span>Mentions & Chat</span>
         </button>
       </div>
@@ -298,7 +297,7 @@ export default function NotificationsPage() {
       {loading ? (
         <div className="space-y-3">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-20 w-full rounded-2xl bg-surface-alt" />
+            <Skeleton key={i} className="h-20 w-full rounded-2xl" />
           ))}
         </div>
       ) : filteredNotifications.length > 0 ? (
@@ -321,14 +320,14 @@ export default function NotificationsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-surface border border-border rounded-2xl p-12 text-center card-shadow">
-          <div className="w-12 h-12 rounded-2xl bg-[#0A1237] text-[#C3D946] flex items-center justify-center mx-auto mb-3 shadow-md">
+        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-8 sm:p-12 text-center shadow-2xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center mx-auto mb-3">
             <Sparkles className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-extrabold text-[#0A1237] dark:text-white">
+          <h3 className="text-base font-extrabold text-[#111827]">
             Inbox is clean
           </h3>
-          <p className="text-xs font-medium text-text-muted mt-1 max-w-sm mx-auto">
+          <p className="text-xs font-medium text-[#9CA3AF] mt-1 max-w-sm mx-auto">
             No notifications match your selected filter tab.
           </p>
         </div>

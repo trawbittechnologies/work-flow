@@ -95,7 +95,7 @@ export function KanbanBoard({ initialTasks, projectId, onAddTask, onTaskClick }:
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4 pt-1 items-start min-h-[550px] scrollbar-thin">
+      <div className="flex gap-4 overflow-x-auto pb-6 pt-1 items-start min-h-[550px] scrollbar-thin snap-x snap-mandatory">
         {COLUMNS.map((col) => {
           const colTasks = tasks.filter((t) => t.status === col.id);
           return (
