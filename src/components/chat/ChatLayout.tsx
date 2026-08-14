@@ -11,11 +11,8 @@ import {
   Plus, 
   Search, 
   MessageSquarePlus, 
-  Phone, 
-  Video, 
   Info, 
   X,
-  FileText,
   Bell,
   ChevronLeft,
 } from "lucide-react";
@@ -343,24 +340,8 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                 </div>
               </div>
 
-              {/* Call & Info Action Toolbar */}
+              {/* Info Action Toolbar */}
               <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-[#9CA3AF] hover:text-[#111827]"
-                  title="Audio call"
-                >
-                  <Phone className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-[#9CA3AF] hover:text-[#111827]"
-                  title="Video call"
-                >
-                  <Video className="h-4 w-4" />
-                </Button>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -415,15 +396,6 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                         Mute Notifications
                       </span>
                       <span className="text-[10px] text-[#9CA3AF]">Off</span>
-                    </button>
-                    <button className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F9FAFB] text-xs font-bold text-[#4B5563] cursor-pointer">
-                      <span className="flex items-center gap-2.5">
-                        <FileText className="h-4 w-4 text-[#9CA3AF]" />
-                        Shared Files
-                      </span>
-                      <span className="text-[10px] font-bold bg-[#F3F4F6] border border-[#E5E7EB] px-1.5 py-0.5 rounded">
-                        {activeConversation.messages?.filter((m: { attachments?: unknown[] }) => m.attachments?.length).length || 0}
-                      </span>
                     </button>
                   </div>
 
