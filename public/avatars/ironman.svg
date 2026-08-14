@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-iron" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#cc2200"/>
+      <stop offset="100%" stop-color="#6a0000"/>
+    </radialGradient>
+    <radialGradient id="arc" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#aaddff"/>
+      <stop offset="50%" stop-color="#44aaff"/>
+      <stop offset="100%" stop-color="#0044cc"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#1a0000" stroke="#cc4400" stroke-width="3"/>
+  <!-- Helmet main -->
+  <ellipse cx="60" cy="58" rx="36" ry="40" fill="url(#bg-iron)"/>
+  <!-- Gold face plate sections -->
+  <path d="M38 55 Q45 50 53 53 L53 75 Q45 78 38 72Z" fill="#cc8800"/>
+  <path d="M82 55 Q75 50 67 53 L67 75 Q75 78 82 72Z" fill="#cc8800"/>
+  <!-- Center face dark panel -->
+  <rect x="53" y="53" width="14" height="22" rx="2" fill="#550000"/>
+  <!-- Eye slits glowing -->
+  <rect x="40" y="54" rx="3" ry="3" width="16" height="6" fill="#44aaff" filter="url(#glow)"/>
+  <rect x="64" y="54" rx="3" ry="3" width="16" height="6" fill="#44aaff" filter="url(#glow)"/>
+  <!-- Chin area -->
+  <path d="M48 75 L60 90 L72 75Z" fill="#cc8800"/>
+  <!-- Helmet top -->
+  <path d="M24 50 Q30 22 60 18 Q90 22 96 50 Q85 38 60 36 Q35 38 24 50Z" fill="#cc2200"/>
+  <!-- Cheek panels -->
+  <path d="M24 50 Q26 35 35 28 Q30 40 24 50Z" fill="#cc8800"/>
+  <path d="M96 50 Q94 35 85 28 Q90 40 96 50Z" fill="#cc8800"/>
+  <!-- Arc reactor on chest -->
+  <circle cx="60" cy="100" r="12" fill="#001133" stroke="#2266cc" stroke-width="2"/>
+  <circle cx="60" cy="100" r="7" fill="url(#arc)" filter="url(#glow)"/>
+  <circle cx="60" cy="100" r="4" fill="#aaddff" filter="url(#glow)"/>
+  <!-- Helmet lines -->
+  <line x1="60" y1="18" x2="60" y2="90" stroke="#880000" stroke-width="0.8" opacity="0.5"/>
+</svg>

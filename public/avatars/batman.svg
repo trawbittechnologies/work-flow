@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-bat" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <radialGradient id="eye-bat" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dddddd"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#000000" stroke="#f5c800" stroke-width="3"/>
+  <!-- Cowl background -->
+  <ellipse cx="60" cy="58" rx="38" ry="42" fill="url(#bg-bat)"/>
+  <!-- Bat ears -->
+  <path d="M38 28 L28 8 L44 24Z" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <path d="M82 28 L92 8 L76 24Z" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <!-- Cowl forehead -->
+  <path d="M38 28 Q60 18 82 28 Q75 20 60 18 Q45 20 38 28Z" fill="#1a1a1a"/>
+  <!-- Cowl sides -->
+  <path d="M22 55 Q24 40 38 28 Q28 42 24 60Z" fill="#111"/>
+  <path d="M98 55 Q96 40 82 28 Q92 42 96 60Z" fill="#111"/>
+  <!-- Mask eye area (white lenses) -->
+  <ellipse cx="44" cy="54" rx="14" ry="10" fill="url(#eye-bat)" transform="rotate(-10 44 54)"/>
+  <ellipse cx="76" cy="54" rx="14" ry="10" fill="url(#eye-bat)" transform="rotate(10 76 54)"/>
+  <!-- Pupils -->
+  <ellipse cx="44" cy="54" rx="9" ry="7" fill="#222" transform="rotate(-10 44 54)"/>
+  <ellipse cx="76" cy="54" rx="9" ry="7" fill="#222" transform="rotate(10 76 54)"/>
+  <!-- Eye shine -->
+  <ellipse cx="40" cy="51" rx="3" ry="2" fill="white" opacity="0.3" transform="rotate(-10 40 51)"/>
+  <ellipse cx="72" cy="51" rx="3" ry="2" fill="white" opacity="0.3" transform="rotate(10 72 51)"/>
+  <!-- Nose area -->
+  <path d="M56 64 Q60 68 64 64 Q62 72 60 73 Q58 72 56 64Z" fill="#111"/>
+  <!-- Mouth grimace -->
+  <path d="M48 76 Q52 72 60 73 Q68 72 72 76" stroke="#444" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Lower cowl -->
+  <path d="M30 70 Q35 88 40 96 Q50 105 60 106 Q70 105 80 96 Q85 88 90 70 Q78 80 60 80 Q42 80 30 70Z" fill="#1a1a1a"/>
+  <!-- Bat symbol on chest -->
+  <path d="M44 90 Q52 84 60 88 Q68 84 76 90 Q68 95 60 92 Q52 95 44 90Z" fill="#f5c800" opacity="0.85"/>
+  <path d="M53 88 Q60 83 67 88 Q63 86 60 86 Q57 86 53 88Z" fill="#f5c800" opacity="0.85"/>
+</svg>

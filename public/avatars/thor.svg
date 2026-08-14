@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-thor" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#3355cc"/>
+      <stop offset="100%" stop-color="#111155"/>
+    </radialGradient>
+    <radialGradient id="face-thor" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#f5d0a0"/>
+      <stop offset="100%" stop-color="#d4a060"/>
+    </radialGradient>
+    <filter id="lightning-glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#080820" stroke="#4466ee" stroke-width="3"/>
+  <!-- Lightning background -->
+  <path d="M15 20 L25 45 L18 45 L30 70" stroke="#aaccff" stroke-width="2" fill="none" opacity="0.4" filter="url(#lightning-glow)"/>
+  <path d="M105 25 L95 50 L102 50 L90 75" stroke="#aaccff" stroke-width="2" fill="none" opacity="0.4" filter="url(#lightning-glow)"/>
+  <!-- Winged helmet -->
+  <ellipse cx="60" cy="44" rx="30" ry="22" fill="#777799"/>
+  <!-- Helmet wings -->
+  <path d="M30 38 Q15 30 12 50 Q20 44 30 48Z" fill="#aaaacc"/>
+  <path d="M90 38 Q105 30 108 50 Q100 44 90 48Z" fill="#aaaacc"/>
+  <!-- Helmet top ridge -->
+  <rect x="54" y="22" width="12" height="6" rx="3" fill="#aaaacc"/>
+  <!-- Helmet rim -->
+  <path d="M30 48 Q60 52 90 48 L88 55 Q60 60 32 55Z" fill="#555577"/>
+  <!-- Face -->
+  <ellipse cx="60" cy="66" rx="24" ry="22" fill="url(#face-thor)"/>
+  <!-- Beard -->
+  <path d="M42 78 Q50 90 60 92 Q70 90 78 78 L75 80 Q68 95 60 96 Q52 95 45 80Z" fill="#cc9900"/>
+  <!-- Mustache -->
+  <path d="M50 76 Q55 79 60 77 Q65 79 70 76" stroke="#cc9900" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyes -->
+  <ellipse cx="50" cy="64" rx="6" ry="5" fill="#3355cc"/>
+  <ellipse cx="70" cy="64" rx="6" ry="5" fill="#3355cc"/>
+  <ellipse cx="50" cy="64" rx="4" ry="3" fill="#1a2299"/>
+  <ellipse cx="70" cy="64" rx="4" ry="3" fill="#1a2299"/>
+  <circle cx="52" cy="62" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="72" cy="62" r="1.5" fill="white" opacity="0.7"/>
+  <!-- Eyebrows -->
+  <path d="M44 58 Q50 55 56 58" stroke="#cc9900" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M76 58 Q70 55 64 58" stroke="#cc9900" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Nose -->
+  <path d="M57 70 Q60 74 63 70" stroke="#d4a060" stroke-width="1.5" fill="none"/>
+  <!-- Ears -->
+  <ellipse cx="36" cy="65" rx="5" ry="7" fill="url(#face-thor)"/>
+  <ellipse cx="84" cy="65" rx="5" ry="7" fill="url(#face-thor)"/>
+  <!-- Long blonde hair sides -->
+  <path d="M36 50 Q28 62 30 80 Q34 74 36 66Z" fill="#f5c800" opacity="0.85"/>
+  <path d="M84 50 Q92 62 90 80 Q86 74 84 66Z" fill="#f5c800" opacity="0.85"/>
+  <!-- Mjolnir hint at bottom -->
+  <rect x="52" y="100" width="16" height="10" rx="2" fill="#777799" stroke="#aaaacc" stroke-width="1"/>
+  <rect x="56" y="110" width="8" height="8" rx="1" fill="#555577"/>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-cap" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1144cc"/>
+      <stop offset="100%" stop-color="#051a66"/>
+    </radialGradient>
+    <radialGradient id="face-cap" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#f5c8a0"/>
+      <stop offset="100%" stop-color="#d49560"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#020d33" stroke="#cc0000" stroke-width="3"/>
+  <!-- Shield in background -->
+  <circle cx="60" cy="60" r="50" fill="none" stroke="#cc0000" stroke-width="8" opacity="0.2"/>
+  <circle cx="60" cy="60" r="38" fill="none" stroke="#f0f0f0" stroke-width="6" opacity="0.15"/>
+  <!-- Body/suit -->
+  <path d="M30 95 Q60 85 90 95 L95 120 L25 120Z" fill="#1144cc"/>
+  <!-- A symbol on chest -->
+  <path d="M52 72 L60 58 L68 72 L65 72 L63 67 L57 67 L55 72Z" fill="#f5c800" opacity="0.85"/>
+  <line x1="57" y1="67" x2="63" y2="67" stroke="#1144cc" stroke-width="1.5"/>
+  <!-- Wings on helmet -->
+  <path d="M32 48 Q22 38 24 28 Q30 35 36 42Z" fill="#e0e0e0"/>
+  <path d="M88 48 Q98 38 96 28 Q90 35 84 42Z" fill="#e0e0e0"/>
+  <!-- Helmet blue top -->
+  <path d="M36 42 Q60 24 84 42 Q78 30 60 28 Q42 30 36 42Z" fill="#1144cc"/>
+  <path d="M38 42 Q38 36 42 32 Q36 36 36 42Z" fill="#cc0000"/>
+  <path d="M82 42 Q82 36 78 32 Q84 36 84 42Z" fill="#cc0000"/>
+  <!-- Face below helmet rim -->
+  <path d="M36 42 Q38 55 36 66 Q40 54 40 42Z" fill="#e0e0e0"/>
+  <path d="M84 42 Q82 55 84 66 Q80 54 80 42Z" fill="#e0e0e0"/>
+  <!-- Face -->
+  <ellipse cx="60" cy="58" rx="22" ry="22" fill="url(#face-cap)"/>
+  <!-- Helmet rim -->
+  <path d="M38 44 Q60 48 82 44 L80 50 Q60 54 40 50Z" fill="#e0e0e0"/>
+  <!-- A on helmet -->
+  <text x="60" y="42" text-anchor="middle" font-family="Arial Black" font-size="10" fill="#f5c800" font-weight="900">A</text>
+  <!-- Eyes -->
+  <ellipse cx="50" cy="57" rx="6" ry="5" fill="#3355bb"/>
+  <ellipse cx="70" cy="57" rx="6" ry="5" fill="#3355bb"/>
+  <ellipse cx="50" cy="57" rx="4" ry="3" fill="#112266"/>
+  <ellipse cx="70" cy="57" rx="4" ry="3" fill="#112266"/>
+  <circle cx="52" cy="55" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="72" cy="55" r="1.5" fill="white" opacity="0.7"/>
+  <!-- Nose -->
+  <path d="M57 63 Q60 67 63 63" stroke="#d4956a" stroke-width="1.5" fill="none"/>
+  <!-- Strong jaw/mouth -->
+  <path d="M52 70 Q60 75 68 70" stroke="#c4756a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Ears -->
+  <ellipse cx="38" cy="57" rx="5" ry="7" fill="url(#face-cap)"/>
+  <ellipse cx="82" cy="57" rx="5" ry="7" fill="url(#face-cap)"/>
+</svg>

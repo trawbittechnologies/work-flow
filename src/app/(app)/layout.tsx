@@ -10,6 +10,7 @@ import { AblyProvider } from "@/components/chat/AblyProvider";
 import { Suspense } from "react";
 import { TopProgressBar } from "@/components/layout/TopProgressBar";
 import { CommandCenter } from "@/components/ui/CommandCenter";
+import { OnboardingProvider } from "@/components/onboarding/OnboardingProvider";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -18,7 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const [user, unreadCount] = await Promise.all([
     prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { id: true, name: true, email: true, avatar: true, role: true },
+      select: { id: true, name: true, email: true, avatar: true, role: true, onboardingComplete: true },
     }),
     prisma.notification.count({
       where: { userId: session.user.id, read: false },
@@ -29,27 +30,29 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <AblyProvider>
-      <div className="min-h-screen bg-[#F6F8FA] antialiased text-[#111827]">
-        <Suspense fallback={null}>
-          <TopProgressBar />
-        </Suspense>
-        <Sidebar user={user} unreadNotifications={unreadCount} />
-        <Header user={user} unreadNotifications={unreadCount} />
-        <CommandCenter />
-        <main
-          className="md:ml-[var(--sidebar-width)] pt-[var(--header-height)] pb-24 md:pb-12 min-h-screen transition-all duration-200 ease-in-out"
-          id="main-content"
-        >
-          <div className="p-3.5 sm:p-6 lg:p-8 max-w-[1600px] mx-auto animate-in">
-            {children}
-          </div>
-        </main>
-        <MobileNav unreadNotifications={unreadCount} />
-        <NotificationManager 
-          userId={user.id} 
-          vapidPublicKey={process.env.VAPID_PUBLIC_KEY || process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BBmlN8JNRmRGplWVsYDDZpMyBtKbGUzSbYw-hXeZohNcnxbhSJbm4scyz7n6vDp89fdT_QaoHOqY4C-f-kwP8aQ"} 
-        />
-      </div>
+      <OnboardingProvider user={user}>
+        <div className="min-h-screen bg-[#F6F8FA] antialiased text-[#111827]">
+          <Suspense fallback={null}>
+            <TopProgressBar />
+          </Suspense>
+          <Sidebar user={user} unreadNotifications={unreadCount} />
+          <Header user={user} unreadNotifications={unreadCount} />
+          <CommandCenter />
+          <main
+            className="md:ml-[var(--sidebar-width)] pt-[var(--header-height)] pb-24 md:pb-12 min-h-screen transition-all duration-200 ease-in-out"
+            id="main-content"
+          >
+            <div className="p-3.5 sm:p-6 lg:p-8 max-w-[1600px] mx-auto animate-in">
+              {children}
+            </div>
+          </main>
+          <MobileNav unreadNotifications={unreadCount} />
+          <NotificationManager 
+            userId={user.id} 
+            vapidPublicKey={process.env.VAPID_PUBLIC_KEY || process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BBmlN8JNRmRGplWVsYDDZpMyBtKbGUzSbYw-hXeZohNcnxbhSJbm4scyz7n6vDp89fdT_QaoHOqY4C-f-kwP8aQ"} 
+          />
+        </div>
+      </OnboardingProvider>
     </AblyProvider>
   );
 }

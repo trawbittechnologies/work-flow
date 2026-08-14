@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="face-sup" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#f5c89a"/>
+      <stop offset="100%" stop-color="#d4956a"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#0d2b8a" stroke="#d4001a" stroke-width="3"/>
+  <!-- Cape -->
+  <path d="M20 80 Q60 110 100 80 L100 120 L20 120Z" fill="#d4001a" opacity="0.9"/>
+  <!-- Body/suit -->
+  <rect x="35" y="75" width="50" height="45" rx="5" fill="#1a3fcc"/>
+  <!-- S shield -->
+  <ellipse cx="60" cy="90" rx="13" ry="10" fill="#d4001a"/>
+  <ellipse cx="60" cy="90" rx="10" ry="8" fill="#f5c800"/>
+  <text x="60" y="94" text-anchor="middle" font-family="Arial Black" font-size="11" fill="#d4001a" font-weight="900">S</text>
+  <!-- Neck -->
+  <rect x="52" y="67" width="16" height="10" rx="3" fill="url(#face-sup)"/>
+  <!-- Face -->
+  <ellipse cx="60" cy="52" rx="22" ry="24" fill="url(#face-sup)"/>
+  <!-- Hair -->
+  <path d="M38 44 Q60 22 82 44 Q80 36 60 30 Q40 30 38 44Z" fill="#1a0a00"/>
+  <path d="M57 35 Q60 30 63 35 Q61 28 60 26 Q59 28 57 35Z" fill="#1a0a00"/>
+  <!-- Eyes -->
+  <ellipse cx="50" cy="50" rx="5" ry="4" fill="#1a3fcc"/>
+  <ellipse cx="70" cy="50" rx="5" ry="4" fill="#1a3fcc"/>
+  <ellipse cx="50" cy="50" rx="3" ry="2.5" fill="#0d2460"/>
+  <ellipse cx="70" cy="50" rx="3" ry="2.5" fill="#0d2460"/>
+  <circle cx="52" cy="49" r="1" fill="white" opacity="0.7"/>
+  <circle cx="72" cy="49" r="1" fill="white" opacity="0.7"/>
+  <!-- Nose -->
+  <ellipse cx="60" cy="58" rx="3" ry="2" fill="#c4856a" opacity="0.6"/>
+  <!-- Smile -->
+  <path d="M52 64 Q60 70 68 64" stroke="#c4856a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Chin cleft -->
+  <path d="M59 72 Q60 74 61 72" stroke="#c4856a" stroke-width="1" fill="none"/>
+</svg>

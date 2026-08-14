@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   if (!adminId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {
-    const { name, email, password, role } = await req.json();
+    const { name, email, password, role, designation } = await req.json();
     if (!name || !email || !password) {
       return NextResponse.json({ error: "name, email, and password are required" }, { status: 400 });
     }
@@ -58,8 +58,10 @@ export async function POST(req: Request) {
         email: email.toLowerCase(),
         passwordHash,
         role: role === "ADMIN" ? "ADMIN" : "MEMBER",
+        designation: designation ? designation.trim() : undefined,
+        onboardingComplete: false,
       },
-      select: { id: true, name: true, email: true, role: true, isActive: true, createdAt: true },
+      select: { id: true, name: true, email: true, role: true, designation: true, isActive: true, createdAt: true },
     });
 
     return NextResponse.json({ success: true, data: user }, { status: 201 });

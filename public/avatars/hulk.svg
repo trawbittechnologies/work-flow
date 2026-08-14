@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-hulk" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#22bb44"/>
+      <stop offset="100%" stop-color="#0a5520"/>
+    </radialGradient>
+    <radialGradient id="face-hulk" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#44dd66"/>
+      <stop offset="100%" stop-color="#1a8833"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#061a0a" stroke="#22bb44" stroke-width="3"/>
+  <!-- Shoulders / body mass -->
+  <ellipse cx="60" cy="105" rx="52" ry="25" fill="#1a8833"/>
+  <ellipse cx="28" cy="88" rx="22" ry="16" fill="#1a8833"/>
+  <ellipse cx="92" cy="88" rx="22" ry="16" fill="#1a8833"/>
+  <!-- Torn purple shirt hint -->
+  <path d="M44 78 Q60 72 76 78 L80 95 Q60 100 40 95Z" fill="#6622aa" opacity="0.6"/>
+  <!-- Neck -->
+  <rect x="50" y="70" width="20" height="12" rx="4" fill="url(#face-hulk)"/>
+  <!-- Face -->
+  <ellipse cx="60" cy="52" rx="28" ry="28" fill="url(#face-hulk)"/>
+  <!-- Brow ridge -->
+  <path d="M32 44 Q60 34 88 44 Q80 30 60 28 Q40 30 32 44Z" fill="#0a5520"/>
+  <!-- Angry brows -->
+  <path d="M36 47 Q44 42 52 46" stroke="#0a4418" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M84 47 Q76 42 68 46" stroke="#0a4418" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyes (white with green iris) -->
+  <ellipse cx="46" cy="52" rx="9" ry="7" fill="#ddffdd"/>
+  <ellipse cx="74" cy="52" rx="9" ry="7" fill="#ddffdd"/>
+  <ellipse cx="46" cy="53" rx="6" ry="5" fill="#226622"/>
+  <ellipse cx="74" cy="53" rx="6" ry="5" fill="#226622"/>
+  <ellipse cx="46" cy="53" rx="3" ry="3" fill="#001100"/>
+  <ellipse cx="74" cy="53" rx="3" ry="3" fill="#001100"/>
+  <circle cx="48" cy="51" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="76" cy="51" r="1.5" fill="white" opacity="0.8"/>
+  <!-- Nose wide -->
+  <path d="M54 62 Q60 66 66 62 M56 64 Q60 68 64 64" stroke="#0a5520" stroke-width="1.5" fill="none"/>
+  <!-- Angry mouth / gritted teeth -->
+  <path d="M42 70 Q60 80 78 70" fill="#0a5520" stroke="#0a5520" stroke-width="1"/>
+  <path d="M46 70 Q60 78 74 70" fill="#ccffcc" opacity="0.8"/>
+  <line x1="50" y1="70" x2="50" y2="76" stroke="#0a5520" stroke-width="1.5"/>
+  <line x1="56" y1="70" x2="56" y2="77" stroke="#0a5520" stroke-width="1.5"/>
+  <line x1="64" y1="70" x2="64" y2="77" stroke="#0a5520" stroke-width="1.5"/>
+  <line x1="70" y1="70" x2="70" y2="76" stroke="#0a5520" stroke-width="1.5"/>
+  <!-- Ear -->
+  <ellipse cx="32" cy="52" rx="6" ry="8" fill="url(#face-hulk)"/>
+  <ellipse cx="88" cy="52" rx="6" ry="8" fill="url(#face-hulk)"/>
+  <!-- Hair -->
+  <path d="M34 40 Q40 22 60 20 Q80 22 86 40 Q75 30 60 28 Q45 30 34 40Z" fill="#0a3a10"/>
+</svg>

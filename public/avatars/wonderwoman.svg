@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-ww" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#cc0022"/>
+      <stop offset="100%" stop-color="#660011"/>
+    </radialGradient>
+    <radialGradient id="face-ww" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#f0c8a0"/>
+      <stop offset="100%" stop-color="#d4905a"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#1a0008" stroke="#f5c800" stroke-width="3"/>
+  <!-- Body / blue suit -->
+  <path d="M30 90 Q60 80 90 90 L95 120 L25 120Z" fill="#1a1acc"/>
+  <!-- Star belt -->
+  <ellipse cx="60" cy="90" rx="20" ry="6" fill="#f5c800" opacity="0.7"/>
+  <!-- Red chest piece -->
+  <path d="M38 70 Q60 65 82 70 Q78 82 60 86 Q42 82 38 70Z" fill="#cc0022"/>
+  <!-- Gold chest eagle -->
+  <path d="M50 74 Q60 70 70 74 Q65 78 60 77 Q55 78 50 74Z" fill="#f5c800"/>
+  <!-- Neck -->
+  <rect x="52" y="63" width="16" height="10" rx="3" fill="url(#face-ww)"/>
+  <!-- Face -->
+  <ellipse cx="60" cy="50" rx="24" ry="24" fill="url(#face-ww)"/>
+  <!-- Hair dark -->
+  <path d="M36 42 Q44 18 60 16 Q76 18 84 42 Q80 26 60 24 Q40 26 36 42Z" fill="#111111"/>
+  <path d="M36 42 Q32 55 34 68 Q30 58 32 45 Q34 44 36 42Z" fill="#111111"/>
+  <path d="M84 42 Q88 55 86 68 Q90 58 88 45 Q86 44 84 42Z" fill="#111111"/>
+  <!-- Golden tiara -->
+  <path d="M36 40 Q60 28 84 40 Q75 35 60 33 Q45 35 36 40Z" fill="#f5c800"/>
+  <path d="M56 33 L60 24 L64 33Z" fill="#f5c800"/>
+  <!-- Red star on tiara -->
+  <path d="M60 30 L61 33 L64 33 L62 35 L63 38 L60 36 L57 38 L58 35 L56 33 L59 33Z" fill="#cc0022" transform="scale(0.6) translate(40 18)"/>
+  <!-- Eyes -->
+  <ellipse cx="50" cy="50" rx="6" ry="5" fill="#2244aa"/>
+  <ellipse cx="70" cy="50" rx="6" ry="5" fill="#2244aa"/>
+  <ellipse cx="50" cy="50" rx="4" ry="3" fill="#112266"/>
+  <ellipse cx="70" cy="50" rx="4" ry="3" fill="#112266"/>
+  <circle cx="52" cy="48" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="72" cy="48" r="1.5" fill="white" opacity="0.7"/>
+  <!-- Brows -->
+  <path d="M44 44 Q50 41 56 44" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M76 44 Q70 41 64 44" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Nose -->
+  <path d="M57 56 Q60 60 63 56" stroke="#d4905a" stroke-width="1.5" fill="none"/>
+  <!-- Smile -->
+  <path d="M52 62 Q60 68 68 62" stroke="#c4755a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Ears -->
+  <ellipse cx="36" cy="50" rx="5" ry="7" fill="url(#face-ww)"/>
+  <ellipse cx="84" cy="50" rx="5" ry="7" fill="url(#face-ww)"/>
+</svg>

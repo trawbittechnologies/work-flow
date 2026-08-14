@@ -112,11 +112,13 @@ model User {
   name         String
   email        String   @unique
   passwordHash String
-  avatar       String?
-  role         UserRole @default(MEMBER)
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  avatar              String?
+  designation         String?
+  role                UserRole @default(MEMBER)
+  isActive            Boolean  @default(true)
+  onboardingComplete  Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   // Relations
   ownedProjects         Project[]            @relation("ProjectOwner")

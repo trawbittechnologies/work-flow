@@ -32,7 +32,7 @@ export default function AdminMembersPage() {
   const [creating, setCreating] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "MEMBER" as "ADMIN" | "MEMBER" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", role: "MEMBER" as "ADMIN" | "MEMBER", designation: "" });
 
   async function loadUsers() {
     try {
@@ -82,7 +82,7 @@ export default function AdminMembersPage() {
       const body = await res.json();
       if (!res.ok) { showError("Failed", body.error); return; }
       success("Member created!", `${form.name || form.email} has been added to the workspace.`);
-      setForm({ name: "", email: "", password: "", role: "MEMBER" });
+      setForm({ name: "", email: "", password: "", role: "MEMBER", designation: "" });
       setIsCreateOpen(false);
       loadUsers();
     } catch {
@@ -262,6 +262,32 @@ export default function AdminMembersPage() {
           <Input label="Full Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Jane Smith" required />
           <Input label="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jane@company.com" required />
           <Input label="Initial Password" type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="password123" required />
+          <div>
+            <label className="text-xs font-semibold text-text-secondary block mb-1.5">Designation</label>
+            <select
+              value={form.designation}
+              onChange={(e) => setForm({ ...form, designation: e.target.value })}
+              className="w-full h-9 px-3 text-sm rounded-[8px] border border-border bg-background text-text-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            >
+              <option value="">Select designation (optional)</option>
+              <option value="Frontend Developer">Frontend Developer</option>
+              <option value="Backend Developer">Backend Developer</option>
+              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="UI/UX Designer">UI/UX Designer</option>
+              <option value="Product Manager">Product Manager</option>
+              <option value="Project Manager">Project Manager</option>
+              <option value="QA Engineer">QA Engineer</option>
+              <option value="DevOps Engineer">DevOps Engineer</option>
+              <option value="Data Analyst">Data Analyst</option>
+              <option value="Scrum Master">Scrum Master</option>
+              <option value="Business Analyst">Business Analyst</option>
+              <option value="Mobile Developer">Mobile Developer</option>
+              <option value="Cloud Architect">Cloud Architect</option>
+              <option value="Security Engineer">Security Engineer</option>
+              <option value="Technical Lead">Technical Lead</option>
+              <option value="CTO / VP Engineering">CTO / VP Engineering</option>
+            </select>
+          </div>
           <div>
             <label className="text-xs font-semibold text-text-secondary block mb-1.5">Role</label>
             <select

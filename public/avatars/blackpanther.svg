@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg-bp" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0a0a18"/>
+    </radialGradient>
+    <radialGradient id="glow-bp" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8855ff"/>
+      <stop offset="100%" stop-color="#4400cc"/>
+    </radialGradient>
+    <filter id="vib-glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="url(#bg-bp)" stroke="#8855ff" stroke-width="3"/>
+  <!-- Vibranium energy pattern -->
+  <circle cx="60" cy="60" r="45" fill="none" stroke="#6633cc" stroke-width="1" opacity="0.4" stroke-dasharray="4 4"/>
+  <circle cx="60" cy="60" r="35" fill="none" stroke="#6633cc" stroke-width="0.5" opacity="0.3"/>
+  <!-- Suit body -->
+  <path d="M28 88 Q60 78 92 88 L95 120 L25 120Z" fill="#111122"/>
+  <!-- Vibranium chest lines -->
+  <path d="M40 75 Q60 68 80 75" stroke="#8855ff" stroke-width="2" fill="none" filter="url(#vib-glow)" opacity="0.8"/>
+  <path d="M44 82 Q60 76 76 82" stroke="#8855ff" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <!-- Panther claw marks on chest -->
+  <path d="M52 72 Q55 65 58 72" stroke="#8855ff" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <path d="M58 72 Q61 65 64 72" stroke="#8855ff" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <path d="M64 72 Q67 65 70 72" stroke="#8855ff" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <!-- Panther mask face -->
+  <ellipse cx="60" cy="54" rx="32" ry="34" fill="#111122"/>
+  <!-- Cat ears -->
+  <path d="M34 32 L28 14 L42 28Z" fill="#111122" stroke="#8855ff" stroke-width="1"/>
+  <path d="M86 32 L92 14 L78 28Z" fill="#111122" stroke="#8855ff" stroke-width="1"/>
+  <path d="M36 30 L31 18 L41 27Z" fill="#2a2a3a"/>
+  <path d="M84 30 L89 18 L79 27Z" fill="#2a2a3a"/>
+  <!-- Mask texture lines -->
+  <line x1="60" y1="20" x2="60" y2="88" stroke="#8855ff" stroke-width="0.5" opacity="0.3"/>
+  <path d="M28 44 Q60 36 92 44" stroke="#8855ff" stroke-width="0.5" fill="none" opacity="0.3"/>
+  <path d="M30 56 Q60 48 90 56" stroke="#8855ff" stroke-width="0.5" fill="none" opacity="0.3"/>
+  <!-- Panther eyes glowing -->
+  <ellipse cx="45" cy="52" rx="11" ry="8" fill="#8855ff" filter="url(#vib-glow)" transform="rotate(-10 45 52)"/>
+  <ellipse cx="75" cy="52" rx="11" ry="8" fill="#8855ff" filter="url(#vib-glow)" transform="rotate(10 75 52)"/>
+  <ellipse cx="45" cy="52" rx="8" ry="6" fill="#cc99ff" transform="rotate(-10 45 52)"/>
+  <ellipse cx="75" cy="52" rx="8" ry="6" fill="#cc99ff" transform="rotate(10 75 52)"/>
+  <ellipse cx="45" cy="52" rx="4" ry="4" fill="#4400cc" transform="rotate(-10 45 52)"/>
+  <ellipse cx="75" cy="52" rx="4" ry="4" fill="#4400cc" transform="rotate(10 75 52)"/>
+  <circle cx="47" cy="50" r="2" fill="white" opacity="0.5"/>
+  <circle cx="77" cy="50" r="2" fill="white" opacity="0.5"/>
+  <!-- Nose -->
+  <ellipse cx="60" cy="64" rx="4" ry="2.5" fill="#222233"/>
+  <!-- Mouth -->
+  <path d="M53 70 Q60 75 67 70" stroke="#333344" stroke-width="1.5" fill="none"/>
+  <!-- Panther whisker lines -->
+  <line x1="38" y1="62" x2="52" y2="64" stroke="#8855ff" stroke-width="0.8" opacity="0.5"/>
+  <line x1="38" y1="66" x2="52" y2="66" stroke="#8855ff" stroke-width="0.8" opacity="0.5"/>
+  <line x1="82" y1="62" x2="68" y2="64" stroke="#8855ff" stroke-width="0.8" opacity="0.5"/>
+  <line x1="82" y1="66" x2="68" y2="66" stroke="#8855ff" stroke-width="0.8" opacity="0.5"/>
+</svg>
