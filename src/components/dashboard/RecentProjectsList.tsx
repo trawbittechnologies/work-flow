@@ -15,6 +15,7 @@ import {
   LayoutGrid,
 } from "lucide-react";
 import { ProjectStatusSelect } from "@/components/projects/ProjectStatusSelect";
+import { ProjectIcon } from "@/components/ui/ProjectIcon";
 
 export interface ProjectItem {
   id: string;

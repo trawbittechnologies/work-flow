@@ -280,8 +280,8 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       {/* Project Name & Key */}
                       <td className="py-4 pl-6 pr-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-[#88C315] text-white flex items-center justify-center shrink-0 shadow-2xs font-bold text-xs sm:text-sm group-hover:scale-105 transition-transform">
-                            {project.key.slice(0, 2).toUpperCase()}
+                          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-[#F3F9DE] text-[#88C315] border border-[#88C315]/20 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                            <ProjectIcon name={project.icon} className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                           </div>
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5 sm:gap-2">
