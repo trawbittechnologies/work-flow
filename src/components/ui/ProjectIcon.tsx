@@ -13,11 +13,13 @@ export type ProjectIconName = typeof PROJECT_ICONS[number];
 
 // Fast lowercase lookup map for Lucide icon components
 const iconLookupMap = new Map<string, React.ComponentType<{ className?: string }>>();
+
 Object.entries(LucideIcons).forEach(([key, component]) => {
   if (typeof component === "function" || (typeof component === "object" && component !== null)) {
-    iconLookupMap.set(key.toLowerCase(), component as React.ComponentType<{ className?: string }>);
+    const comp = component as unknown as React.ComponentType<{ className?: string }>;
+    iconLookupMap.set(key.toLowerCase(), comp);
     // Also strip hyphens/underscores for flexible matching
-    iconLookupMap.set(key.toLowerCase().replace(/[-_]/g, ""), component as React.ComponentType<{ className?: string }>);
+    iconLookupMap.set(key.toLowerCase().replace(/[-_]/g, ""), comp);
   }
 });
 
@@ -32,7 +34,7 @@ export function ProjectIcon({ name, className }: ProjectIconProps) {
     return <Fallback className={cn("h-5 w-5", className)} />;
   }
 
-  // If already a React component / function
+  // If already a React component / element
   if (typeof name === "function" || (typeof name === "object" && React.isValidElement(name))) {
     if (React.isValidElement(name)) {
       return React.cloneElement(name as React.ReactElement<{ className?: string }>, {
@@ -57,7 +59,8 @@ export function ProjectIcon({ name, className }: ProjectIconProps) {
     }
 
     // Direct lookup in lucide icons map
-    const directComp = (LucideIcons as Record<string, React.ComponentType<{ className?: string }>>)[cleanName];
+    const allIcons = LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>;
+    const directComp = allIcons[cleanName];
     if (directComp) {
       const Icon = directComp;
       return <Icon className={cn("h-5 w-5", className)} />;
