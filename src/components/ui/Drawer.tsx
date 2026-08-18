@@ -39,16 +39,16 @@ export function Drawer({ isOpen, onClose, title, children, width = "w-full sm:w-
       {/* Panel */}
       <div
         className={cn(
-          "relative ml-auto h-full bg-white border-l border-[#EAEDF2] shadow-2xl",
+          "relative ml-auto h-full bg-white dark:bg-[#071A49] border-l border-[#DDE2D8] dark:border-[#1E3A7B] shadow-2xl",
           "flex flex-col overflow-hidden slide-in-right",
           width,
           "max-w-[100vw]"
         )}
       >
         {title && (
-          <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-[#EAEDF2] bg-[#F8F9FA] shrink-0">
-            <h2 className="text-base sm:text-lg font-bold text-[#111827] tracking-tight">{title}</h2>
-            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close panel" className="hover:bg-white text-[#9CA3AF] hover:text-[#111827]">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-[#DDE2D8] dark:border-[#1E3A7B] bg-[#F8F9F6] dark:bg-[#041030] shrink-0">
+            <h2 className="text-base sm:text-lg font-bold text-[#071A49] dark:text-white uppercase font-display tracking-tight">{title}</h2>
+            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close panel" className="hover:bg-[#F0F2EC] text-[#8E99A8] hover:text-[#071A49]">
               <X className="h-5 w-5" />
             </Button>
           </div>

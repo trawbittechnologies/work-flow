@@ -59,7 +59,7 @@ export function TopProgressBar() {
     <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
       {/* Top glowing loading bar */}
       <div
-        className="h-[3px] bg-gradient-to-r from-[#88C315] via-[#A3E635] to-[#88C315] transition-all duration-200 ease-out shadow-[0_0_8px_rgba(136,195,21,0.8)]"
+        className="h-[2.5px] bg-gradient-to-r from-[#B7D600] via-[#D1E838] to-[#B7D600] transition-all duration-200 ease-out shadow-[0_0_8px_rgba(183,214,0,0.9)]"
         style={{ width: `${progress}%` }}
       />
     </div>

@@ -55,9 +55,9 @@ function LoginForm() {
         </div>
       )}
 
-      <div className="bg-surface border border-border rounded-2xl p-6 shadow-xl card-shadow">
-        <h2 className="text-lg font-extrabold text-text-primary tracking-tight">Welcome back</h2>
-        <p className="text-xs font-medium text-text-secondary mb-6 mt-0.5">Sign in to your Flowdesk workspace</p>
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-6 shadow-sm">
+        <h2 className="text-lg font-bold uppercase font-display text-[#071A49] tracking-tight">Welcome back</h2>
+        <p className="text-xs font-medium text-[#586274] mb-6 mt-0.5">Sign in to your Flowdesk workspace</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
@@ -74,13 +74,13 @@ function LoginForm() {
             <div className="flex items-center justify-between mb-1.5">
               <label
                 htmlFor="login-password"
-                className="text-xs font-extrabold uppercase tracking-wider text-[#0A1237] dark:text-white"
+                className="text-xs font-bold uppercase tracking-wider text-[#071A49]"
               >
                 Password
               </label>
               <Link
                 href="/forgot-password"
-                className="text-xs font-bold text-text-secondary hover:text-primary transition-colors"
+                className="text-xs font-bold text-[#586274] hover:text-[#071A49] transition-colors"
               >
                 Forgot password?
               </Link>
@@ -106,7 +106,7 @@ function LoginForm() {
           </div>
 
           {serverError && (
-            <div className="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800 rounded-xl px-3.5 py-2.5">
+            <div className="text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-[2px] px-3.5 py-2.5">
               {serverError}
             </div>
           )}
@@ -116,13 +116,13 @@ function LoginForm() {
             variant="primary"
             size="lg"
             isLoading={isSubmitting}
-            className="w-full shadow-md font-bold mt-2"
+            className="w-full font-bold mt-2"
           >
             Sign in
           </Button>
         </form>
 
-        <div className="mt-6 pt-4 border-t border-border-subtle text-center text-xs text-text-muted">
+        <div className="mt-6 pt-4 border-t border-[#DDE2D8] text-center text-xs text-[#586274]">
           Need workspace access? Ask your project owner or admin to invite your email.
         </div>
       </div>

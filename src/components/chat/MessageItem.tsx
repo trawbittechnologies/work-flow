@@ -42,7 +42,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
   if (isDeleted) {
     return (
       <div className={cn("flex flex-col mb-4", isOwn ? "items-end" : "items-start")}>
-        <div className="px-4 py-2 rounded-2xl bg-[#F2F4EA] text-[#8A918A] italic text-xs border border-[#E4E8DD] shadow-xs">
+        <div className="px-4 py-2 rounded-[2px] bg-[#F0F2EC] text-[#586274] italic text-xs border border-[#DDE2D8] shadow-xs">
           This message was deleted
         </div>
       </div>
@@ -55,23 +55,23 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
     <div className={cn("flex flex-col mb-4 group relative", isOwn ? "items-end" : "items-start")}>
       {!isOwn && (
         <div className="flex items-center gap-1.5 ml-1 mb-1">
-          <Avatar name={message.sender?.name || "Member"} src={message.sender?.avatar} size="xs" />
-          <span className="text-[11px] font-bold text-[#172018]">{message.sender?.name}</span>
+          <Avatar name={message.sender?.name || "Member"} src={message.sender?.avatar} size="xs" className="rounded-[2px]" />
+          <span className="text-[11px] font-bold text-[#071A49]">{message.sender?.name}</span>
         </div>
       )}
 
       <div className={cn("relative flex items-center gap-2 max-w-[85%] md:max-w-[75%]", isOwn ? "flex-row-reverse" : "flex-row")}>
         <div
           className={cn(
-            "flex flex-col px-4 py-2.5 rounded-2xl shadow-xs border transition-all",
+            "flex flex-col px-4 py-2.5 rounded-[2px] shadow-xs border transition-all",
             isOwn
-              ? "bg-[#172018] text-white rounded-br-xs border-transparent"
-              : "bg-surface text-[#172018] rounded-bl-xs border-[#E4E8DD]"
+              ? "bg-[#071A49] text-white border-[#071A49]"
+              : "bg-white text-[#071A49] border-[#DDE2D8]"
           )}
         >
           {/* Reply Context Bar */}
           {message.replyTo && (
-            <div className={cn("p-2 rounded-xl mb-2 text-xs border-l-2", isOwn ? "bg-white/10 border-[#C3D946]" : "bg-[#F2F4EA] border-[#172018]")}>
+            <div className={cn("p-2 rounded-[2px] mb-2 text-xs border-l-2", isOwn ? "bg-white/10 border-[#B7D600]" : "bg-[#F0F2EC] border-[#071A49]")}>
               <p className="font-bold">{message.replyTo.sender?.name}</p>
               <p className="opacity-80 truncate">{message.replyTo.content || "Attachment"}</p>
             </div>
@@ -89,7 +89,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
                 <img
                   src={att.url}
                   alt={att.filename}
-                  className="rounded-xl max-w-full h-auto object-cover max-h-64 border border-border shadow-xs"
+                  className="rounded-[2px] max-w-full h-auto object-cover max-h-64 border border-[#DDE2D8] shadow-xs"
                   loading="lazy"
                 />
               ) : (
@@ -98,11 +98,11 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
                   target="_blank"
                   rel="noreferrer"
                   className={cn(
-                    "flex items-center gap-2.5 p-2.5 rounded-xl transition-colors border",
-                    isOwn ? "bg-white/10 hover:bg-white/20 border-white/10" : "bg-[#F2F4EA] hover:bg-[#F2F4EA]/80 border-[#E4E8DD]"
+                    "flex items-center gap-2.5 p-2.5 rounded-[2px] transition-colors border",
+                    isOwn ? "bg-white/10 hover:bg-white/20 border-white/10" : "bg-[#F0F2EC] hover:bg-[#F0F2EC]/80 border-[#DDE2D8]"
                   )}
                 >
-                  <FileText className={cn("h-5 w-5", isOwn ? "text-[#C3D946]" : "text-[#172018]")} />
+                  <FileText className={cn("h-5 w-5", isOwn ? "text-[#B7D600]" : "text-[#071A49]")} />
                   <div className="flex flex-col text-xs truncate max-w-[160px]">
                     <span className="font-bold truncate">{att.filename}</span>
                     <span className="opacity-70 text-[10px]">{(att.size / 1024 / 1024).toFixed(2)} MB</span>
@@ -114,27 +114,27 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
 
           {/* Emoji Reactions display */}
           {Object.keys(reactions).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2 pt-1 border-t border-border-subtle/40">
+            <div className="flex flex-wrap gap-1 mt-2 pt-1 border-t border-[#DDE2D8]/40">
               {Object.entries(reactions).map(([emoji, count]) => (
                 <button
                   key={emoji}
                   onClick={() => handleToggleReaction(emoji)}
-                  className="px-2 py-0.5 rounded-full bg-[#F2F4EA] border border-border text-[11px] font-bold flex items-center gap-1 hover:scale-105 transition-transform"
+                  className="px-2 py-0.5 rounded-[2px] bg-[#F0F2EC] border border-[#DDE2D8] text-[11px] font-bold flex items-center gap-1 hover:scale-105 transition-transform"
                 >
                   <span>{emoji}</span>
-                  <span className="text-[10px] text-[#8A918A]">{count}</span>
+                  <span className="text-[10px] text-[#586274]">{count}</span>
                 </button>
               ))}
             </div>
           )}
 
-          {/* Timestamp & WhatsApp Double Checkmark */}
-          <div className={cn("flex items-center justify-end gap-1 mt-1 text-[10px] font-bold", isOwn ? "text-[#C3D946]" : "text-[#8A918A]")}>
+          {/* Timestamp & Checkmark */}
+          <div className={cn("flex items-center justify-end gap-1 mt-1 text-[10px] font-mono font-bold", isOwn ? "text-[#B7D600]" : "text-[#8E99A8]")}>
             <span>{format(message.createdAt ? new Date(message.createdAt) : new Date(0), "h:mm a")}</span>
             {message.editedAt && <span className="italic">Edited</span>}
             {isOwn && (
               <span title="Delivered & Read">
-                <CheckCheck className="h-3.5 w-3.5 text-[#C3D946]" />
+                <CheckCheck className="h-3.5 w-3.5 text-[#B7D600]" />
               </span>
             )}
           </div>
@@ -143,7 +143,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
         {/* Hover Action Bar */}
         <div
           className={cn(
-            "opacity-0 group-hover:opacity-100 flex items-center gap-0.5 bg-surface border border-border rounded-xl shadow-md px-1.5 py-1 transition-all z-10",
+            "opacity-0 group-hover:opacity-100 flex items-center gap-0.5 bg-white border border-[#DDE2D8] rounded-[2px] shadow-sm px-1.5 py-1 transition-all z-10",
             isOwn ? "flex-row-reverse" : "flex-row"
           )}
         >
@@ -152,7 +152,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
             <button
               key={emoji}
               onClick={() => handleToggleReaction(emoji)}
-              className="p-1 hover:bg-[#F2F4EA] rounded-lg text-xs transition-transform active:scale-125 cursor-pointer"
+              className="p-1 hover:bg-[#F0F2EC] rounded-[2px] text-xs transition-transform active:scale-125 cursor-pointer"
             >
               {emoji}
             </button>
@@ -160,7 +160,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
 
           <button
             onClick={() => setShowEmojiPicker((o) => !o)}
-            className="p-1 text-[#8A918A] hover:text-[#172018] rounded-lg hover:bg-[#F2F4EA] transition-colors cursor-pointer"
+            className="p-1 text-[#8E99A8] hover:text-[#071A49] rounded-[2px] hover:bg-[#F0F2EC] transition-colors cursor-pointer"
             title="Add reaction"
           >
             <Smile className="h-3.5 w-3.5" />
@@ -168,7 +168,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
 
           <button
             onClick={() => setReplyingTo(message)}
-            className="p-1 text-[#8A918A] hover:text-[#172018] rounded-lg hover:bg-[#F2F4EA] transition-colors cursor-pointer"
+            className="p-1 text-[#8E99A8] hover:text-[#071A49] rounded-[2px] hover:bg-[#F0F2EC] transition-colors cursor-pointer"
             title="Reply in thread"
           >
             <MessageCircle className="h-3.5 w-3.5" />
@@ -177,7 +177,7 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
           {isOwn && (
             <button
               onClick={handleDelete}
-              className="p-1 text-[#8A918A] hover:text-[#D64545] rounded-lg hover:bg-[#FCEBEB] transition-colors cursor-pointer"
+              className="p-1 text-[#8E99A8] hover:text-red-600 rounded-[2px] hover:bg-red-50 transition-colors cursor-pointer"
               title="Delete message"
             >
               <Trash2 className="h-3.5 w-3.5" />
@@ -186,12 +186,12 @@ export function MessageItem({ message, isOwn }: { message: any; isOwn: boolean }
 
           {/* Quick Emoji Picker Drawer */}
           {showEmojiPicker && (
-            <div className="absolute top-full mt-1 bg-surface border border-border rounded-xl p-2 shadow-xl flex gap-1.5 z-30">
+            <div className="absolute top-full mt-1 bg-white border border-[#DDE2D8] rounded-[2px] p-2 shadow-sm flex gap-1.5 z-30">
               {quickEmojis.map((emoji) => (
                 <button
                   key={emoji}
                   onClick={() => handleToggleReaction(emoji)}
-                  className="p-1.5 hover:bg-[#F2F4EA] rounded-lg text-sm hover:scale-125 transition-transform cursor-pointer"
+                  className="p-1.5 hover:bg-[#F0F2EC] rounded-[2px] text-sm hover:scale-125 transition-transform cursor-pointer"
                 >
                   {emoji}
                 </button>

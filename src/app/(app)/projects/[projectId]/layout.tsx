@@ -75,45 +75,45 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
   return (
     <div className="space-y-5 sm:space-y-6">
       {/* Project Header */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-5 shadow-2xs space-y-4 sm:space-y-5 relative overflow-hidden">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-4 sm:p-5 shadow-xs space-y-4 sm:space-y-5 relative overflow-hidden">
         {/* Subtle accent gradient at the top edge */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#88C315] to-[#98CD28] opacity-80" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-[#B7D600]" />
         
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 relative z-10">
           <div className="flex items-start gap-3 sm:gap-4">
-            <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-[#F3F9DE] text-[#88C315] border border-[#88C315]/20 flex items-center justify-center shrink-0 shadow-2xs">
+            <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-[2px] bg-[#071A49] text-[#B7D600] border border-[#071A49] flex items-center justify-center shrink-0 shadow-xs">
               <ProjectIcon name={project.icon} className="h-6 w-6 sm:h-7 sm:w-7" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                <h1 className="text-xl sm:text-2xl font-black text-[#111827] tracking-tight truncate">
+                <h1 className="text-xl sm:text-2xl font-black font-display uppercase text-[#071A49] tracking-tight truncate">
                   {project.name}
                 </h1>
                 {/* Project Key Badge */}
-                <span className="text-[10px] sm:text-[11px] font-bold font-mono bg-[#F3F4F6] border border-[#E5E7EB] text-[#4B5563] px-2 py-0.5 rounded">
+                <span className="text-[10px] sm:text-[11px] font-bold font-mono bg-[#F0F2EC] border border-[#DDE2D8] text-[#071A49] px-2 py-0.5 rounded-[2px]">
                   {project.key}
                 </span>
                 <StatusBadge status={project.status} />
                 <PriorityBadge priority={project.priority} />
               </div>
               {project.description && (
-                <p className="text-xs sm:text-sm font-medium text-[#6B7280] mt-1 max-w-2xl line-clamp-2">
+                <p className="text-xs sm:text-sm font-medium text-[#586274] mt-1 max-w-2xl line-clamp-2">
                   {project.description}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#EAEDF2]">
+          <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#DDE2D8]">
             <div className="text-left sm:text-right">
-              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[#9CA3AF] block mb-0.5">Progress</span>
-              <span className="text-xs sm:text-sm font-bold text-[#111827]">
-                {progress}% <span className="text-[#9CA3AF] font-medium">({completedTasks}/{totalTasks})</span>
+              <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#586274] block mb-0.5">Progress</span>
+              <span className="text-xs sm:text-sm font-mono font-bold text-[#071A49]">
+                {progress}% <span className="text-[#8E99A8] font-medium">({completedTasks}/{totalTasks})</span>
               </span>
               {/* Progress Bar */}
-              <div className="w-20 sm:w-24 h-1.5 bg-[#F3F4F6] rounded-full mt-1 overflow-hidden">
+              <div className="w-20 sm:w-24 h-1.5 bg-[#F0F2EC] rounded-[2px] mt-1 overflow-hidden border border-[#DDE2D8]">
                 <div
-                  className="h-full bg-[#88C315] rounded-full transition-all"
+                  className="h-full bg-[#B7D600] rounded-[2px] transition-all"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -126,7 +126,7 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
               />
               <Link 
                 href={`/projects/${projectId}/team`}
-                className="h-7 w-7 sm:h-8 sm:w-8 rounded-full border border-dashed border-[#D1D5DB] flex items-center justify-center text-[#9CA3AF] hover:text-[#111827] hover:border-[#9CA3AF] transition-colors bg-[#F9FAFB] hover:bg-white"
+                className="h-7 w-7 sm:h-8 sm:w-8 rounded-[2px] border border-dashed border-[#DDE2D8] flex items-center justify-center text-[#8E99A8] hover:text-[#071A49] hover:border-[#071A49] transition-colors bg-[#F8F9F6] hover:bg-white"
                 title="Add team member"
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -136,30 +136,30 @@ export default async function ProjectLayout({ children, params }: LayoutProps) {
         </div>
 
         {/* Metadata Bar */}
-        <div className="flex flex-wrap items-center gap-y-2 gap-x-4 sm:gap-x-6 text-[11px] sm:text-xs font-medium text-[#6B7280] pt-2.5 sm:pt-3 border-t border-[#EAEDF2] relative z-10">
+        <div className="flex flex-wrap items-center gap-y-2 gap-x-4 sm:gap-x-6 text-[11px] sm:text-xs font-mono text-[#586274] pt-2.5 sm:pt-3 border-t border-[#DDE2D8] relative z-10">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5 text-[#88C315]" />
-            <span>Owner: <strong className="text-[#111827] font-semibold">{project.owner?.name || "Workspace"}</strong></span>
+            <ShieldCheck className="h-3.5 w-3.5 text-[#071A49]" />
+            <span>Owner: <strong className="text-[#071A49] font-bold">{project.owner?.name || "Workspace"}</strong></span>
           </div>
 
           {/* Project Lead */}
           {project.lead && (
             <div className="flex items-center gap-1.5">
               <Star className="h-3.5 w-3.5 text-amber-500" />
-              <span>Lead: <strong className="text-[#111827] font-semibold">{project.lead?.name || "Team Lead"}</strong></span>
+              <span>Lead: <strong className="text-[#071A49] font-bold">{project.lead?.name || "Team Lead"}</strong></span>
             </div>
           )}
 
           {project.startDate && (
             <div className="flex items-center gap-1.5">
-              <CalendarDays className="h-3.5 w-3.5 text-[#9CA3AF]" />
+              <CalendarDays className="h-3.5 w-3.5 text-[#8E99A8]" />
               <span>Started: {formatDate(project.startDate)}</span>
             </div>
           )}
 
           {project.deadline && (
-            <div className={cn("flex items-center gap-1.5", overdueDeadline ? "text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded" : "")}>
-              <CalendarDays className="h-3.5 w-3.5 text-[#9CA3AF]" />
+            <div className={cn("flex items-center gap-1.5", overdueDeadline ? "text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded-[2px]" : "")}>
+              <CalendarDays className="h-3.5 w-3.5 text-[#8E99A8]" />
               <span>
                 Deadline: {formatDate(project.deadline)} {overdueDeadline && "(Overdue)"}
               </span>

@@ -41,7 +41,7 @@ export function ProjectNav({ projectId, userRole }: ProjectNavProps) {
   ];
 
   return (
-    <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pt-3 sm:pt-4 pb-1 scrollbar-thin border-t border-[#EAEDF2]">
+    <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pt-3 sm:pt-4 pb-1 scrollbar-thin border-t border-[#DDE2D8]">
       {tabs.map((tab) => {
         const isActive = tab.exact
           ? pathname === tab.href
@@ -52,13 +52,13 @@ export function ProjectNav({ projectId, userRole }: ProjectNavProps) {
             key={tab.href}
             href={tab.href}
             className={cn(
-              "flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all shrink-0",
+              "flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-[2px] text-xs font-mono font-bold uppercase whitespace-nowrap transition-all shrink-0",
               isActive
-                ? "bg-[#F3F9DE] text-[#111827] font-bold shadow-2xs border border-[#88C315]/20"
-                : "text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#111827]"
+                ? "bg-[#F1F8CE] text-[#071A49] shadow-2xs border border-[#B7D600]"
+                : "text-[#586274] hover:bg-[#F8F9F6] hover:text-[#071A49] border border-transparent"
             )}
           >
-            <tab.icon className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4", isActive ? "text-[#88C315]" : "text-[#9CA3AF]")} />
+            <tab.icon className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4", isActive ? "text-[#071A49]" : "text-[#8E99A8]")} />
             <span>{tab.label}</span>
           </Link>
         );

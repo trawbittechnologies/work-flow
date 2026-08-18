@@ -190,14 +190,14 @@ export function TimeTrackingDashboard({ initialLogs, projects, tasks }: Props) {
     <div className="space-y-6">
       
       {/* Active Timer Bar */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center gap-4 sticky top-4 z-10">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center gap-4 sticky top-4 z-10">
         <input
           type="text"
           placeholder="What are you working on?"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           disabled={!!activeLogId}
-          className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-sm text-[#111827] placeholder-[#9CA3AF] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] outline-none disabled:opacity-70 disabled:bg-[#F3F4F6]"
+          className="flex-1 bg-[#F8F9F6] border border-[#DDE2D8] rounded-[2px] px-4 py-2.5 text-sm text-[#071A49] placeholder-[#8E99A8] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] outline-none disabled:opacity-70 disabled:bg-[#F0F2EC]"
         />
         
         <div className="flex items-center gap-3">
@@ -208,9 +208,9 @@ export function TimeTrackingDashboard({ initialLogs, projects, tasks }: Props) {
               setTaskId("");
             }}
             disabled={!!activeLogId}
-            className="w-32 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-xs text-[#111827] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] outline-none disabled:opacity-70"
+            className="w-32 bg-[#F8F9F6] border border-[#DDE2D8] rounded-[2px] px-3 py-2.5 text-xs font-mono text-[#071A49] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] outline-none disabled:opacity-70"
           >
-            <option value="">Project...</option>
+            <option value="">PROJECT...</option>
             {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
           
@@ -218,30 +218,30 @@ export function TimeTrackingDashboard({ initialLogs, projects, tasks }: Props) {
             value={taskId}
             onChange={(e) => setTaskId(e.target.value)}
             disabled={!!activeLogId || !projectId}
-            className="w-32 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-xs text-[#111827] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] outline-none disabled:opacity-70"
+            className="w-32 bg-[#F8F9F6] border border-[#DDE2D8] rounded-[2px] px-3 py-2.5 text-xs font-mono text-[#071A49] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] outline-none disabled:opacity-70"
           >
-            <option value="">Task...</option>
+            <option value="">TASK...</option>
             {filteredTasks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
           </select>
         </div>
 
         <div className="flex items-center gap-4 ml-auto">
-          <span className="text-2xl font-mono font-bold text-[#111827] w-28 text-right tracking-tight">
+          <span className="text-2xl font-mono font-bold text-[#071A49] w-28 text-right tracking-tight">
             {formatTimer(elapsedSeconds)}
           </span>
           {activeLogId ? (
             <button
               onClick={handleStopTimer}
-              className="flex items-center justify-center w-12 h-12 bg-red-500 hover:bg-red-600 text-white rounded-xl shadow-md shadow-red-500/20 transition-all active:scale-95"
+              className="flex items-center justify-center w-11 h-11 bg-red-600 hover:bg-red-700 text-white rounded-[2px] shadow-xs transition-all active:scale-95 cursor-pointer"
             >
-              <Square className="w-5 h-5 fill-current" />
+              <Square className="w-4 h-4 fill-current" />
             </button>
           ) : (
             <button
               onClick={handleStartTimer}
-              className="flex items-center justify-center w-12 h-12 bg-[#88C315] hover:bg-[#77AB12] text-white rounded-xl shadow-md shadow-[#88C315]/20 transition-all active:scale-95"
+              className="flex items-center justify-center w-11 h-11 bg-[#071A49] hover:bg-[#041030] text-[#B7D600] rounded-[2px] shadow-xs transition-all active:scale-95 cursor-pointer"
             >
-              <Play className="w-5 h-5 fill-current ml-1" />
+              <Play className="w-4 h-4 fill-current ml-0.5" />
             </button>
           )}
         </div>
@@ -249,67 +249,67 @@ export function TimeTrackingDashboard({ initialLogs, projects, tasks }: Props) {
 
       {/* Summaries */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-5 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#F3F9DE] flex items-center justify-center text-[#88C315]">
-            <Clock className="w-6 h-6" />
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-5 shadow-xs flex items-center gap-4">
+          <div className="w-11 h-11 rounded-[2px] bg-[#F1F8CE] border border-[#B7D600] flex items-center justify-center text-[#071A49]">
+            <Clock className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-[#6B7280]">Today</p>
-            <p className="text-xl font-black text-[#111827]">{formatDuration(totalMinutesToday)}</p>
+            <p className="text-xs font-mono font-bold uppercase text-[#586274]">Today</p>
+            <p className="text-xl font-black font-display text-[#071A49]">{formatDuration(totalMinutesToday)}</p>
           </div>
         </div>
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-5 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center text-[#4B5563]">
-            <Clock className="w-6 h-6" />
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-5 shadow-xs flex items-center gap-4">
+          <div className="w-11 h-11 rounded-[2px] bg-[#F0F2EC] border border-[#DDE2D8] flex items-center justify-center text-[#071A49]">
+            <Clock className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-[#6B7280]">This Week</p>
-            <p className="text-xl font-black text-[#111827]">{formatDuration(totalMinutesThisWeek)}</p>
+            <p className="text-xs font-mono font-bold uppercase text-[#586274]">This Week</p>
+            <p className="text-xl font-black font-display text-[#071A49]">{formatDuration(totalMinutesThisWeek)}</p>
           </div>
         </div>
       </div>
 
       {/* History List */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-5 shadow-sm">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-5 shadow-xs">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-sm font-bold text-[#111827]">Recent Time Logs</h2>
+          <h2 className="text-sm font-bold uppercase font-display text-[#071A49]">Recent Time Logs</h2>
           <button 
             onClick={() => setIsManualModalOpen(true)}
-            className="text-xs font-bold text-[#88C315] hover:text-[#77AB12] flex items-center gap-1"
+            className="text-xs font-mono font-bold text-[#071A49] hover:text-[#041030] flex items-center gap-1 cursor-pointer uppercase"
           >
             <Plus className="w-3.5 h-3.5" /> Manual Entry
           </button>
         </div>
 
         {logs.length === 0 ? (
-          <div className="text-center py-10">
-            <Clock className="w-10 h-10 text-[#D1D5DB] mx-auto mb-3" />
-            <p className="text-sm font-semibold text-[#9CA3AF]">No time logged yet</p>
+          <div className="text-center py-10 bg-tech-grid rounded-[2px] border border-[#DDE2D8]">
+            <Clock className="w-10 h-10 text-[#8E99A8] mx-auto mb-3" />
+            <p className="text-sm font-bold uppercase font-display text-[#071A49]">No time logged yet</p>
           </div>
         ) : (
           <div className="space-y-2">
             {logs.map(log => {
               const isRunning = !log.endTime;
               return (
-                <div key={log.id} className={`flex items-center justify-between p-3 rounded-xl border ${isRunning ? "border-[#88C315] bg-[#F3F9DE]/30" : "border-[#EAEDF2] hover:bg-[#F9FAFB]"}`}>
+                <div key={log.id} className={`flex items-center justify-between p-3 rounded-[2px] border ${isRunning ? "border-[#071A49] bg-[#F1F8CE]/40" : "border-[#DDE2D8] hover:bg-[#F8F9F6]"}`}>
                   <div className="flex-1 min-w-0 pr-4">
-                    <p className="text-sm font-bold text-[#111827] truncate">
+                    <p className="text-sm font-bold text-[#071A49] truncate">
                       {log.description || "Working..."}
-                      {isRunning && <span className="ml-2 text-[10px] bg-[#88C315] text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wide">Running</span>}
+                      {isRunning && <span className="ml-2 text-[9px] bg-[#071A49] text-[#B7D600] px-1.5 py-0.5 rounded-[2px] font-mono font-bold uppercase tracking-wide">Running</span>}
                     </p>
-                    <div className="flex items-center gap-2 mt-1 text-xs font-medium text-[#6B7280]">
-                      {log.project && <span className="bg-[#E5E7EB]/50 px-1.5 py-0.5 rounded">{log.project.name}</span>}
-                      {log.task && <span>{log.task.title}</span>}
-                      {!log.project && !log.task && <span>No project</span>}
+                    <div className="flex items-center gap-2 mt-1 text-xs font-medium text-[#586274]">
+                      {log.project && <span className="bg-[#F0F2EC] px-1.5 py-0.5 rounded-[2px] border border-[#DDE2D8] font-mono text-[10px]">{log.project.name}</span>}
+                      {log.task && <span className="font-mono text-[11px]">{log.task.title}</span>}
+                      {!log.project && !log.task && <span className="font-mono text-[10px]">No project</span>}
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-6">
                     <div className="text-right">
-                      <p className="text-sm font-bold text-[#111827]">
+                      <p className="text-sm font-mono font-bold text-[#071A49]">
                         {isRunning ? formatTimer(elapsedSeconds) : formatDuration(log.duration || 0)}
                       </p>
-                      <p className="text-[10px] text-[#9CA3AF]">
+                      <p className="text-[10px] font-mono text-[#8E99A8]">
                         {format(new Date(log.startTime), "MMM d, h:mm a")}
                       </p>
                     </div>
@@ -317,7 +317,7 @@ export function TimeTrackingDashboard({ initialLogs, projects, tasks }: Props) {
                     {!isRunning && (
                       <button 
                         onClick={() => handleDelete(log.id)}
-                        className="p-1.5 text-[#D1D5DB] hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-1.5 text-[#8E99A8] hover:text-red-600 hover:bg-red-50 rounded-[2px] transition-colors cursor-pointer"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -332,76 +332,76 @@ export function TimeTrackingDashboard({ initialLogs, projects, tasks }: Props) {
 
       {/* Manual Entry Modal */}
       {isManualModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111827]/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="px-5 py-4 border-b border-[#EAEDF2] flex items-center justify-between">
-              <h2 className="text-base font-bold text-[#111827]">Manual Time Entry</h2>
-              <button onClick={() => setIsManualModalOpen(false)} className="text-[#9CA3AF] hover:text-[#111827]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#071A49]/40 backdrop-blur-xs">
+          <div className="bg-white rounded-[2px] border border-[#DDE2D8] shadow-lg w-full max-w-md overflow-hidden">
+            <div className="px-5 py-4 border-b border-[#DDE2D8] flex items-center justify-between">
+              <h2 className="text-base font-bold uppercase font-display text-[#071A49]">Manual Time Entry</h2>
+              <button onClick={() => setIsManualModalOpen(false)} className="text-[#8E99A8] hover:text-[#071A49] cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleManualSubmit} className="p-5 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">Description</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#071A49] mb-1.5">Description</label>
                 <input
                   type="text"
                   required
                   value={manualDesc}
                   onChange={e => setManualDesc(e.target.value)}
-                  className="w-full bg-white border border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] rounded-xl px-3 py-2 text-sm text-[#111827] outline-none"
+                  className="w-full bg-white border border-[#DDE2D8] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] rounded-[2px] px-3 py-2 text-sm text-[#071A49] outline-none"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">Date</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#071A49] mb-1.5">Date</label>
                   <input
                     type="date"
                     required
                     value={manualDate}
                     onChange={e => setManualDate(e.target.value)}
-                    className="w-full bg-white border border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] rounded-xl px-3 py-2 text-sm text-[#111827] outline-none"
+                    className="w-full bg-white border border-[#DDE2D8] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] rounded-[2px] px-3 py-2 text-sm text-[#071A49] outline-none font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">Duration (mins)</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#071A49] mb-1.5">Duration (mins)</label>
                   <input
                     type="number"
                     min="1"
                     required
                     value={manualDuration}
                     onChange={e => setManualDuration(e.target.value)}
-                    className="w-full bg-white border border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] rounded-xl px-3 py-2 text-sm text-[#111827] outline-none"
+                    className="w-full bg-white border border-[#DDE2D8] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] rounded-[2px] px-3 py-2 text-sm text-[#071A49] outline-none font-mono"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">Project</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#071A49] mb-1.5">Project</label>
                 <select
                   value={manualProject}
                   onChange={e => { setManualProject(e.target.value); setManualTask(""); }}
-                  className="w-full bg-white border border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] rounded-xl px-3 py-2 text-sm text-[#111827] outline-none"
+                  className="w-full bg-white border border-[#DDE2D8] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] rounded-[2px] px-3 py-2 text-sm text-[#071A49] outline-none font-mono"
                 >
                   <option value="">None</option>
                   {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-[#4B5563] mb-1.5">Task</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#071A49] mb-1.5">Task</label>
                 <select
                   value={manualTask}
                   onChange={e => setManualTask(e.target.value)}
                   disabled={!manualProject}
-                  className="w-full bg-white border border-[#D1D5DB] focus:border-[#88C315] focus:ring-1 focus:ring-[#88C315] rounded-xl px-3 py-2 text-sm text-[#111827] outline-none disabled:bg-[#F9FAFB] disabled:opacity-50"
+                  className="w-full bg-white border border-[#DDE2D8] focus:border-[#071A49] focus:ring-1 focus:ring-[#071A49] rounded-[2px] px-3 py-2 text-sm text-[#071A49] outline-none disabled:bg-[#F8F9F6] disabled:opacity-50 font-mono"
                 >
                   <option value="">None</option>
                   {tasks.filter(t => t.projectId === manualProject).map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
                 </select>
               </div>
               <div className="pt-2 flex justify-end gap-2">
-                <button type="button" onClick={() => setIsManualModalOpen(false)} className="px-4 py-2 rounded-xl text-sm font-semibold text-[#4B5563] hover:bg-[#F3F4F6]">
+                <button type="button" onClick={() => setIsManualModalOpen(false)} className="px-4 py-2 rounded-[2px] text-sm font-semibold text-[#586274] hover:bg-[#F0F2EC] cursor-pointer">
                   Cancel
                 </button>
-                <button type="submit" className="px-4 py-2 rounded-xl text-sm font-bold bg-[#88C315] hover:bg-[#77AB12] text-white shadow-sm">
+                <button type="submit" className="px-4 py-2 rounded-[2px] text-sm font-mono font-bold uppercase bg-[#071A49] hover:bg-[#041030] text-[#B7D600] shadow-xs cursor-pointer">
                   Save Entry
                 </button>
               </div>

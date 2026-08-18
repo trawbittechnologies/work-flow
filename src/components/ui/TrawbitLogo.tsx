@@ -11,7 +11,7 @@ export function TrawbitLogoIcon({ className, size = 32 }: TrawbitLogoIconProps) 
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-lg flex-shrink-0 flex items-center justify-center shadow-2xs",
+        "relative overflow-hidden rounded-[2px] flex-shrink-0 flex items-center justify-center shadow-2xs border border-[#DDE2D8]",
         className
       )}
       style={{ width: size, height: size }}
@@ -21,7 +21,7 @@ export function TrawbitLogoIcon({ className, size = 32 }: TrawbitLogoIconProps) 
         alt="Trawbit Logo"
         width={size}
         height={size}
-        className="w-full h-full object-cover rounded-lg"
+        className="w-full h-full object-cover rounded-[2px]"
         priority
       />
     </div>
@@ -44,10 +44,10 @@ export function TrawbitLogo({
       <TrawbitLogoIcon size={iconSize} className="shadow-2xs" />
       {showText && (
         <div className="flex items-center gap-1.5 leading-none">
-          <span className="text-[17px] font-black text-[#111827] tracking-tight">
+          <span className="text-[17px] font-black text-[#071A49] dark:text-white tracking-tight font-display">
             Trawbit
           </span>
-          <span className="text-[17px] font-black text-[#98CD28] tracking-tight">
+          <span className="text-[17px] font-black text-[#B7D600] tracking-tight font-display">
             FlowDesk
           </span>
         </div>

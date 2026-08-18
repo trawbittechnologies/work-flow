@@ -112,11 +112,11 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-base font-bold text-text-primary">Project Files</h2>
-          <p className="text-xs text-text-muted">{files.length} file{files.length !== 1 ? "s" : ""} attached</p>
+          <h2 className="text-base font-bold font-display uppercase text-[#071A49]">Project Files</h2>
+          <p className="text-xs font-mono text-[#586274]">{files.length} file{files.length !== 1 ? "s" : ""} attached</p>
         </div>
         <label className={cn(
-          "inline-flex items-center gap-2 h-9 px-4 text-sm rounded-xl bg-primary hover:bg-primary-dark text-white font-semibold transition-all shadow-xs cursor-pointer active:scale-95",
+          "inline-flex items-center gap-2 h-9 px-4 text-xs font-mono font-bold uppercase rounded-[2px] bg-[#071A49] hover:bg-[#041030] text-[#B7D600] transition-all shadow-xs cursor-pointer active:scale-95",
           uploading && "opacity-60 pointer-events-none"
         )}>
           <Upload className="h-4 w-4" />
@@ -132,24 +132,24 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
           description="Upload project files to share with your team."
         />
       ) : (
-        <div className="bg-surface border border-border rounded-2xl divide-y divide-border-subtle overflow-hidden card-shadow">
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] divide-y divide-[#DDE2D8] overflow-hidden shadow-xs">
           {files.map((file) => (
-            <div key={file.id} className="flex items-center gap-4 p-4 group hover:bg-surface-alt/50 transition-colors">
-              <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-surface-alt border border-border flex items-center justify-center">
+            <div key={file.id} className="flex items-center gap-4 p-4 group hover:bg-[#F8F9F6] transition-colors">
+              <div className="flex-shrink-0 h-10 w-10 rounded-[2px] bg-[#F0F2EC] border border-[#DDE2D8] flex items-center justify-center">
                 {getFileIcon(file.mimeType)}
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-text-primary truncate">{file.name}</p>
-                <div className="flex items-center gap-3 mt-0.5 flex-wrap">
-                  <span className="text-[11px] font-medium text-text-muted">{formatFileSize(file.size)}</span>
-                  <span className="text-[11px] text-text-muted">·</span>
+                <p className="text-sm font-semibold text-[#071A49] truncate">{file.name}</p>
+                <div className="flex items-center gap-3 mt-0.5 flex-wrap font-mono text-[10px]">
+                  <span className="text-[#586274]">{formatFileSize(file.size)}</span>
+                  <span className="text-[#8E99A8]">·</span>
                   <div className="flex items-center gap-1.5">
-                    <Avatar name={file.user.name} src={file.user.avatar} size="xs" />
-                    <span className="text-[11px] font-medium text-text-secondary">{file.user.name}</span>
+                    <Avatar name={file.user.name} src={file.user.avatar} size="xs" className="rounded-[2px]" />
+                    <span className="text-[#071A49] font-medium">{file.user.name}</span>
                   </div>
-                  <span className="text-[11px] text-text-muted">·</span>
-                  <span className="text-[11px] font-medium text-text-muted">{formatRelative(file.createdAt)}</span>
+                  <span className="text-[#8E99A8]">·</span>
+                  <span className="text-[#586274]">{formatRelative(file.createdAt)}</span>
                 </div>
               </div>
 
@@ -159,7 +159,7 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
                   download={file.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-primary-subtle transition-colors"
+                  className="p-2 rounded-[2px] text-[#8E99A8] hover:text-[#071A49] hover:bg-[#F0F2EC] transition-colors"
                   title="Download"
                 >
                   <Download className="h-4 w-4" />
@@ -167,7 +167,7 @@ export function FilesManager({ projectId, initialFiles, currentUserId, userRole 
                 {canDelete(file) && (
                   <button
                     onClick={() => setDeleteId(file.id)}
-                    className="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
+                    className="p-2 rounded-[2px] text-[#8E99A8] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                     title="Delete file"
                   >
                     <Trash2 className="h-4 w-4" />

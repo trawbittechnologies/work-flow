@@ -28,7 +28,7 @@ export function MobileNav({ unreadNotifications: _unreadNotifications = 0 }: Mob
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-30 md:hidden bg-white/95 backdrop-blur-xl border-t border-[#EAEDF2] flex items-center justify-around px-2 py-2 shadow-lg safe-area-bottom"
+      className="fixed bottom-0 left-0 right-0 z-30 md:hidden bg-white/95 backdrop-blur-xl border-t border-[#DDE2D8] flex items-center justify-around px-2 py-2 shadow-lg safe-area-bottom"
       aria-label="Mobile navigation"
     >
       {navLinks.map((item) => {
@@ -38,25 +38,25 @@ export function MobileNav({ unreadNotifications: _unreadNotifications = 0 }: Mob
             key={item.href}
             href={item.href}
             className={cn(
-              "flex-1 flex flex-col items-center gap-1 py-1 px-1 relative transition-all rounded-xl",
+              "flex-1 flex flex-col items-center gap-1 py-1 px-1 relative transition-all rounded-[2px]",
               active
-                ? "text-[#88C315] font-bold"
-                : "text-[#6B7280] hover:text-[#111827]"
+                ? "text-[#071A49] font-bold"
+                : "text-[#586274] hover:text-[#071A49]"
             )}
             aria-current={active ? "page" : undefined}
           >
             <item.icon
               className={cn(
                 "h-5 w-5 transition-transform",
-                active && "scale-110 text-[#88C315]"
+                active && "scale-105 text-[#071A49]"
               )}
-              strokeWidth={active ? 2.5 : 2}
+              strokeWidth={active ? 2.4 : 1.9}
             />
-            <span className="text-[10px] font-semibold tracking-tight leading-none">
+            <span className="text-[10px] font-bold tracking-tight leading-none uppercase">
               {item.label}
             </span>
             {active && (
-              <span className="absolute -top-2 left-1/2 -translate-x-1/2 h-1 w-6 bg-[#88C315] rounded-full" />
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 h-0.5 w-6 bg-[#B7D600] rounded-[2px]" />
             )}
           </Link>
         );
@@ -67,25 +67,25 @@ export function MobileNav({ unreadNotifications: _unreadNotifications = 0 }: Mob
         type="button"
         onClick={toggle}
         className={cn(
-          "flex-1 flex flex-col items-center gap-1 py-1 px-1 relative transition-all rounded-xl cursor-pointer",
+          "flex-1 flex flex-col items-center gap-1 py-1 px-1 relative transition-all rounded-[2px] cursor-pointer",
           isOpen
-            ? "text-[#88C315] font-bold"
-            : "text-[#6B7280] hover:text-[#111827]"
+            ? "text-[#071A49] font-bold"
+            : "text-[#586274] hover:text-[#071A49]"
         )}
         aria-label="Toggle full workspace navigation"
       >
         <Menu
           className={cn(
             "h-5 w-5 transition-transform",
-            isOpen && "scale-110 text-[#88C315]"
+            isOpen && "scale-105 text-[#071A49]"
           )}
-          strokeWidth={isOpen ? 2.5 : 2}
+          strokeWidth={isOpen ? 2.4 : 1.9}
         />
-        <span className="text-[10px] font-semibold tracking-tight leading-none">
+        <span className="text-[10px] font-bold tracking-tight leading-none uppercase">
           Menu
         </span>
         {isOpen && (
-          <span className="absolute -top-2 left-1/2 -translate-x-1/2 h-1 w-6 bg-[#88C315] rounded-full" />
+          <span className="absolute -top-2 left-1/2 -translate-x-1/2 h-0.5 w-6 bg-[#B7D600] rounded-[2px]" />
         )}
       </button>
     </nav>

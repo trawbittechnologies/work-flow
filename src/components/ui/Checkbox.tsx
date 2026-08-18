@@ -19,15 +19,15 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             checked={checked}
             className={cn(
-              "peer h-4 w-4 shrink-0 rounded border border-[var(--border)] bg-[var(--surface)] text-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 appearance-none checked:bg-[var(--primary)] checked:border-[var(--primary)] transition-colors cursor-pointer",
+              "peer h-4 w-4 shrink-0 rounded-[2px] border border-[#DDE2D8] dark:border-[#1E3A7B] bg-white dark:bg-[#071A49] focus:outline-none focus:ring-2 focus:ring-[#071A49]/20 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 appearance-none checked:bg-[#071A49] checked:border-[#071A49] dark:checked:bg-[#B7D600] dark:checked:border-[#B7D600] transition-colors cursor-pointer",
               className
             )}
             {...props}
           />
-          <Check className="pointer-events-none absolute left-0.5 top-0.5 h-3 w-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" />
+          <Check className="pointer-events-none absolute left-0.5 top-0.5 h-3 w-3 text-[#B7D600] dark:text-[#071A49] opacity-0 peer-checked:opacity-100 transition-opacity" />
         </div>
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-[var(--text-primary)] cursor-pointer">
+          <label htmlFor={inputId} className="text-sm font-medium text-[#071A49] dark:text-[#F8F9F6] cursor-pointer">
             {label}
           </label>
         )}

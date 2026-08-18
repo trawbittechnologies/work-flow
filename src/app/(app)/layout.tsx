@@ -31,7 +31,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <AblyProvider>
       <OnboardingProvider user={user}>
-        <div className="min-h-screen bg-[#F6F8FA] antialiased text-[#111827]">
+        <div className="min-h-screen bg-[#F8F9F6] bg-tech-grid antialiased text-[#071A49]">
           <Suspense fallback={null}>
             <TopProgressBar />
           </Suspense>

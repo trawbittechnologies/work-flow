@@ -128,99 +128,99 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
     <div className="space-y-5 sm:space-y-6">
       {/* Header Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-3.5 sm:p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold text-[#586274] uppercase tracking-wider">
               Total Projects
             </span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center">
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-[2px] bg-[#F1F8CE] text-[#071A49] border border-[#B7D600] flex items-center justify-center">
               <Folder className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <div className="text-xl sm:text-2xl font-black text-[#111827] mt-2">
+          <div className="text-xl sm:text-2xl font-black font-display text-[#071A49] mt-2">
             {stats.total}
           </div>
         </div>
 
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-3.5 sm:p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold text-[#586274] uppercase tracking-wider">
               Progressing
             </span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#F3F9DE] text-[#659A08] flex items-center justify-center">
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-[2px] bg-[#F1F8CE] text-[#071A49] border border-[#B7D600] flex items-center justify-center">
               <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <div className="text-xl sm:text-2xl font-black text-[#659A08] mt-2">
+          <div className="text-xl sm:text-2xl font-black font-display text-[#071A49] mt-2">
             {stats.inProgress}
           </div>
         </div>
 
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-3.5 sm:p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold text-[#586274] uppercase tracking-wider">
               Completed
             </span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center">
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-[2px] bg-[#ECFDF5] text-[#16A34A] border border-emerald-200 flex items-center justify-center">
               <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <div className="text-xl sm:text-2xl font-black text-[#10B981] mt-2">
+          <div className="text-xl sm:text-2xl font-black font-display text-[#16A34A] mt-2">
             {stats.completed}
           </div>
         </div>
 
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-4 shadow-2xs">
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-3.5 sm:p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] sm:text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold text-[#586274] uppercase tracking-wider">
               Pending
             </span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-xl bg-[#FFFBEB] text-[#D97706] flex items-center justify-center">
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-[2px] bg-[#FFFBEB] text-[#D97706] border border-amber-200 flex items-center justify-center">
               <AlertCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </div>
-          <div className="text-xl sm:text-2xl font-black text-[#D97706] mt-2">
+          <div className="text-xl sm:text-2xl font-black font-display text-[#D97706] mt-2">
             {stats.planning}
           </div>
         </div>
       </div>
 
       {/* Modern Filter Toolbar */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3 sm:p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-3 sm:p-4 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
         {/* Search Bar */}
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8E99A8]" />
           <input
             type="search"
             placeholder="Filter projects by title, key, lead..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-9 pl-9 pr-4 text-xs font-medium rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 focus:border-[#88C315] transition-all"
+            className="w-full h-9 pl-9 pr-4 text-xs font-medium rounded-[2px] border border-[#DDE2D8] bg-[#F8F9F6] text-[#071A49] placeholder:text-[#8E99A8] focus:outline-none focus:ring-1 focus:ring-[#071A49] focus:border-[#071A49] transition-all"
           />
         </div>
 
         {/* Status Filters & Actions */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-          <div className="flex items-center bg-[#F4F5F7] p-1 rounded-xl gap-0.5 sm:gap-1 overflow-x-auto max-w-full">
+          <div className="flex items-center bg-[#F0F2EC] p-0.5 rounded-[2px] gap-0.5 sm:gap-1 overflow-x-auto max-w-full border border-[#DDE2D8]">
             {[
-              { label: "All", value: "ALL" },
-              { label: "Progressing", value: "IN_PROGRESS" },
-              { label: "Pending", value: "PENDING" },
-              { label: "Testing", value: "TESTING" },
-              { label: "Hold", value: "ON_HOLD" },
-              { label: "Review", value: "REVIEW" },
-              { label: "Complete", value: "COMPLETED" },
-              { label: "Re-Open", value: "REOPENED" },
-              { label: "Cancel", value: "CANCELLED" },
+              { label: "ALL", value: "ALL" },
+              { label: "PROGRESSING", value: "IN_PROGRESS" },
+              { label: "PENDING", value: "PENDING" },
+              { label: "TESTING", value: "TESTING" },
+              { label: "HOLD", value: "ON_HOLD" },
+              { label: "REVIEW", value: "REVIEW" },
+              { label: "COMPLETE", value: "COMPLETED" },
+              { label: "RE-OPEN", value: "REOPENED" },
+              { label: "CANCEL", value: "CANCELLED" },
             ].map((tab) => (
               <button
                 key={tab.value}
                 onClick={() => setStatusFilter(tab.value)}
                 className={cn(
-                  "px-2.5 sm:px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap",
+                  "px-2.5 sm:px-3 py-1 text-xs font-mono font-bold rounded-[2px] transition-all cursor-pointer whitespace-nowrap",
                   statusFilter === tab.value
-                    ? "bg-white text-[#111827] shadow-2xs"
-                    : "text-[#6B7280] hover:text-[#111827]"
+                    ? "bg-[#071A49] text-[#B7D600] shadow-2xs"
+                    : "text-[#586274] hover:text-[#071A49]"
                 )}
               >
                 {tab.label}
@@ -233,19 +233,19 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="h-8 px-2.5 sm:px-3 text-xs font-semibold rounded-xl border border-[#E5E7EB] bg-white text-[#4B5563] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 cursor-pointer"
+              className="h-8 px-2.5 sm:px-3 text-xs font-mono font-bold rounded-[2px] border border-[#DDE2D8] bg-white text-[#071A49] focus:outline-none focus:ring-1 focus:ring-[#071A49] cursor-pointer"
             >
-              <option value="ALL">All Priorities</option>
-              <option value="HIGH">High Priority</option>
-              <option value="MEDIUM">Medium Priority</option>
-              <option value="LOW">Low Priority</option>
-              <option value="CRITICAL">Critical</option>
+              <option value="ALL">ALL PRIORITIES</option>
+              <option value="HIGH">HIGH PRIORITY</option>
+              <option value="MEDIUM">MEDIUM PRIORITY</option>
+              <option value="LOW">LOW PRIORITY</option>
+              <option value="CRITICAL">CRITICAL</option>
             </select>
           </div>
 
           <Link
             href="/projects/new"
-            className="inline-flex items-center gap-1.5 sm:gap-2 h-8 px-3 sm:px-3.5 text-xs font-bold rounded-xl bg-[#88C315] hover:bg-[#77AB12] text-white transition-colors shadow-2xs cursor-pointer ml-auto"
+            className="inline-flex items-center gap-1.5 sm:gap-2 h-8 px-3 sm:px-3.5 text-xs font-bold font-mono uppercase rounded-[2px] bg-[#071A49] hover:bg-[#041030] text-[#B7D600] transition-colors shadow-2xs cursor-pointer ml-auto"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>New Project</span>
@@ -254,11 +254,11 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
       </div>
 
       {/* Main Table Container with smooth horizontal scrolling */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl shadow-2xs min-h-[360px] pb-8 overflow-hidden">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] shadow-xs min-h-[360px] pb-8 overflow-hidden">
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full text-left border-collapse min-w-[760px]">
             <thead>
-              <tr className="bg-[#F8F9FA] border-b border-[#EAEDF2] text-[11px] font-extrabold uppercase tracking-wider text-[#6B7280]">
+              <tr className="bg-[#F0F2EC] border-b border-[#DDE2D8] text-[11px] font-mono font-bold uppercase tracking-wider text-[#071A49]">
                 <th className="py-3.5 pl-6 pr-4">Project</th>
                 <th className="py-3.5 px-4">Status</th>
                 <th className="py-3.5 px-4">Progress</th>
@@ -269,13 +269,13 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                 <th className="py-3.5 pr-6 pl-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EAEDF2] text-xs">
+            <tbody className="divide-y divide-[#DDE2D8] text-xs">
               {filteredProjects.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-16 text-center text-[#9CA3AF]">
+                  <td colSpan={8} className="py-16 text-center text-[#8E99A8]">
                     <LayoutGrid className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p className="font-semibold text-sm text-[#4B5563]">No projects found</p>
-                    <p className="text-xs mt-0.5">Try clearing filters or search query.</p>
+                    <p className="font-bold uppercase font-display text-sm text-[#071A49]">No projects found</p>
+                    <p className="text-xs text-[#586274] mt-0.5">Try clearing filters or search query.</p>
                   </td>
                 </tr>
               ) : (
@@ -296,28 +296,28 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                   return (
                     <tr
                       key={project.id}
-                      className="hover:bg-[#F9FAFC] transition-colors group"
+                      className="hover:bg-[#F8F9F6] transition-colors group"
                     >
                       {/* Project Name & Key */}
                       <td className="py-4 pl-6 pr-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-[#F3F9DE] text-[#88C315] border border-[#88C315]/20 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-[2px] bg-[#071A49] text-[#B7D600] border border-[#071A49] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                             <ProjectIcon name={project.icon} className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                           </div>
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5 sm:gap-2">
                               <Link
                                 href={`/projects/${project.id}`}
-                                className="font-bold text-xs sm:text-[13px] text-[#111827] hover:text-[#88C315] transition-colors truncate max-w-[150px] sm:max-w-[200px]"
+                                className="font-bold text-xs sm:text-[13px] text-[#071A49] hover:text-[#041030] transition-colors truncate max-w-[150px] sm:max-w-[200px]"
                               >
                                 {project.name}
                               </Link>
-                              <span className="text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 bg-[#F3F4F6] text-[#4B5563] rounded border border-[#E5E7EB]">
+                              <span className="text-[9px] sm:text-[10px] font-mono font-bold px-1.5 py-0.5 bg-[#F0F2EC] text-[#586274] rounded-[2px] border border-[#DDE2D8]">
                                 {project.key}
                               </span>
                             </div>
                             {project.description && (
-                              <p className="text-[10px] sm:text-[11px] text-[#9CA3AF] truncate max-w-xs mt-0.5">
+                              <p className="text-[10px] sm:text-[11px] text-[#586274] truncate max-w-xs mt-0.5">
                                 {project.description}
                               </p>
                             )}
@@ -337,16 +337,16 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       <td className="py-4 px-4 min-w-[140px] sm:min-w-[160px]">
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between text-[11px]">
-                            <span className="font-bold text-[#111827]">
+                            <span className="font-mono font-bold text-[#071A49]">
                               {project.progress}%
                             </span>
-                            <span className="text-[#9CA3AF] font-medium text-[10px] sm:text-[11px]">
+                            <span className="text-[#586274] font-mono text-[10px] sm:text-[11px]">
                               {project.completedTasks}/{project.totalTasks} tasks
                             </span>
                           </div>
-                          <div className="h-2 w-full bg-[#F3F4F6] rounded-full overflow-hidden">
+                          <div className="h-2 w-full bg-[#F0F2EC] rounded-[2px] overflow-hidden">
                             <div
-                              className="h-full bg-[#88C315] rounded-full transition-all duration-300"
+                              className="h-full bg-[#B7D600] rounded-[2px] transition-all duration-300"
                               style={{ width: `${project.progress}%` }}
                             />
                           </div>
@@ -357,14 +357,14 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                       <td className="py-4 px-4">
                         <span
                           className={cn(
-                            "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border border-transparent",
+                            "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[2px] text-[10px] font-mono font-bold border border-[#DDE2D8]",
                             priority.bg,
                             priority.text
                           )}
                         >
                           <span
                             className={cn(
-                              "h-1.5 w-1.5 rounded-full shrink-0",
+                              "h-1.5 w-1.5 rounded-[2px] shrink-0",
                               priority.dot
                             )}
                           />
@@ -380,14 +380,14 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                               name={project.lead.name}
                               src={project.lead.avatar}
                               size="xs"
-                              className="h-6 w-6 rounded-full ring-1 ring-border"
+                              className="h-6 w-6 rounded-[2px] ring-1 ring-[#DDE2D8]"
                             />
-                            <span className="font-semibold text-[#374151] truncate max-w-[90px]">
+                            <span className="font-semibold text-[#071A49] truncate max-w-[90px]">
                               {project.lead.name}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-[#9CA3AF] italic">Unassigned</span>
+                          <span className="text-[#8E99A8] italic font-mono text-[11px]">Unassigned</span>
                         )}
                       </td>
 
@@ -400,11 +400,11 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                               name={m.user.name}
                               src={m.user.avatar}
                               size="xs"
-                              className="h-6 w-6 rounded-full ring-2 ring-white"
+                              className="h-6 w-6 rounded-[2px] ring-1 ring-white"
                             />
                           ))}
                           {(project.members?.length || 0) > 3 && (
-                            <div className="h-6 w-6 rounded-full bg-[#F3F4F6] border-2 border-white flex items-center justify-center text-[10px] font-bold text-[#6B7280]">
+                            <div className="h-6 w-6 rounded-[2px] bg-[#F0F2EC] border border-[#DDE2D8] flex items-center justify-center text-[10px] font-mono font-bold text-[#586274]">
                               +{project.members!.length - 3}
                             </div>
                           )}
@@ -413,9 +413,9 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
 
                       {/* Deadline */}
                       <td className="py-4 px-4">
-                        <div className="flex items-center gap-1.5 text-[#6B7280]">
-                          <Calendar className="h-3.5 w-3.5 text-[#9CA3AF]" />
-                          <span className="font-medium">{formattedDeadline}</span>
+                        <div className="flex items-center gap-1.5 text-[#586274] font-mono text-[11px]">
+                          <Calendar className="h-3.5 w-3.5 text-[#8E99A8]" />
+                          <span>{formattedDeadline}</span>
                         </div>
                       </td>
 
@@ -430,7 +430,7 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                                 activeActionMenu === project.id ? null : project.id
                               );
                             }}
-                            className="p-1 text-[#9CA3AF] hover:text-[#111827] rounded-lg hover:bg-[#F3F4F6] transition-colors cursor-pointer"
+                            className="p-1 text-[#8E99A8] hover:text-[#071A49] rounded-[2px] hover:bg-[#F0F2EC] transition-colors cursor-pointer"
                           >
                             <MoreVertical className="h-4 w-4" />
                           </button>
@@ -438,32 +438,32 @@ export function ProjectsTable({ initialProjects, isAdminUser: _isAdminUser = fal
                           {activeActionMenu === project.id && (
                             <div
                               className={cn(
-                                "absolute right-0 w-48 bg-white border border-[#E5E7EB] rounded-2xl shadow-2xl z-[100] py-2 text-xs animate-in font-medium text-left",
+                                "absolute right-0 w-48 bg-white border border-[#DDE2D8] rounded-[2px] shadow-sm z-[100] py-1 text-xs font-medium text-left",
                                 isLastRow && filteredProjects.length > 2 ? "bottom-full mb-1" : "top-full mt-1"
                               )}
                             >
                               <Link
                                 href={`/projects/${project.id}`}
                                 onClick={() => setActiveActionMenu(null)}
-                                className="flex items-center gap-2 px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] rounded-xl mx-1"
+                                className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F0F2EC] text-[#071A49] rounded-[2px] mx-1"
                               >
-                                <Folder className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                                <Folder className="h-3.5 w-3.5 text-[#8E99A8]" />
                                 <span>Project Details</span>
                               </Link>
                               <Link
                                 href={`/projects/${project.id}/board`}
                                 onClick={() => setActiveActionMenu(null)}
-                                className="flex items-center gap-2 px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] rounded-xl mx-1"
+                                className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F0F2EC] text-[#071A49] rounded-[2px] mx-1"
                               >
-                                <ExternalLink className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                                <ExternalLink className="h-3.5 w-3.5 text-[#8E99A8]" />
                                 <span>Kanban Board</span>
                               </Link>
                               <Link
                                 href={`/projects/${project.id}/settings`}
                                 onClick={() => setActiveActionMenu(null)}
-                                className="flex items-center gap-2 px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] rounded-xl mx-1"
+                                className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#F0F2EC] text-[#071A49] rounded-[2px] mx-1"
                               >
-                                <Edit className="h-3.5 w-3.5 text-[#9CA3AF]" />
+                                <Edit className="h-3.5 w-3.5 text-[#8E99A8]" />
                                 <span>Project Settings</span>
                               </Link>
                             </div>

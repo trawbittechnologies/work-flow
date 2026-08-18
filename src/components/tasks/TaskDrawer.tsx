@@ -99,17 +99,17 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
     <Drawer isOpen={isOpen} onClose={onClose} width="w-[600px]">
       {loading || !task ? (
         <div className="p-6 space-y-6">
-          <Skeleton className="h-8 w-3/4 rounded-lg" />
+          <Skeleton className="h-8 w-3/4 rounded-[2px]" />
           <div className="flex gap-4">
-            <Skeleton className="h-10 w-32 rounded-lg" />
-            <Skeleton className="h-10 w-32 rounded-lg" />
+            <Skeleton className="h-10 w-32 rounded-[2px]" />
+            <Skeleton className="h-10 w-32 rounded-[2px]" />
           </div>
-          <Skeleton className="h-24 w-full rounded-lg" />
+          <Skeleton className="h-24 w-full rounded-[2px]" />
         </div>
       ) : (
-        <div className="flex flex-col h-full bg-surface">
+        <div className="flex flex-col h-full bg-white">
           {/* Header */}
-          <div className="px-6 pt-6 pb-4 border-b border-border">
+          <div className="px-6 pt-6 pb-4 border-b border-[#DDE2D8]">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <TaskStatusSelect
@@ -123,51 +123,51 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
                 />
                 <PriorityBadge priority={task.priority} />
               </div>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-danger hover:bg-danger-subtle/50 hover:text-danger" onClick={handleDelete} isLoading={deleting}>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:bg-red-50 rounded-[2px]" onClick={handleDelete} isLoading={deleting}>
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            <h2 className="text-xl font-bold text-text-primary tracking-tight leading-tight">
+            <h2 className="text-xl font-bold font-display uppercase text-[#071A49] tracking-tight leading-tight">
               {task.title}
             </h2>
           </div>
 
           <div className="flex-1 overflow-y-auto p-6 space-y-8">
             {/* Meta grid */}
-            <div className="grid grid-cols-2 gap-6 bg-surface-alt/50 p-4 rounded-xl border border-border">
+            <div className="grid grid-cols-2 gap-6 bg-[#F8F9F6] p-4 rounded-[2px] border border-[#DDE2D8]">
               <div>
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Assignee</p>
+                <p className="text-xs font-mono font-bold text-[#586274] uppercase tracking-wider mb-2">Assignee</p>
                 {task.assignee ? (
                   <div className="flex items-center gap-2">
-                    <Avatar name={task.assignee.name} src={task.assignee.avatar} size="sm" />
-                    <span className="text-sm font-medium text-text-primary">{task.assignee.name}</span>
+                    <Avatar name={task.assignee.name} src={task.assignee.avatar} size="sm" className="rounded-[2px] ring-1 ring-[#DDE2D8]" />
+                    <span className="text-sm font-medium text-[#071A49]">{task.assignee.name}</span>
                   </div>
                 ) : (
-                  <span className="text-sm text-text-muted italic">Unassigned</span>
+                  <span className="text-sm font-mono text-[#8E99A8] italic">Unassigned</span>
                 )}
               </div>
               
               <div>
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Due Date</p>
+                <p className="text-xs font-mono font-bold text-[#586274] uppercase tracking-wider mb-2">Due Date</p>
                 {task.dueDate ? (
-                  <div className={`flex items-center gap-2 text-sm font-medium ${overdue ? 'text-danger' : 'text-text-primary'}`}>
-                    {overdue ? <AlertCircle className="h-4 w-4" /> : <CalendarDays className="h-4 w-4 text-text-muted" />}
+                  <div className={`flex items-center gap-2 text-sm font-mono font-medium ${overdue ? 'text-red-600' : 'text-[#071A49]'}`}>
+                    {overdue ? <AlertCircle className="h-4 w-4" /> : <CalendarDays className="h-4 w-4 text-[#8E99A8]" />}
                     {formatDueDate(task.dueDate)}
                   </div>
                 ) : (
-                  <span className="text-sm text-text-muted">No date set</span>
+                  <span className="text-sm font-mono text-[#8E99A8]">No date set</span>
                 )}
               </div>
 
               {task.labels && task.labels.length > 0 && (
                 <div className="col-span-2">
-                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Labels</p>
+                  <p className="text-xs font-mono font-bold text-[#586274] uppercase tracking-wider mb-2">Labels</p>
                   <div className="flex flex-wrap gap-2">
                     {task.labels.map(({ label }: { label: { id: string; name: string; color: string } }) => (
                       <span
                         key={label.id}
                         style={{ backgroundColor: `${label.color}15`, color: label.color, borderColor: `${label.color}40` }}
-                        className="text-xs font-semibold px-2 py-1 rounded-md border"
+                        className="text-xs font-mono font-semibold px-2 py-1 rounded-[2px] border"
                       >
                         {label.name}
                       </span>
@@ -179,13 +179,13 @@ export function TaskDrawer({ taskId, isOpen, onClose, onTaskUpdated, onTaskDelet
 
             {/* Description */}
             <div>
-              <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Description</p>
+              <p className="text-xs font-mono font-bold text-[#586274] uppercase tracking-wider mb-3">Description</p>
               {task.description ? (
-                <div className="text-sm text-text-secondary whitespace-pre-wrap leading-relaxed">
+                <div className="text-sm text-[#071A49] whitespace-pre-wrap leading-relaxed">
                   {task.description}
                 </div>
               ) : (
-                <p className="text-sm text-text-muted italic">No description provided.</p>
+                <p className="text-sm font-mono text-[#8E99A8] italic">No description provided.</p>
               )}
             </div>
 

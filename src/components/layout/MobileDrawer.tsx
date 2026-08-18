@@ -117,29 +117,29 @@ export function MobileDrawer({
       />
 
       {/* Slide-out Drawer Panel */}
-      <div className="relative w-[300px] max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl slide-in-left overflow-hidden border-r border-[#EAEDF2]">
+      <div className="relative w-[300px] max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl slide-in-left overflow-hidden border-r border-[#DDE2D8]">
         {/* Brand Header & Close */}
-        <div className="p-4 border-b border-[#EAEDF2] flex items-center justify-between bg-[#F8F9FA]">
+        <div className="p-4 border-b border-[#DDE2D8] flex items-center justify-between bg-[#F8F9F6]">
           <Link href="/dashboard" onClick={close} className="flex items-center gap-2.5">
-            <div className="relative h-8 w-8 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs">
+            <div className="relative h-8 w-8 rounded-[2px] overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs border border-[#DDE2D8]">
               <Image
                 src="/logo.png"
                 alt="Trawbit Logo"
                 width={32}
                 height={32}
-                className="h-8 w-8 object-cover rounded-lg"
+                className="h-8 w-8 object-cover rounded-[2px]"
                 priority
               />
             </div>
-            <div className="flex items-center gap-1 leading-none">
-              <span className="text-base font-black text-[#111827] tracking-tight">Trawbit</span>
-              <span className="text-base font-black text-[#98CD28] tracking-tight">FlowDesk</span>
+            <div className="flex items-center gap-1 leading-none font-display">
+              <span className="text-base font-black text-[#071A49] tracking-tight">Trawbit</span>
+              <span className="text-base font-black text-[#B7D600] tracking-tight">FlowDesk</span>
             </div>
           </Link>
 
           <button
             onClick={close}
-            className="p-1.5 rounded-xl text-[#9CA3AF] hover:text-[#111827] hover:bg-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-[2px] text-[#8E99A8] hover:text-[#071A49] hover:bg-[#F0F2EC] transition-colors cursor-pointer"
             aria-label="Close navigation menu"
           >
             <X className="h-5 w-5" />
@@ -147,24 +147,24 @@ export function MobileDrawer({
         </div>
 
         {/* User Profile Card */}
-        <div className="p-3.5 mx-3 mt-3 rounded-2xl bg-[#F6F8FA] border border-[#EAEDF2] flex items-center gap-3">
+        <div className="p-3.5 mx-3 mt-3 rounded-[2px] bg-[#F8F9F6] border border-[#DDE2D8] flex items-center gap-3">
           <Avatar
             name={displayName}
             src={user.avatar}
             size="md"
-            className="ring-1 ring-border rounded-full"
+            className="ring-1 ring-[#DDE2D8] rounded-[2px]"
           />
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-[#111827] truncate">{displayName}</p>
-            <p className="text-[11px] text-[#6B7280] truncate mt-0.5">{user.email}</p>
-            <span className="inline-block mt-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#F3F9DE] text-[#659A08]">
+            <p className="text-xs font-bold text-[#071A49] truncate">{displayName}</p>
+            <p className="text-[11px] text-[#586274] truncate mt-0.5">{user.email}</p>
+            <span className="inline-block mt-1 px-2 py-0.5 rounded-[2px] font-mono text-[10px] font-bold bg-[#F1F8CE] text-[#071A49] border border-[#B7D600]">
               {displayRole}
             </span>
           </div>
         </div>
 
         {/* Nav Links */}
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-5">
+        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-5 bg-tech-grid">
           {/* Main Menu */}
           <div className="space-y-1">
             {user.role === "ADMIN" && (
@@ -172,13 +172,13 @@ export function MobileDrawer({
                 href="/admin"
                 onClick={close}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all",
+                  "flex items-center gap-3 px-3 py-2 rounded-[2px] text-xs font-bold transition-all border",
                   isActive("/admin")
-                    ? "bg-[#F3F9DE] text-[#111827]"
-                    : "text-[#4B5563] hover:bg-[#F7F8FA] hover:text-[#111827]"
+                    ? "bg-[#F1F8CE] text-[#071A49] border-[#B7D600]"
+                    : "border-transparent text-[#586274] hover:bg-[#F0F2EC] hover:text-[#071A49]"
                 )}
               >
-                <ShieldCheck className="h-4 w-4 text-[#88C315] flex-shrink-0" />
+                <ShieldCheck className="h-4 w-4 text-[#B7D600] flex-shrink-0" />
                 <span>Admin Portal</span>
               </Link>
             )}
@@ -191,23 +191,23 @@ export function MobileDrawer({
                   href={item.href}
                   onClick={close}
                   className={cn(
-                    "flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all",
+                    "flex items-center justify-between px-3 py-2 rounded-[2px] text-xs font-semibold transition-all border",
                     active
-                      ? "bg-[#F3F9DE] text-[#111827] font-bold"
-                      : "text-[#6B7280] hover:bg-[#F7F8FA] hover:text-[#111827]"
+                      ? "bg-[#F1F8CE] text-[#071A49] font-bold border-[#B7D600]"
+                      : "border-transparent text-[#586274] hover:bg-[#F0F2EC] hover:text-[#071A49]"
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon
                       className={cn(
                         "h-4 w-4 flex-shrink-0",
-                        active ? "text-[#88C315]" : "text-[#9CA3AF]"
+                        active ? "text-[#071A49]" : "text-[#8E99A8]"
                       )}
                     />
                     <span>{item.label}</span>
                   </div>
                   {item.count !== undefined && item.count > 0 && (
-                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#88C315] text-white">
+                    <span className="px-1.5 py-0.2 rounded-[2px] font-mono text-[10px] font-bold bg-[#B7D600] text-[#071A49] border border-[#071A49]">
                       {item.count}
                     </span>
                   )}
@@ -217,29 +217,29 @@ export function MobileDrawer({
           </div>
 
           {/* Your Projects Section */}
-          <div className="pt-2 border-t border-[#EAEDF2]">
+          <div className="pt-2 border-t border-[#DDE2D8]">
             <div className="flex items-center justify-between px-3 mb-2">
-              <span className="text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-[#071A49] uppercase tracking-wider">
                 Your Projects
               </span>
               <Link
                 href="/projects/new"
                 onClick={close}
-                className="p-1 text-[#9CA3AF] hover:text-[#111827] rounded hover:bg-[#F3F4F6] transition-colors"
+                className="p-1 text-[#8E99A8] hover:text-[#071A49] rounded-[2px] hover:bg-[#F0F2EC] transition-colors"
                 title="Add Project"
               >
                 <Plus className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {yourProjects.map((project) => (
                 <Link
                   key={project.name}
                   href={project.href}
                   onClick={close}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-[#4B5563] hover:bg-[#F7F8FA] hover:text-[#111827] transition-all"
+                  className="flex items-center gap-2.5 px-3 py-1.5 rounded-[2px] text-xs font-medium text-[#586274] hover:bg-[#F0F2EC] hover:text-[#071A49] transition-all"
                 >
-                  <span className={cn("h-2 w-2 rounded-full shrink-0", project.color)} />
+                  <span className={cn("h-2 w-2 rounded-[2px] shrink-0", project.color)} />
                   <span className="truncate">{project.name}</span>
                 </Link>
               ))}
@@ -248,20 +248,20 @@ export function MobileDrawer({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-3 border-t border-[#EAEDF2] bg-[#F8F9FA] space-y-1">
+        <div className="p-3 border-t border-[#DDE2D8] bg-[#F8F9F6] space-y-1">
           <Link
             href="/profile"
             onClick={close}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-[#4B5563] hover:bg-white transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-[2px] text-xs font-bold text-[#586274] hover:bg-white transition-colors"
           >
-            <UserIcon className="h-4 w-4 text-[#9CA3AF]" />
+            <UserIcon className="h-4 w-4 text-[#8E99A8]" />
             <span>Profile</span>
           </Link>
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-[#EF4444] hover:bg-[#FEF2F2] transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-[2px] text-xs font-bold text-[#DC2626] hover:bg-[#FEF2F2] transition-colors cursor-pointer"
           >
-            <LogOut className="h-4 w-4 text-[#EF4444]" />
+            <LogOut className="h-4 w-4 text-[#DC2626]" />
             <span>Sign out</span>
           </button>
         </div>

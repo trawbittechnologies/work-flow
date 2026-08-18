@@ -131,11 +131,11 @@ function ToastItem({
       onTouchStart={handleMouseEnter}
       onTouchEnd={handleMouseLeave}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border p-3.5 sm:p-4 shadow-xl backdrop-blur-xl transition-all duration-200",
-        "bg-white/95 dark:bg-[#1A1D24]/95 text-text-primary",
+        "group relative overflow-hidden rounded-[2px] border p-3 sm:p-3.5 shadow-sm backdrop-blur-xl transition-all duration-200",
+        "bg-white/95 dark:bg-[#071A49]/95 text-[#071A49] dark:text-[#F8F9F6]",
         config.borderColor,
         config.glowColor,
-        "animate-in slide-in-up hover:scale-[1.01] hover:shadow-2xl"
+        "animate-in slide-in-up hover:scale-[1.01]"
       )}
       role="alert"
     >
@@ -143,7 +143,7 @@ function ToastItem({
         {/* Icon Badge */}
         <div
           className={cn(
-            "h-8 w-8 rounded-xl border flex items-center justify-center shrink-0 shadow-2xs",
+            "h-7 w-7 rounded-[2px] border flex items-center justify-center shrink-0 shadow-2xs",
             config.badgeBg
           )}
         >
@@ -152,11 +152,11 @@ function ToastItem({
 
         {/* Content */}
         <div className="flex-1 min-w-0 pr-1">
-          <p className="text-xs sm:text-[13px] font-bold text-[#111827] dark:text-neutral-100 leading-snug break-words">
+          <p className="text-xs sm:text-[13px] font-bold text-[#071A49] dark:text-neutral-100 leading-snug break-words">
             {toast.title}
           </p>
           {toast.message && (
-            <p className="text-[11px] sm:text-xs text-[#4B5563] dark:text-neutral-400 mt-0.5 leading-relaxed break-words font-medium">
+            <p className="text-[11px] sm:text-xs text-[#586274] dark:text-neutral-400 mt-0.5 leading-relaxed break-words font-medium">
               {toast.message}
             </p>
           )}
@@ -165,7 +165,7 @@ function ToastItem({
         {/* Close Button */}
         <button
           onClick={() => onRemove(toast.id)}
-          className="h-7 w-7 rounded-lg text-[#9CA3AF] hover:text-[#111827] dark:hover:text-white hover:bg-[#F3F4F6] dark:hover:bg-neutral-800 transition-colors flex items-center justify-center shrink-0 cursor-pointer"
+          className="h-6 w-6 rounded-[2px] text-[#8E99A8] hover:text-[#071A49] dark:hover:text-white hover:bg-[#F0F2EC] dark:hover:bg-[#0D2561] transition-colors flex items-center justify-center shrink-0 cursor-pointer"
           aria-label="Dismiss notification"
         >
           <X className="h-3.5 w-3.5" />
@@ -173,7 +173,7 @@ function ToastItem({
       </div>
 
       {/* Interactive Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/5 dark:bg-white/5 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black/5 dark:bg-white/5 overflow-hidden">
         <div
           className={cn("h-full transition-all duration-75", config.progressColor)}
           style={{ width: `${progress}%` }}

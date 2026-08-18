@@ -59,10 +59,10 @@ export default async function ProjectsPage() {
   return (
     <div className="space-y-6 pb-12">
       <div>
-        <h1 className="text-2xl font-black tracking-tight text-[#111827]">
+        <h1 className="text-2xl font-black font-display uppercase tracking-tight text-[#071A49]">
           Workspace Projects
         </h1>
-        <p className="text-[13px] font-medium text-[#6B7280] mt-0.5">
+        <p className="text-[13px] font-medium text-[#586274] mt-0.5">
           Manage project roadmaps, track team progress, and update status instantly.
         </p>
       </div>

@@ -154,24 +154,24 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
   const filteredMembers = users.filter((u) => u.name.toLowerCase().includes(memberSearch.toLowerCase()) || u.email.toLowerCase().includes(memberSearch.toLowerCase()));
 
   return (
-    <div className="-m-3.5 sm:-m-6 lg:-m-8 flex h-[calc(100vh-var(--header-height)-1px)] overflow-hidden bg-white border-t border-[#EAEDF2]">
+    <div className="-m-3.5 sm:-m-6 lg:-m-8 flex h-[calc(100vh-var(--header-height)-1px)] overflow-hidden bg-white border-t border-[#DDE2D8]">
       {/* Sidebar List (Full-width on mobile if no active chat selected or when toggled) */}
       <div
         className={cn(
-          "w-full md:w-80 border-r border-[#EAEDF2] bg-white flex flex-col shrink-0 z-10 transition-all",
+          "w-full md:w-80 border-r border-[#DDE2D8] bg-white flex flex-col shrink-0 z-10 transition-all",
           mobileShowChat ? "hidden md:flex" : "flex"
         )}
       >
         {/* Header */}
-        <div className="p-3.5 sm:p-4 border-b border-[#EAEDF2] space-y-3">
+        <div className="p-3.5 sm:p-4 border-b border-[#DDE2D8] space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm sm:text-base font-black text-[#111827] tracking-tight">Chat & DMs</h2>
+            <h2 className="text-sm sm:text-base font-black font-display uppercase text-[#071A49] tracking-tight">Chat & DMs</h2>
             <Button
               variant="primary"
               size="sm"
               leftIcon={<MessageSquarePlus className="h-3.5 w-3.5" />}
               onClick={() => setIsDmModalOpen(true)}
-              className="text-xs shadow-xs h-8"
+              className="text-xs shadow-xs h-8 font-mono font-bold uppercase rounded-[2px]"
             >
               New DM
             </Button>
@@ -179,13 +179,13 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
 
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#9CA3AF]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#8E99A8]" />
             <input
               type="search"
               placeholder="Filter chats..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-8 pl-8 pr-3 text-xs rounded-xl border border-[#EAEDF2] bg-[#F9FAFB] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30 focus:border-[#88C315]"
+              className="w-full h-8 pl-8 pr-3 text-xs rounded-[2px] border border-[#DDE2D8] bg-[#F8F9F6] text-[#071A49] placeholder:text-[#8E99A8] focus:outline-none focus:ring-1 focus:ring-[#071A49]"
             />
           </div>
         </div>
@@ -194,13 +194,13 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
         <div className="flex-1 overflow-y-auto p-2 space-y-4">
           {/* Project Channels */}
           <div>
-            <div className="px-3 mb-1.5 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-[#9CA3AF]">
+            <div className="px-3 mb-1.5 flex items-center justify-between text-[10px] font-mono font-bold uppercase tracking-widest text-[#586274]">
               <span>Project Channels</span>
-              <span className="text-[10px] font-bold bg-[#F3F4F6] border border-[#E5E7EB] px-1.5 py-0.5 rounded">{projectChannels.length}</span>
+              <span className="text-[10px] font-mono font-bold bg-[#F0F2EC] border border-[#DDE2D8] text-[#071A49] px-1.5 py-0.5 rounded-[2px]">{projectChannels.length}</span>
             </div>
             <div className="space-y-1">
               {projectChannels.length === 0 ? (
-                <p className="px-3 py-2 text-xs text-[#9CA3AF] italic">No project channels</p>
+                <p className="px-3 py-2 text-xs text-[#8E99A8] italic font-mono">No project channels</p>
               ) : (
                 projectChannels.map((conv) => {
                   const title = getConversationName(conv);
@@ -211,20 +211,20 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                       key={conv.id}
                       onClick={() => handleSelectConversation(conv.id)}
                       className={cn(
-                        "w-full text-left flex items-center gap-3 p-2.5 rounded-xl transition-all cursor-pointer relative border border-transparent",
+                        "w-full text-left flex items-center gap-3 p-2.5 rounded-[2px] transition-all cursor-pointer relative border",
                         isActive
-                          ? "bg-[#F3F9DE] text-[#111827] font-bold border-[#88C315]/20 shadow-2xs"
-                          : "hover:bg-[#F9FAFB] text-[#4B5563] hover:text-[#111827]"
+                          ? "bg-[#F1F8CE] text-[#071A49] font-bold border-[#B7D600] shadow-2xs"
+                          : "border-transparent hover:bg-[#F8F9F6] text-[#586274] hover:text-[#071A49]"
                       )}
                     >
-                      {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#88C315] rounded-r-full" />}
-                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border", isActive ? "bg-white border-[#88C315] text-[#111827]" : "bg-[#F3F4F6] border-[#E5E7EB] text-[#9CA3AF]")}>
+                      {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#071A49] rounded-r-[2px]" />}
+                      <div className={cn("w-8 h-8 rounded-[2px] flex items-center justify-center shrink-0 border", isActive ? "bg-white border-[#B7D600] text-[#071A49]" : "bg-[#F0F2EC] border-[#DDE2D8] text-[#8E99A8]")}>
                         <Hash className="h-4 w-4" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="truncate text-xs font-bold leading-tight">{title}</p>
+                        <p className="truncate text-xs font-bold leading-tight text-[#071A49]">{title}</p>
                         {lastMsg && (
-                          <p className="text-[10px] truncate mt-0.5 text-[#9CA3AF]">
+                          <p className="text-[10px] font-mono truncate mt-0.5 text-[#8E99A8]">
                             {lastMsg.sender?.name}: {lastMsg.content || "Attachment"}
                           </p>
                         )}
@@ -238,12 +238,12 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
 
           {/* Direct Messages */}
           <div>
-            <div className="px-3 mb-1.5 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-[#9CA3AF]">
+            <div className="px-3 mb-1.5 flex items-center justify-between text-[10px] font-mono font-bold uppercase tracking-widest text-[#586274]">
               <span>Direct Messages</span>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-5 w-5 text-[#9CA3AF] hover:text-[#111827] cursor-pointer"
+                className="h-5 w-5 text-[#8E99A8] hover:text-[#071A49] cursor-pointer rounded-[2px]"
                 onClick={() => setIsDmModalOpen(true)}
                 title="Start new DM"
               >
@@ -252,7 +252,7 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
             </div>
             <div className="space-y-1">
               {directMessages.length === 0 ? (
-                <p className="px-3 py-2 text-xs text-[#9CA3AF] italic">No direct messages yet</p>
+                <p className="px-3 py-2 text-xs text-[#8E99A8] italic font-mono">No direct messages yet</p>
               ) : (
                 directMessages.map((conv) => {
                   const title = getConversationName(conv);
@@ -264,25 +264,25 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                       key={conv.id}
                       onClick={() => handleSelectConversation(conv.id)}
                       className={cn(
-                        "w-full text-left flex items-center gap-3 p-2.5 rounded-xl transition-all cursor-pointer relative border border-transparent",
+                        "w-full text-left flex items-center gap-3 p-2.5 rounded-[2px] transition-all cursor-pointer relative border",
                         isActive
-                          ? "bg-[#F3F9DE] text-[#111827] font-bold border-[#88C315]/20 shadow-2xs"
-                          : "hover:bg-[#F9FAFB] text-[#4B5563] hover:text-[#111827]"
+                          ? "bg-[#F1F8CE] text-[#071A49] font-bold border-[#B7D600] shadow-2xs"
+                          : "border-transparent hover:bg-[#F8F9F6] text-[#586274] hover:text-[#071A49]"
                       )}
                     >
-                      {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#88C315] rounded-r-full" />}
+                      {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#071A49] rounded-r-[2px]" />}
                       <div className="relative shrink-0">
-                        <Avatar name={avatar?.name || title} src={avatar?.avatar} size="sm" className="ring-1 ring-border" />
-                        <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-emerald-500 rounded-full ring-2 ring-white" />
+                        <Avatar name={avatar?.name || title} src={avatar?.avatar} size="sm" className="ring-1 ring-[#DDE2D8] rounded-[2px]" />
+                        <span className="absolute bottom-0 right-0 h-2 w-2 bg-emerald-600 rounded-[2px] ring-1 ring-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="truncate text-xs font-bold leading-tight">{title}</p>
+                        <p className="truncate text-xs font-bold leading-tight text-[#071A49]">{title}</p>
                         {lastMsg ? (
-                          <p className="text-[10px] truncate mt-0.5 text-[#9CA3AF]">
+                          <p className="text-[10px] font-mono truncate mt-0.5 text-[#8E99A8]">
                             {lastMsg.content || "Attachment"}
                           </p>
                         ) : (
-                          <p className="text-[10px] text-[#9CA3AF] italic mt-0.5">Start chatting</p>
+                          <p className="text-[10px] font-mono text-[#8E99A8] italic mt-0.5">Start chatting</p>
                         )}
                       </div>
                     </button>
@@ -297,19 +297,19 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
       {/* Main Chat Area (Full width on mobile when conversation selected) */}
       <div
         className={cn(
-          "flex-1 flex flex-col relative bg-[#F9FAFB] min-w-0",
+          "flex-1 flex flex-col relative bg-[#F8F9F6] bg-tech-grid min-w-0",
           !mobileShowChat ? "hidden md:flex" : "flex"
         )}
       >
         {activeConversation ? (
           <ChannelProvider channelName={`conversation:${activeConversation.id}`}>
             {/* Active Header Action Bar */}
-            <div className="h-14 border-b border-[#EAEDF2] flex items-center justify-between px-3 sm:px-6 bg-white z-10 shadow-2xs">
+            <div className="h-14 border-b border-[#DDE2D8] flex items-center justify-between px-3 sm:px-6 bg-white z-10 shadow-2xs">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 {/* Mobile Back to Conversation List Button */}
                 <button
                   onClick={() => setMobileShowChat(false)}
-                  className="md:hidden h-8 w-8 rounded-lg text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6] flex items-center justify-center shrink-0 cursor-pointer"
+                  className="md:hidden h-8 w-8 rounded-[2px] text-[#586274] hover:text-[#071A49] hover:bg-[#F0F2EC] flex items-center justify-center shrink-0 cursor-pointer"
                   title="Back to conversations"
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -321,20 +321,21 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                       name={getConversationName(activeConversation)}
                       src={getConversationAvatar(activeConversation)?.avatar}
                       size="sm"
+                      className="rounded-[2px] ring-1 ring-[#DDE2D8]"
                     />
-                    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-emerald-500 rounded-full ring-2 ring-white" />
+                    <span className="absolute bottom-0 right-0 h-2 w-2 bg-emerald-600 rounded-[2px] ring-1 ring-white" />
                   </div>
                 ) : (
-                  <div className="h-8 w-8 rounded-lg bg-[#F3F9DE] text-[#88C315] border border-[#88C315]/20 flex items-center justify-center font-bold shrink-0">
+                  <div className="h-8 w-8 rounded-[2px] bg-[#071A49] text-[#B7D600] border border-[#071A49] flex items-center justify-center font-bold shrink-0">
                     <Hash className="h-4 w-4" />
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h3 className="text-xs sm:text-sm font-extrabold text-[#111827] tracking-tight truncate">
+                  <h3 className="text-xs sm:text-sm font-bold text-[#071A49] tracking-tight truncate font-display uppercase">
                     {getConversationName(activeConversation)}
                   </h3>
-                  <p className="text-[10px] font-semibold text-[#9CA3AF] flex items-center gap-1.5 truncate">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                  <p className="text-[10px] font-mono text-[#8E99A8] flex items-center gap-1.5 truncate">
+                    <span className="h-1.5 w-1.5 rounded-[2px] bg-emerald-600 shrink-0" />
                     <span>{activeConversation.type === "DIRECT" ? "Active Now" : `${activeConversation.members?.length || 2} members`}</span>
                   </p>
                 </div>
@@ -346,8 +347,8 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                   variant="ghost"
                   size="icon"
                   className={cn(
-                    "h-8 w-8 transition-colors cursor-pointer",
-                    showRightDrawer ? "bg-[#F3F9DE] text-[#88C315]" : "text-[#9CA3AF] hover:text-[#111827]"
+                    "h-8 w-8 transition-colors cursor-pointer rounded-[2px]",
+                    showRightDrawer ? "bg-[#F1F8CE] text-[#071A49]" : "text-[#8E99A8] hover:text-[#071A49]"
                   )}
                   onClick={() => setShowRightDrawer((o) => !o)}
                   title="Conversation details"
@@ -365,10 +366,10 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
 
               {/* Right Details Panel */}
               {showRightDrawer && (
-                <div className="w-72 border-l border-[#EAEDF2] bg-white p-4 flex flex-col gap-5 overflow-y-auto hidden lg:flex shrink-0 shadow-sm">
-                  <div className="flex items-center justify-between border-b border-[#EAEDF2] pb-3">
-                    <h4 className="text-xs font-black text-[#111827] uppercase tracking-wider">Details</h4>
-                    <button onClick={() => setShowRightDrawer(false)} className="text-[#9CA3AF] hover:text-[#111827] p-1 cursor-pointer">
+                <div className="w-72 border-l border-[#DDE2D8] bg-white p-4 flex flex-col gap-5 overflow-y-auto hidden lg:flex shrink-0 shadow-xs">
+                  <div className="flex items-center justify-between border-b border-[#DDE2D8] pb-3">
+                    <h4 className="text-xs font-mono font-bold text-[#071A49] uppercase tracking-wider">Details</h4>
+                    <button onClick={() => setShowRightDrawer(false)} className="text-[#8E99A8] hover:text-[#071A49] p-1 cursor-pointer">
                       <X className="h-4 w-4" />
                     </button>
                   </div>
@@ -379,37 +380,38 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
                       name={getConversationName(activeConversation)}
                       src={getConversationAvatar(activeConversation)?.avatar}
                       size="lg"
+                      className="rounded-[2px] ring-1 ring-[#DDE2D8]"
                     />
-                    <h5 className="text-sm font-extrabold text-[#111827]">
+                    <h5 className="text-sm font-bold text-[#071A49]">
                       {getConversationName(activeConversation)}
                     </h5>
-                    <span className="text-[10px] font-bold text-[#6B7280] bg-[#F3F4F6] px-2.5 py-0.5 rounded-full border border-[#E5E7EB]">
+                    <span className="text-[10px] font-mono font-bold text-[#586274] bg-[#F0F2EC] px-2.5 py-0.5 rounded-[2px] border border-[#DDE2D8] uppercase">
                       {activeConversation.type === "DIRECT" ? "Direct Message" : "Project Channel"}
                     </span>
                   </div>
 
                   {/* Options */}
-                  <div className="space-y-2 pt-2 border-t border-[#EAEDF2]">
-                    <button className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F9FAFB] text-xs font-bold text-[#4B5563] cursor-pointer">
+                  <div className="space-y-2 pt-2 border-t border-[#DDE2D8]">
+                    <button className="w-full flex items-center justify-between p-2.5 rounded-[2px] hover:bg-[#F8F9F6] text-xs font-bold text-[#586274] cursor-pointer">
                       <span className="flex items-center gap-2.5">
-                        <Bell className="h-4 w-4 text-[#9CA3AF]" />
+                        <Bell className="h-4 w-4 text-[#8E99A8]" />
                         Mute Notifications
                       </span>
-                      <span className="text-[10px] text-[#9CA3AF]">Off</span>
+                      <span className="text-[10px] font-mono text-[#8E99A8]">Off</span>
                     </button>
                   </div>
 
                   {/* Members list */}
-                  <div className="space-y-2 pt-2 border-t border-[#EAEDF2]">
-                    <h6 className="text-[10px] font-black uppercase text-[#9CA3AF] tracking-widest">
+                  <div className="space-y-2 pt-2 border-t border-[#DDE2D8]">
+                    <h6 className="text-[10px] font-mono font-bold uppercase text-[#586274] tracking-widest">
                       Members ({activeConversation.members?.length || 2})
                     </h6>
                     <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
                       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                       {activeConversation.members?.map((m: any) => (
-                        <div key={m.id || m.userId} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-[#F9FAFB]">
-                          <Avatar name={m.user?.name || "Member"} src={m.user?.avatar} size="xs" />
-                          <span className="text-xs font-bold text-[#111827] truncate">{m.user?.name || "Workspace Member"}</span>
+                        <div key={m.id || m.userId} className="flex items-center gap-2.5 p-1.5 rounded-[2px] hover:bg-[#F8F9F6]">
+                          <Avatar name={m.user?.name || "Member"} src={m.user?.avatar} size="xs" className="rounded-[2px]" />
+                          <span className="text-xs font-bold text-[#071A49] truncate">{m.user?.name || "Workspace Member"}</span>
                         </div>
                       ))}
                     </div>
@@ -419,18 +421,18 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
             </div>
           </ChannelProvider>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-[#9CA3AF] p-6 text-center">
-            <div className="h-14 w-14 bg-[#F3F9DE] text-[#88C315] rounded-2xl flex items-center justify-center mb-3">
+          <div className="flex-1 flex flex-col items-center justify-center text-[#8E99A8] p-6 text-center">
+            <div className="h-14 w-14 bg-[#F1F8CE] text-[#071A49] border border-[#B7D600] rounded-[2px] flex items-center justify-center mb-3">
               <Users className="h-7 w-7" />
             </div>
-            <h3 className="text-base font-bold text-[#111827] mb-1">Your Messages</h3>
-            <p className="text-xs text-[#6B7280] max-w-sm">Select a project channel or start a Direct Message with a team member.</p>
+            <h3 className="text-base font-bold uppercase font-display text-[#071A49] mb-1">Your Messages</h3>
+            <p className="text-xs text-[#586274] max-w-sm">Select a project channel or start a Direct Message with a team member.</p>
             <Button
               variant="primary"
               size="sm"
               leftIcon={<MessageSquarePlus className="h-4 w-4" />}
               onClick={() => setIsDmModalOpen(true)}
-              className="mt-4"
+              className="mt-4 font-mono uppercase text-xs"
             >
               Start New DM
             </Button>
@@ -448,41 +450,41 @@ function ChatLayoutContent({ currentUserId }: { currentUserId: string }) {
       >
         <div className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8E99A8]" />
             <input
               type="search"
               placeholder="Search member by name or email..."
               value={memberSearch}
               onChange={(e) => setMemberSearch(e.target.value)}
-              className="w-full h-9 pl-9 pr-3 text-xs rounded-xl border border-[#E5E7EB] bg-white text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#88C315]/30"
+              className="w-full h-9 pl-9 pr-3 text-xs rounded-[2px] border border-[#DDE2D8] bg-white text-[#071A49] placeholder:text-[#8E99A8] focus:outline-none focus:ring-1 focus:ring-[#071A49]"
             />
           </div>
 
           <div className="max-h-72 overflow-y-auto space-y-1.5 pr-1">
             {filteredMembers.length === 0 ? (
-              <p className="text-center text-xs text-[#9CA3AF] py-6">No members found.</p>
+              <p className="text-center text-xs text-[#8E99A8] py-6 font-mono">No members found.</p>
             ) : (
               filteredMembers.map((member) => (
                 <button
                   key={member.id}
                   onClick={() => startDirectMessage(member.id)}
                   disabled={startingDm === member.id}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F9FAFB] transition-colors group cursor-pointer border border-transparent hover:border-[#EAEDF2]"
+                  className="w-full flex items-center justify-between p-2.5 rounded-[2px] hover:bg-[#F8F9F6] transition-colors group cursor-pointer border border-transparent hover:border-[#DDE2D8]"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <Avatar name={member.name} src={member.avatar} size="sm" />
+                    <Avatar name={member.name} src={member.avatar} size="sm" className="rounded-[2px]" />
                     <div className="text-left min-w-0">
-                      <p className="text-xs font-extrabold text-[#111827] truncate group-hover:text-[#88C315] transition-colors">
+                      <p className="text-xs font-bold text-[#071A49] truncate group-hover:text-[#041030] transition-colors">
                         {member.name}
                       </p>
-                      <p className="text-[10px] text-[#6B7280] truncate">{member.email}</p>
+                      <p className="text-[10px] font-mono text-[#586274] truncate">{member.email}</p>
                     </div>
                   </div>
                   <Button
                     variant="primary"
                     size="sm"
                     isLoading={startingDm === member.id}
-                    className="text-[11px] px-2.5 h-7"
+                    className="text-[11px] px-2.5 h-7 font-mono uppercase"
                   >
                     Chat
                   </Button>

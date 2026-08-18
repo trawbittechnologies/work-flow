@@ -58,34 +58,34 @@ export default async function CalendarPage() {
     <div className="space-y-5 sm:space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#111827]">
+          <h1 className="text-xl sm:text-2xl font-black font-display uppercase tracking-tight text-[#071A49]">
             Calendar &amp; Schedule
           </h1>
-          <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
+          <p className="text-xs sm:text-[13px] font-medium text-[#586274] mt-0.5">
             Keep track of project milestones, sprint deadlines, and team meetings.
           </p>
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <div className="flex items-center bg-white border border-[#E5E7EB] rounded-xl p-1 shadow-2xs">
-            <button className="p-1 hover:bg-[#F3F4F6] rounded-lg text-[#6B7280] cursor-pointer" title="Previous month">
+          <div className="flex items-center bg-white border border-[#DDE2D8] rounded-[2px] p-1 shadow-xs">
+            <button className="p-1 hover:bg-[#F0F2EC] rounded-[2px] text-[#586274] cursor-pointer" title="Previous month">
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="px-2.5 text-xs font-bold text-[#111827]">{monthName}</span>
-            <button className="p-1 hover:bg-[#F3F4F6] rounded-lg text-[#6B7280] cursor-pointer" title="Next month">
+            <span className="px-2.5 text-xs font-mono font-bold text-[#071A49]">{monthName}</span>
+            <button className="p-1 hover:bg-[#F0F2EC] rounded-[2px] text-[#586274] cursor-pointer" title="Next month">
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
-          <button className="inline-flex items-center gap-1.5 sm:gap-2 h-9 px-3 sm:px-4 text-xs font-bold rounded-xl bg-[#88C315] hover:bg-[#77AB12] text-white transition-colors shadow-2xs cursor-pointer">
+          <button className="inline-flex items-center gap-1.5 sm:gap-2 h-9 px-3 sm:px-4 text-xs font-mono font-bold uppercase rounded-[2px] bg-[#071A49] hover:bg-[#041030] text-[#B7D600] transition-colors shadow-2xs cursor-pointer">
             <Plus className="h-4 w-4" /> <span>Add Event</span>
           </button>
         </div>
       </div>
 
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-3.5 sm:p-6 shadow-2xs overflow-hidden">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-3.5 sm:p-6 shadow-xs overflow-hidden">
         {/* Day headers */}
-        <div className="grid grid-cols-7 gap-px border-b border-[#EAEDF2] pb-2.5 mb-2.5 text-center">
+        <div className="grid grid-cols-7 gap-px border-b border-[#DDE2D8] pb-2.5 mb-2.5 text-center">
           {days.map((day) => (
-            <span key={day} className="text-[11px] sm:text-xs font-bold text-[#6B7280]">
+            <span key={day} className="text-[11px] sm:text-xs font-mono font-bold uppercase text-[#071A49]">
               {day}
             </span>
           ))}
@@ -102,17 +102,17 @@ export default async function CalendarPage() {
             return (
               <div
                 key={d}
-                className={`min-h-[58px] sm:min-h-[90px] p-1 sm:p-2.5 rounded-xl border transition-all flex flex-col ${
+                className={`min-h-[58px] sm:min-h-[90px] p-1 sm:p-2.5 rounded-[2px] border transition-all flex flex-col ${
                   isToday
-                    ? "border-[#88C315] bg-[#F3F9DE]/40"
-                    : "border-[#EAEDF2] bg-[#FAFAFB] hover:border-[#D1D5DB]"
+                    ? "border-[#071A49] bg-[#F1F8CE]/50"
+                    : "border-[#DDE2D8] bg-[#F8F9F6] hover:border-[#071A49]"
                 }`}
               >
                 <span
-                  className={`text-[10px] sm:text-xs font-bold ${
+                  className={`text-[10px] sm:text-xs font-mono font-bold ${
                     isToday
-                      ? "h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-[#88C315] text-white flex items-center justify-center"
-                      : "text-[#4B5563]"
+                      ? "h-5 w-5 sm:h-6 sm:w-6 rounded-[2px] bg-[#071A49] text-[#B7D600] flex items-center justify-center"
+                      : "text-[#586274]"
                   }`}
                 >
                   {d}
@@ -121,17 +121,17 @@ export default async function CalendarPage() {
                   <div
                     key={task.id}
                     title={task.title}
-                    className={`mt-1 p-0.5 sm:p-1 text-[8px] sm:text-[10px] font-bold rounded truncate ${
-                      task.status === "DONE"
-                        ? "bg-[#ECFDF5] text-[#059669]"
-                        : "bg-[#F3F9DE] text-[#659A08]"
+                    className={`mt-1 p-0.5 sm:p-1 text-[8px] sm:text-[9px] font-mono font-bold rounded-[2px] truncate border ${
+                      task.status === "DONE" || task.status === "COMPLETED"
+                        ? "bg-[#ECFDF5] text-[#16A34A] border-emerald-200"
+                        : "bg-[#F1F8CE] text-[#071A49] border-[#B7D600]"
                     }`}
                   >
                     {task.title}
                   </div>
                 ))}
                 {tasks.length > 2 && (
-                  <div className="mt-0.5 text-[8px] text-[#9CA3AF] font-medium">
+                  <div className="mt-0.5 text-[8px] font-mono text-[#8E99A8] font-medium">
                     +{tasks.length - 2} more
                   </div>
                 )}
@@ -142,11 +142,11 @@ export default async function CalendarPage() {
       </div>
 
       {dueTasks.length === 0 && (
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-6 shadow-2xs flex items-center gap-3">
-          <CalendarDays className="h-8 w-8 text-[#D1D5DB] flex-shrink-0" />
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-6 shadow-xs flex items-center gap-3">
+          <CalendarDays className="h-8 w-8 text-[#8E99A8] flex-shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-[#9CA3AF]">No tasks due this month</p>
-            <p className="text-xs text-[#C4C9D4] mt-0.5">Assign due dates to tasks and they&apos;ll appear on the calendar</p>
+            <p className="text-sm font-bold uppercase font-display text-[#071A49]">No tasks due this month</p>
+            <p className="text-xs text-[#586274] mt-0.5">Assign due dates to tasks and they&apos;ll appear on the calendar</p>
           </div>
         </div>
       )}

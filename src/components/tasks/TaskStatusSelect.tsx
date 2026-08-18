@@ -261,11 +261,11 @@ export function TaskStatusSelect({
         onClick={handleToggle}
         title="Click to update task status"
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-full font-bold tracking-tight border transition-all duration-150 select-none shadow-2xs",
-          isSmall ? "text-[11px] px-2.5 py-1" : "text-xs px-3 py-1.5",
+          "inline-flex items-center gap-1.5 rounded-[2px] font-mono font-bold tracking-tight border border-[#DDE2D8] transition-all duration-150 select-none shadow-2xs",
+          isSmall ? "text-[10px] px-2 py-0.5" : "text-xs px-2.5 py-1",
           config.badgeClass,
           disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer active:scale-95",
-          isOpen && "ring-2 ring-primary/30"
+          isOpen && "ring-1 ring-[#071A49]/30"
         )}
       >
         {isUpdating ? (
@@ -273,13 +273,13 @@ export function TaskStatusSelect({
         ) : (
           <span
             className={cn(
-              "rounded-full shrink-0 animate-pulse",
+              "rounded-[2px] shrink-0",
               isSmall ? "h-1.5 w-1.5" : "h-2 w-2",
               config.dotClass
             )}
           />
         )}
-        <span className="truncate">{config.label}</span>
+        <span className="truncate uppercase">{config.label}</span>
         {!disabled && (
           <ChevronDown
             className={cn(
@@ -298,17 +298,17 @@ export function TaskStatusSelect({
             ref={menuRef}
             style={{
               position: "fixed",
-              top: coords.openUpwards ? "auto" : `${coords.top + 6}px`,
+              top: coords.openUpwards ? "auto" : `${coords.top + 4}px`,
               bottom: coords.openUpwards
-                ? `${window.innerHeight - coords.top + 6}px`
+                ? `${window.innerHeight - coords.top + 4}px`
                 : "auto",
               left: `${Math.max(8, Math.min(window.innerWidth - 188, coords.left))}px`,
               zIndex: 99999,
             }}
             onClick={(e) => e.stopPropagation()}
-            className="w-[180px] rounded-2xl bg-white dark:bg-[#1C1F26] border border-[#EAEDF2] dark:border-[#2D3139] shadow-2xl p-1.5 text-xs font-semibold animate-in fade-in-50 zoom-in-95 duration-150"
+            className="w-[180px] rounded-[2px] bg-white border border-[#DDE2D8] shadow-sm p-1 text-xs font-semibold animate-in duration-150"
           >
-            <div className="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-[#9CA3AF] border-b border-[#EAEDF2] dark:border-[#2D3139] mb-1">
+            <div className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-[#586274] border-b border-[#DDE2D8] mb-1">
               Change Status
             </div>
             <div className="space-y-0.5 max-h-64 overflow-y-auto scrollbar-thin">
@@ -328,18 +328,18 @@ export function TaskStatusSelect({
                     type="button"
                     onClick={() => handleStatusSelect(s.value)}
                     className={cn(
-                      "w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl text-left transition-colors cursor-pointer text-xs",
+                      "w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-[2px] text-left transition-colors cursor-pointer text-xs font-mono uppercase",
                       isSelected
-                        ? "bg-[#F3F9DE] text-[#659A08] font-bold dark:bg-lime-950/50 dark:text-lime-400"
-                        : "text-[#374151] dark:text-[#E5E7EB] hover:bg-[#F3F4F6] dark:hover:bg-[#282C35] font-medium"
+                        ? "bg-[#F1F8CE] text-[#071A49] font-bold border border-[#B7D600]"
+                        : "text-[#586274] hover:bg-[#F0F2EC] hover:text-[#071A49] font-medium"
                     )}
                   >
                     <span className="flex items-center gap-2">
-                      <span className={cn("h-2 w-2 rounded-full shrink-0", s.dot)} />
+                      <span className={cn("h-1.5 w-1.5 rounded-[2px] shrink-0", s.dot)} />
                       <span>{s.label}</span>
                     </span>
                     {isSelected && (
-                      <Check className="h-3.5 w-3.5 text-[#659A08] dark:text-lime-400 shrink-0" />
+                      <Check className="h-3.5 w-3.5 text-[#071A49] shrink-0" />
                     )}
                   </button>
                 );

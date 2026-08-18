@@ -64,22 +64,22 @@ export function Modal({
       <div
         ref={ref}
         className={cn(
-          "relative w-full max-w-[calc(100vw-1.5rem)] z-10 bg-white rounded-2xl shadow-2xl border border-[#EAEDF2] overflow-hidden flex flex-col max-h-[90vh]",
+          "relative w-full max-w-[calc(100vw-1.5rem)] z-10 bg-white dark:bg-[#071A49] rounded-[2px] shadow-sm border border-[#DDE2D8] dark:border-[#1E3A7B] overflow-hidden flex flex-col max-h-[90vh]",
           "scale-in",
           sizeMap[size],
           className
         )}
       >
         {(title || description) && (
-          <div className="flex items-start justify-between p-4 sm:p-5 border-b border-[#EAEDF2] bg-[#F8F9FA] shrink-0">
+          <div className="flex items-start justify-between p-4 sm:p-5 border-b border-[#DDE2D8] dark:border-[#1E3A7B] bg-[#F8F9F6] dark:bg-[#041030] shrink-0">
             <div>
               {title && (
-                <h2 id="modal-title" className="text-sm sm:text-base font-bold text-[#111827] tracking-tight">
+                <h2 id="modal-title" className="text-sm sm:text-base font-bold text-[#071A49] dark:text-white uppercase font-display tracking-tight">
                   {title}
                 </h2>
               )}
               {description && (
-                <p className="text-[11px] sm:text-xs text-[#6B7280] mt-0.5 leading-relaxed">{description}</p>
+                <p className="text-[11px] sm:text-xs text-[#586274] dark:text-[#A6B4C9] mt-0.5 leading-relaxed">{description}</p>
               )}
             </div>
             <Button
@@ -87,7 +87,7 @@ export function Modal({
               size="icon"
               onClick={onClose}
               aria-label="Close dialog"
-              className="ml-3 sm:ml-4 shrink-0 text-[#9CA3AF] hover:text-[#111827] hover:bg-white"
+              className="ml-3 sm:ml-4 shrink-0 text-[#8E99A8] hover:text-[#071A49] hover:bg-[#F0F2EC]"
             >
               <X className="h-4 w-4" />
             </Button>

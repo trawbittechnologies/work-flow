@@ -48,39 +48,39 @@ function formatRelativeTime(isoString: string): string {
 
 export function RecentActivityList({ activities }: RecentActivityListProps) {
   return (
-    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-6 shadow-2xs">
+    <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-4 sm:p-6 shadow-xs">
       <div className="flex items-center justify-between mb-4 sm:mb-5">
-        <h3 className="text-sm sm:text-[15px] font-bold text-[#111827]">Recent Activity</h3>
+        <h3 className="text-sm sm:text-[15px] font-bold uppercase font-display text-[#071A49]">Recent Activity</h3>
         <Link
           href="/notifications"
-          className="text-xs font-bold text-[#88C315] hover:text-[#74A710] transition-colors"
+          className="text-xs font-mono font-bold text-[#071A49] hover:text-[#041030] transition-colors"
         >
-          View all
+          VIEW ALL →
         </Link>
       </div>
 
       {activities.length === 0 ? (
-        <div className="flex flex-col items-center justify-center text-center py-10">
-          <Activity className="h-9 w-9 text-[#D1D5DB] mb-3 stroke-[1.5]" />
-          <p className="text-sm font-semibold text-[#9CA3AF]">No activity yet</p>
-          <p className="text-xs text-[#C4C9D4] mt-1">Team actions will show up here</p>
+        <div className="flex flex-col items-center justify-center text-center py-10 bg-tech-grid rounded-[2px] border border-[#DDE2D8]">
+          <Activity className="h-9 w-9 text-[#8E99A8] mb-3 stroke-[1.5]" />
+          <p className="text-sm font-bold uppercase font-display text-[#071A49]">No activity yet</p>
+          <p className="text-xs text-[#586274] mt-1">Team actions will show up here</p>
         </div>
       ) : (
-        <div className="space-y-3.5 sm:space-y-4">
+        <div className="space-y-3 sm:space-y-3.5">
           {activities.map((act) => (
-            <div key={act.id} className="flex items-start gap-3 sm:gap-3.5 py-1">
+            <div key={act.id} className="flex items-start gap-3 sm:gap-3.5 py-1.5 px-2 rounded-[2px] hover:bg-[#F8F9F6] transition-colors">
               <Avatar
                 name={act.userName}
                 src={act.userAvatar}
                 size="sm"
-                className="h-8 w-8 sm:h-9 sm:w-9 rounded-full ring-1 ring-border flex-shrink-0"
+                className="h-8 w-8 sm:h-9 sm:w-9 rounded-[2px] ring-1 ring-[#DDE2D8] flex-shrink-0"
               />
               <div className="min-w-0 flex-1">
-                <p className="text-xs sm:text-[13px] text-[#4B5563] leading-snug break-words">
-                  <span className="font-bold text-[#111827]">{act.userName}</span>{" "}
+                <p className="text-xs sm:text-[13px] text-[#586274] leading-snug break-words">
+                  <span className="font-bold text-[#071A49]">{act.userName}</span>{" "}
                   {formatActivityText(act.type, act.metadata)}
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-[#9CA3AF] mt-0.5">
+                <p className="text-[10px] font-mono text-[#8E99A8] mt-0.5">
                   {formatRelativeTime(act.createdAt)}
                 </p>
               </div>

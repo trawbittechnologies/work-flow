@@ -59,11 +59,11 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
       <div>
-        <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#111827]">
+        <h1 className="text-xl sm:text-2xl font-black font-display uppercase tracking-tight text-[#071A49]">
           Dashboard
         </h1>
-        <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
-          Welcome back, {userName} 👋
+        <p className="text-xs sm:text-[13px] font-medium text-[#586274] mt-0.5">
+          Welcome back, {userName}
         </p>
       </div>
 
@@ -71,30 +71,30 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
       <div className="relative">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto px-3.5 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#374151] hover:bg-[#F9FAFB] active:scale-95 shadow-2xs transition-all cursor-pointer"
+          className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto px-3.5 py-2 bg-white border border-[#DDE2D8] rounded-[2px] text-xs font-semibold text-[#071A49] hover:bg-[#F8F9F6] active:scale-95 shadow-2xs transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2">
             {isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin text-[#88C315]" />
+              <Loader2 className="h-4 w-4 animate-spin text-[#B7D600]" />
             ) : (
-              <Calendar className="h-4 w-4 text-[#6B7280]" />
+              <Calendar className="h-4 w-4 text-[#8E99A8]" />
             )}
-            <span>{selectedRange}</span>
+            <span className="font-mono">{selectedRange}</span>
           </div>
-          <ChevronDown className="h-3.5 w-3.5 text-[#9CA3AF]" />
+          <ChevronDown className="h-3.5 w-3.5 text-[#8E99A8]" />
         </button>
 
         {dropdownOpen && (
-          <div className="absolute right-0 top-full mt-1.5 w-72 bg-white border border-[#E5E7EB] rounded-xl shadow-xl z-20 py-1.5 text-xs font-medium animate-in">
+          <div className="absolute right-0 top-full mt-1 w-72 bg-white border border-[#DDE2D8] rounded-[2px] shadow-sm z-20 py-1 text-xs font-medium animate-in">
             {options.map((opt) => (
               <button
                 key={opt}
                 onClick={() => handleSelect(opt)}
-                className="w-full text-left px-3.5 py-2 hover:bg-[#F3F4F6] text-[#374151] flex items-center justify-between transition-colors"
+                className="w-full text-left px-3.5 py-2 hover:bg-[#F0F2EC] text-[#071A49] flex items-center justify-between transition-colors font-mono"
               >
                 <span>{opt}</span>
                 {selectedRange === opt && (
-                  <span className="h-2 w-2 rounded-full bg-[#88C315]" />
+                  <span className="h-2 w-2 rounded-[2px] bg-[#B7D600]" />
                 )}
               </button>
             ))}

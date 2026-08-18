@@ -130,8 +130,8 @@ export default async function DashboardPage() {
         <StatCard
           label="My Projects"
           value={totalProjects}
-          icon={<FolderKanban className="h-6 w-6 text-[#88C315]" />}
-          iconBg="bg-[#F3F9DE]"
+          icon={<FolderKanban className="h-6 w-6 text-[#071A49]" />}
+          iconBg="bg-[#F1F8CE]"
           trendText={totalProjects === 0 ? "No projects yet" : `${totalProjects} active`}
           trendType="positive"
           showArrow={false}
@@ -139,7 +139,7 @@ export default async function DashboardPage() {
         <StatCard
           label="Tasks Completed"
           value={completedTasks}
-          icon={<CheckCircle2 className="h-6 w-6 text-[#10B981]" />}
+          icon={<CheckCircle2 className="h-6 w-6 text-[#16A34A]" />}
           iconBg="bg-[#ECFDF5]"
           trendText={completedTasks === 0 ? "No tasks done yet" : "Great progress!"}
           trendType="positive"
@@ -148,7 +148,7 @@ export default async function DashboardPage() {
         <StatCard
           label="In Progress"
           value={inProgressTasks}
-          icon={<Clock className="h-6 w-6 text-[#F59E0B]" />}
+          icon={<Clock className="h-6 w-6 text-[#D97706]" />}
           iconBg="bg-[#FFFBEB]"
           trendText={inProgressTasks === 0 ? "Nothing in progress" : `${inProgressTasks} active tasks`}
           trendType={inProgressTasks > 0 ? "positive" : "neutral"}
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
         <StatCard
           label="Team Members"
           value={totalMembers}
-          icon={<Users className="h-6 w-6 text-[#9333EA]" />}
+          icon={<Users className="h-6 w-6 text-[#7C3AED]" />}
           iconBg="bg-[#F3E8FF]"
           trendText={totalMembers === 1 ? "Just you so far" : `${totalMembers} members`}
           trendType="positive"

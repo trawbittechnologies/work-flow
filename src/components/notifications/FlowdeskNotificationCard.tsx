@@ -45,7 +45,7 @@ export function FlowdeskBrandMark({ className }: { className?: string }) {
   return (
     <div 
       className={cn(
-        "w-8 h-8 rounded-xl bg-[#0A1237] text-[#C3D946] flex items-center justify-center shadow-xs flex-shrink-0 border border border-[#0A1237]",
+        "w-8 h-8 rounded-[2px] bg-[#071A49] text-[#B7D600] flex items-center justify-center shadow-xs flex-shrink-0 border border-[#071A49]",
         className
       )}
     >
@@ -56,13 +56,13 @@ export function FlowdeskBrandMark({ className }: { className?: string }) {
 
 /**
  * Contextual Badge Icon (Lucide Icons)
- * Accent: Electric Lime (#C3D946) & Midnight Navy (#0A1237)
+ * Accent: Electric Lime (#B7D600) & Deep Anchor Navy (#071A49)
  */
 function ContextualIcon({ type }: { type: FlowdeskNotificationType }) {
-  const iconProps = { className: "h-3.5 w-3.5 text-[#0A1237] dark:text-[#C3D946]" };
+  const iconProps = { className: "h-3.5 w-3.5 text-[#071A49]" };
 
   return (
-    <div className="w-6 h-6 rounded-lg bg-[#C3D946]/20 border border-[#C3D946]/50 flex items-center justify-center flex-shrink-0">
+    <div className="w-6 h-6 rounded-[2px] bg-[#F1F8CE] border border-[#B7D600] flex items-center justify-center flex-shrink-0">
       {type === "MEMBER_ACTIVITY" && <UserPlus {...iconProps} />}
       {type === "TASK_ACTIVITY" && <ClipboardList {...iconProps} />}
       {type === "COMMENT" && <MessageSquare {...iconProps} />}
@@ -90,36 +90,36 @@ export function FlowdeskNotificationCard({
   return (
     <div
       className={cn(
-        "group relative bg-surface border border-border rounded-2xl p-4 card-shadow transition-all duration-200 hover:border-[#C3D946]",
-        !read && "bg-surface border-l-4 border-l-[#C3D946]"
+        "group relative bg-white border border-[#DDE2D8] rounded-[2px] p-4 shadow-xs transition-all duration-200 hover:border-[#071A49]",
+        !read && "border-l-4 border-l-[#B7D600]"
       )}
     >
       {/* Top Identity & Timestamp Bar */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <FlowdeskBrandMark className="w-7 h-7 rounded-lg" />
-          <span className="text-xs font-black text-[#0A1237] dark:text-white tracking-tight">
+          <FlowdeskBrandMark className="w-6 h-6 rounded-[2px]" />
+          <span className="text-xs font-bold font-display uppercase text-[#071A49] tracking-tight">
             Flowdesk
           </span>
           <ContextualIcon type={type} />
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold text-text-muted">
+          <span className="text-[10px] font-mono font-bold text-[#586274]">
             {timestamp}
           </span>
           {!read && (
             <button
               onClick={() => onMarkRead?.(id)}
               title="Mark as read"
-              className="text-text-muted hover:text-emerald-600 transition-colors p-1 cursor-pointer"
+              className="text-[#586274] hover:text-emerald-700 transition-colors p-1 cursor-pointer"
             >
-              <span className="h-2.5 w-2.5 rounded-full bg-[#C3D946] block glow-lime animate-pulse" />
+              <span className="h-2 w-2 rounded-[2px] bg-[#B7D600] block" />
             </button>
           )}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-text-muted hover:text-[#0A1237] dark:hover:text-white transition-colors p-1 rounded-lg hover:bg-surface-alt cursor-pointer"
+            className="text-[#586274] hover:text-[#071A49] transition-colors p-1 rounded-[2px] hover:bg-[#F0F2EC] cursor-pointer"
             aria-label={isExpanded ? "Collapse notification" : "Expand notification"}
           >
             {isExpanded ? (
@@ -132,18 +132,18 @@ export function FlowdeskNotificationCard({
       </div>
 
       {/* Primary Notification Message: Sender -> Action -> Target */}
-      <div className="text-xs md:text-sm leading-relaxed text-text-primary pl-0.5">
-        <strong className="font-extrabold text-[#0A1237] dark:text-white">{senderName}</strong>{" "}
-        <span className="text-text-secondary font-medium">{actionText}</span>{" "}
-        <strong className="font-extrabold text-[#0A1237] dark:text-white">{targetName}</strong>
+      <div className="text-xs md:text-sm leading-relaxed text-[#071A49] pl-0.5">
+        <strong className="font-bold text-[#071A49]">{senderName}</strong>{" "}
+        <span className="text-[#586274] font-medium">{actionText}</span>{" "}
+        <strong className="font-bold text-[#071A49]">{targetName}</strong>
       </div>
 
       {/* Expanded Hierarchy View */}
       {isExpanded && (
-        <div className="mt-3 pt-3 border-t border-border-subtle space-y-3 animate-in fade-in slide-in-from-top-1 duration-150">
+        <div className="mt-3 pt-3 border-t border-[#DDE2D8] space-y-3 animate-in duration-150">
           {/* Context Tag Pill */}
           {contextTag && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-alt border border-border text-[10px] font-extrabold text-text-secondary">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[2px] bg-[#F0F2EC] border border-[#DDE2D8] text-[10px] font-mono font-bold text-[#586274] uppercase">
               <span>{contextTag}</span>
             </div>
           )}
@@ -153,7 +153,7 @@ export function FlowdeskNotificationCard({
             <Link
               href={targetLink}
               onClick={() => onMarkRead?.(id)}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#C3D946] hover:bg-[#A8BD2F] text-[#0A1237] text-xs font-black rounded-xl shadow-xs transition-transform active:scale-98"
+              className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 bg-[#071A49] hover:bg-[#041030] text-[#B7D600] text-xs font-mono font-bold uppercase rounded-[2px] shadow-xs transition-transform active:scale-98"
             >
               <span>Open {targetName.includes("App") ? "Project" : "Item"}</span>
               <ExternalLink className="h-3.5 w-3.5" />
@@ -162,7 +162,7 @@ export function FlowdeskNotificationCard({
             {!read && (
               <button
                 onClick={() => onMarkRead?.(id)}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-emerald-600 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#586274] hover:text-emerald-700 transition-colors cursor-pointer uppercase"
               >
                 <CheckCircle2 className="h-4 w-4" />
                 <span>Mark read</span>

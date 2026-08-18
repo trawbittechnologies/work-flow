@@ -36,18 +36,18 @@ export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: Kanba
     <div
       ref={setNodeRef}
       className={cn(
-        "flex flex-col bg-[#F8F9FA] border border-[#EAEDF2] rounded-2xl p-3.5 w-[82vw] sm:w-[300px] lg:w-[320px] max-w-[340px] shrink-0 snap-center transition-all",
-        isOver && "border-[#88C315] bg-[#F3F9DE]/50"
+        "flex flex-col bg-[#F8F9F6] border border-[#DDE2D8] rounded-[2px] p-3.5 w-[82vw] sm:w-[300px] lg:w-[320px] max-w-[340px] shrink-0 snap-center transition-all",
+        isOver && "border-[#071A49] bg-[#F1F8CE]/50"
       )}
     >
       {/* Column Header */}
-      <div className="flex items-center justify-between pb-3 px-1 border-b border-[#EAEDF2] mb-3">
+      <div className="flex items-center justify-between pb-3 px-1 border-b border-[#DDE2D8] mb-3">
         <div className="flex items-center gap-2">
-          <span className={cn("h-2.5 w-2.5 rounded-full shrink-0", columnHeaderColors[id])} />
-          <h3 className="text-xs sm:text-sm font-black text-[#111827] tracking-tight">
+          <span className={cn("h-2 w-2 rounded-[2px] shrink-0", columnHeaderColors[id])} />
+          <h3 className="text-xs sm:text-sm font-black font-display uppercase tracking-tight text-[#071A49]">
             {title}
           </h3>
-          <span className="h-5 px-2 rounded-full bg-white border border-[#E5E7EB] text-[#6B7280] text-[11px] font-bold flex items-center justify-center shadow-2xs">
+          <span className="h-5 px-1.5 rounded-[2px] bg-white border border-[#DDE2D8] text-[#071A49] text-[10px] font-mono font-bold flex items-center justify-center shadow-2xs">
             {tasks.length}
           </span>
         </div>
@@ -55,7 +55,7 @@ export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: Kanba
         <Button
           variant="ghost"
           size="icon"
-          className="h-7 w-7 text-[#9CA3AF] hover:text-[#111827] hover:bg-white cursor-pointer"
+          className="h-7 w-7 text-[#8E99A8] hover:text-[#071A49] hover:bg-white cursor-pointer rounded-[2px]"
           onClick={onAddTask}
           aria-label={`Add task to ${title}`}
         >
@@ -70,8 +70,8 @@ export function KanbanColumn({ id, title, tasks, onAddTask, onTaskClick }: Kanba
         ))}
 
         {tasks.length === 0 && (
-          <div className="h-28 border-2 border-dashed border-[#D1D5DB] rounded-xl flex items-center justify-center text-xs font-bold text-[#9CA3AF] bg-white/40">
-            Drop tasks here
+          <div className="h-28 border border-dashed border-[#DDE2D8] rounded-[2px] flex items-center justify-center text-xs font-mono font-bold text-[#8E99A8] bg-white/40">
+            DROP TASKS HERE
           </div>
         )}
       </div>

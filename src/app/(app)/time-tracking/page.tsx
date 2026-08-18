@@ -35,10 +35,10 @@ export default async function TimeTrackingPage() {
   return (
     <div className="space-y-5 sm:space-y-6 pb-12">
       <div>
-        <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#111827]">
+        <h1 className="text-xl sm:text-2xl font-black font-display uppercase tracking-tight text-[#071A49]">
           Time Tracking
         </h1>
-        <p className="text-xs sm:text-[13px] font-medium text-[#6B7280] mt-0.5">
+        <p className="text-xs sm:text-[13px] font-medium text-[#586274] mt-0.5">
           Record billable hours, monitor task time, and boost productivity.
         </p>
       </div>

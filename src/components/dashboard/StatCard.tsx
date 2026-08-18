@@ -26,10 +26,10 @@ const colorMap: Record<
   { bg: string; text: string; border: string; icon: ReactNode }
 > = {
   lime: {
-    bg: "bg-[#F3F9DE]",
-    text: "text-[#88C315]",
-    border: "border-[#88C315]/30",
-    icon: <FolderKanban className="h-5 w-5 text-[#88C315]" />,
+    bg: "bg-[#F1F8CE]",
+    text: "text-[#071A49]",
+    border: "border-[#B7D600]",
+    icon: <FolderKanban className="h-5 w-5 text-[#071A49]" />,
   },
   indigo: {
     bg: "bg-[#EDE9FE]",
@@ -39,27 +39,27 @@ const colorMap: Record<
   },
   blue: {
     bg: "bg-sky-50",
-    text: "text-sky-600",
+    text: "text-sky-700",
     border: "border-sky-200",
-    icon: <Clock className="h-5 w-5 text-sky-600" />,
+    icon: <Clock className="h-5 w-5 text-sky-700" />,
   },
   amber: {
     bg: "bg-[#FFFBEB]",
-    text: "text-[#F59E0B]",
+    text: "text-[#D97706]",
     border: "border-amber-200",
-    icon: <Clock className="h-5 w-5 text-[#F59E0B]" />,
+    icon: <Clock className="h-5 w-5 text-[#D97706]" />,
   },
   red: {
     bg: "bg-[#FEF2F2]",
-    text: "text-[#EF4444]",
+    text: "text-[#DC2626]",
     border: "border-red-200",
-    icon: <AlertCircle className="h-5 w-5 text-[#EF4444]" />,
+    icon: <AlertCircle className="h-5 w-5 text-[#DC2626]" />,
   },
   emerald: {
     bg: "bg-[#ECFDF5]",
-    text: "text-[#10B981]",
+    text: "text-[#16A34A]",
     border: "border-emerald-200",
-    icon: <CheckCircle2 className="h-5 w-5 text-[#10B981]" />,
+    icon: <CheckCircle2 className="h-5 w-5 text-[#16A34A]" />,
   },
 };
 
@@ -77,12 +77,12 @@ export function StatCard({
   const fallback = colorMap[color] || colorMap.lime;
 
   return (
-    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-5 shadow-2xs hover:shadow-xs transition-all duration-200">
+    <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-5 shadow-xs transition-all duration-200">
       <div className="flex items-start gap-4">
-        {/* Rounded Icon Box */}
+        {/* Micro-radius Icon Box */}
         <div
           className={cn(
-            "h-12 w-12 rounded-2xl flex items-center justify-center flex-shrink-0",
+            "h-11 w-11 rounded-[2px] border border-[#DDE2D8] flex items-center justify-center flex-shrink-0 shadow-2xs",
             iconBg || fallback.bg
           )}
         >
@@ -91,18 +91,18 @@ export function StatCard({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-[#6B7280]">{label}</p>
-          <h3 className="text-2xl font-black text-[#111827] tracking-tight mt-0.5">
+          <p className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#586274]">{label}</p>
+          <h3 className="text-2xl font-black font-display text-[#071A49] tracking-tight mt-0.5">
             {value}
           </h3>
           <div className="flex items-center gap-1 mt-1">
             {trendText ? (
               <span
                 className={cn(
-                  "text-[12px] font-semibold flex items-center",
+                  "text-[11px] font-mono font-semibold flex items-center",
                   trendType === "positive" && "text-[#16A34A]",
-                  trendType === "negative" && "text-[#EF4444]",
-                  trendType === "neutral" && "text-[#6B7280]"
+                  trendType === "negative" && "text-[#DC2626]",
+                  trendType === "neutral" && "text-[#586274]"
                 )}
               >
                 {trendText}
@@ -111,7 +111,7 @@ export function StatCard({
                 )}
               </span>
             ) : trend !== undefined ? (
-              <span className="text-[11px] font-semibold text-[#16A34A] flex items-center gap-0.5">
+              <span className="text-[11px] font-mono font-semibold text-[#16A34A] flex items-center gap-0.5">
                 <TrendingUp className="h-3 w-3" />
                 <span>
                   {trend > 0 ? "+" : ""}

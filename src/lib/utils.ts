@@ -84,23 +84,23 @@ export function getAvatarColor(name: string): string {
 
 export function getPriorityColor(priority: string): string {
   switch (priority) {
-    case "CRITICAL": return "text-red-700 bg-red-100 border-red-300 dark:text-red-300 dark:bg-red-950 dark:border-red-800";
-    case "URGENT": return "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-950 dark:border-red-800";
-    case "HIGH": return "text-orange-600 bg-orange-50 border-orange-200 dark:text-orange-400 dark:bg-orange-950 dark:border-orange-800";
-    case "MEDIUM": return "text-amber-600 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950 dark:border-amber-800";
-    case "LOW": return "text-slate-600 bg-slate-50 border-slate-200 dark:text-slate-400 dark:bg-slate-900 dark:border-slate-700";
-    default: return "text-slate-600 bg-slate-50 border-slate-200";
+    case "CRITICAL": return "text-red-700 bg-red-50 border-red-200 dark:text-red-300 dark:bg-red-950/40 dark:border-red-900";
+    case "URGENT": return "text-red-600 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-950/40 dark:border-red-900";
+    case "HIGH": return "text-orange-700 bg-orange-50 border-orange-200 dark:text-orange-400 dark:bg-orange-950/40 dark:border-orange-900";
+    case "MEDIUM": return "text-amber-700 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950/40 dark:border-amber-900";
+    case "LOW": return "text-[#586274] bg-[#F0F2EC] border-[#DDE2D8] dark:text-[#A6B4C9] dark:bg-[#0D2561] dark:border-[#1E3A7B]";
+    default: return "text-[#586274] bg-[#F0F2EC] border-[#DDE2D8]";
   }
 }
 
 export function getPriorityDotColor(priority: string): string {
   switch (priority) {
-    case "CRITICAL": return "bg-red-700";
+    case "CRITICAL": return "bg-red-600";
     case "URGENT": return "bg-red-500";
     case "HIGH": return "bg-orange-500";
     case "MEDIUM": return "bg-amber-500";
-    case "LOW": return "bg-slate-400";
-    default: return "bg-slate-400";
+    case "LOW": return "bg-[#586274]";
+    default: return "bg-[#586274]";
   }
 }
 
@@ -110,27 +110,27 @@ export function getStatusColor(status: string): string {
     case "TODO":
     case "PLANNING":
     case "NOT_STARTED":
-      return "text-amber-700 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950 dark:border-amber-800";
+      return "text-amber-800 bg-amber-50 border-amber-200 dark:text-amber-300 dark:bg-amber-950/40 dark:border-amber-900";
     case "IN_PROGRESS":
-      return "text-[#659A08] bg-[#F3F9DE] border-[#D7ECC0] dark:text-lime-400 dark:bg-lime-950 dark:border-lime-800";
+      return "text-[#071A49] bg-[#F1F8CE] border-[#B7D600] dark:text-[#B7D600] dark:bg-[#182B00] dark:border-[#B7D600]";
     case "TESTING":
-      return "text-cyan-700 bg-cyan-50 border-cyan-200 dark:text-cyan-400 dark:bg-cyan-950 dark:border-cyan-800";
+      return "text-cyan-800 bg-cyan-50 border-cyan-200 dark:text-cyan-300 dark:bg-cyan-950/40 dark:border-cyan-900";
     case "ON_HOLD":
-      return "text-slate-600 bg-slate-100 border-slate-200 dark:text-slate-400 dark:bg-slate-800 dark:border-slate-700";
+      return "text-[#586274] bg-[#F0F2EC] border-[#DDE2D8] dark:text-[#A6B4C9] dark:bg-[#0D2561] dark:border-[#1E3A7B]";
     case "IN_REVIEW":
     case "REVIEW":
-      return "text-purple-700 bg-purple-50 border-purple-200 dark:text-purple-400 dark:bg-purple-950 dark:border-purple-800";
+      return "text-purple-800 bg-purple-50 border-purple-200 dark:text-purple-300 dark:bg-purple-950/40 dark:border-purple-900";
     case "COMPLETED":
     case "DONE":
-      return "text-emerald-700 bg-emerald-50 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-800";
+      return "text-emerald-800 bg-emerald-50 border-emerald-200 dark:text-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-900";
     case "REOPENED":
-      return "text-orange-700 bg-orange-50 border-orange-200 dark:text-orange-400 dark:bg-orange-950 dark:border-orange-800";
+      return "text-orange-800 bg-orange-50 border-orange-200 dark:text-orange-300 dark:bg-orange-950/40 dark:border-orange-900";
     case "CANCELLED":
-      return "text-red-700 bg-red-50 border-red-200 dark:text-red-400 dark:bg-red-950 dark:border-red-800";
+      return "text-red-800 bg-red-50 border-red-200 dark:text-red-300 dark:bg-red-950/40 dark:border-red-900";
     case "ARCHIVED":
-      return "text-gray-400 bg-gray-100 border-gray-200 dark:text-gray-500 dark:bg-gray-800 dark:border-gray-700";
+      return "text-gray-500 bg-gray-100 border-[#DDE2D8] dark:text-gray-400 dark:bg-gray-800 dark:border-gray-700";
     default:
-      return "text-slate-600 bg-slate-100 border-slate-200 dark:text-slate-400 dark:bg-slate-800 dark:border-slate-700";
+      return "text-[#586274] bg-[#F0F2EC] border-[#DDE2D8]";
   }
 }
 

@@ -197,21 +197,21 @@ export default function NotificationsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6 pb-12">
       {/* Brand Header & Action Toolbar */}
-      <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-4 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3 sm:gap-3.5">
-          <FlowdeskBrandMark className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl shrink-0" />
+          <FlowdeskBrandMark className="w-9 h-9 sm:w-10 sm:h-10 rounded-[2px] shrink-0" />
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <h1 className="text-lg sm:text-xl font-black text-[#111827] tracking-tight truncate">
+              <h1 className="text-lg sm:text-xl font-black font-display uppercase text-[#071A49] tracking-tight truncate">
                 Notifications
               </h1>
               {unreadCount > 0 && (
-                <span className="px-2.5 py-0.5 rounded-full bg-[#88C315] text-white text-[11px] sm:text-xs font-black shadow-2xs">
+                <span className="px-2 py-0.5 rounded-[2px] bg-[#B7D600] text-[#071A49] text-[10px] sm:text-xs font-mono font-bold uppercase shadow-2xs">
                   {unreadCount} new
                 </span>
               )}
             </div>
-            <p className="text-[11px] sm:text-xs font-medium text-[#6B7280] mt-0.5 truncate">
+            <p className="text-[11px] sm:text-xs font-medium text-[#586274] mt-0.5 truncate">
               Real-time activity stream & updates for Flowdesk Workspace
             </p>
           </div>
@@ -222,7 +222,7 @@ export default function NotificationsPage() {
             variant="primary"
             size="sm"
             onClick={handleMarkAllRead}
-            className="self-start md:self-auto shadow-2xs text-xs"
+            className="self-start md:self-auto shadow-2xs text-xs font-mono font-bold uppercase"
           >
             <CheckCheck className="h-4 w-4 mr-1.5" />
             <span>Mark all read</span>
@@ -231,13 +231,13 @@ export default function NotificationsPage() {
       </div>
 
       {/* Filter Tabs Toolbar */}
-      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-thin border-b border-[#EAEDF2]">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-thin border-b border-[#DDE2D8]">
         <button
           onClick={() => setActiveTab("ALL")}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-[2px] text-xs font-mono font-bold uppercase transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "ALL"
-              ? "bg-[#111827] text-white shadow-2xs"
-              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
+              ? "bg-[#071A49] text-[#B7D600] shadow-2xs"
+              : "text-[#586274] hover:text-[#071A49] hover:bg-[#F0F2EC]"
           }`}
         >
           <Layers className="h-3.5 w-3.5" />
@@ -246,10 +246,10 @@ export default function NotificationsPage() {
 
         <button
           onClick={() => setActiveTab("UNREAD")}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-[2px] text-xs font-mono font-bold uppercase transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "UNREAD"
-              ? "bg-[#111827] text-white shadow-2xs"
-              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
+              ? "bg-[#071A49] text-[#B7D600] shadow-2xs"
+              : "text-[#586274] hover:text-[#071A49] hover:bg-[#F0F2EC]"
           }`}
         >
           <Bell className="h-3.5 w-3.5" />
@@ -258,10 +258,10 @@ export default function NotificationsPage() {
 
         <button
           onClick={() => setActiveTab("PROJECT")}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-[2px] text-xs font-mono font-bold uppercase transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "PROJECT"
-              ? "bg-[#111827] text-white shadow-2xs"
-              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
+              ? "bg-[#071A49] text-[#B7D600] shadow-2xs"
+              : "text-[#586274] hover:text-[#071A49] hover:bg-[#F0F2EC]"
           }`}
         >
           <UserPlus className="h-3.5 w-3.5" />
@@ -270,10 +270,10 @@ export default function NotificationsPage() {
 
         <button
           onClick={() => setActiveTab("TASK")}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-[2px] text-xs font-mono font-bold uppercase transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "TASK"
-              ? "bg-[#111827] text-white shadow-2xs"
-              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
+              ? "bg-[#071A49] text-[#B7D600] shadow-2xs"
+              : "text-[#586274] hover:text-[#071A49] hover:bg-[#F0F2EC]"
           }`}
         >
           <ClipboardList className="h-3.5 w-3.5" />
@@ -282,10 +282,10 @@ export default function NotificationsPage() {
 
         <button
           onClick={() => setActiveTab("MENTION")}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-[2px] text-xs font-mono font-bold uppercase transition-all whitespace-nowrap cursor-pointer shrink-0 ${
             activeTab === "MENTION"
-              ? "bg-[#111827] text-white shadow-2xs"
-              : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
+              ? "bg-[#071A49] text-[#B7D600] shadow-2xs"
+              : "text-[#586274] hover:text-[#071A49] hover:bg-[#F0F2EC]"
           }`}
         >
           <AtSign className="h-3.5 w-3.5" />
@@ -297,7 +297,7 @@ export default function NotificationsPage() {
       {loading ? (
         <div className="space-y-3">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+            <Skeleton key={i} className="h-20 w-full rounded-[2px]" />
           ))}
         </div>
       ) : filteredNotifications.length > 0 ? (
@@ -320,14 +320,14 @@ export default function NotificationsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-white border border-[#EAEDF2] rounded-2xl p-8 sm:p-12 text-center shadow-2xs">
-          <div className="w-12 h-12 rounded-2xl bg-[#F3F9DE] text-[#88C315] flex items-center justify-center mx-auto mb-3">
+        <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-8 sm:p-12 text-center shadow-xs bg-tech-grid">
+          <div className="w-12 h-12 rounded-[2px] bg-[#F1F8CE] text-[#071A49] border border-[#B7D600] flex items-center justify-center mx-auto mb-3">
             <Sparkles className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-extrabold text-[#111827]">
+          <h3 className="text-base font-bold uppercase font-display text-[#071A49]">
             Inbox is clean
           </h3>
-          <p className="text-xs font-medium text-[#9CA3AF] mt-1 max-w-sm mx-auto">
+          <p className="text-xs font-medium text-[#586274] mt-1 max-w-sm mx-auto">
             No notifications match your selected filter tab.
           </p>
         </div>

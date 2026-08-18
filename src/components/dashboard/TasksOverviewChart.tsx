@@ -19,25 +19,25 @@ export function TasksOverviewChart({ stats }: TasksOverviewChartProps) {
   const { completed, inProgress, todo, inReview, total } = stats;
 
   const data = [
-    { name: "Completed", value: completed, color: "#88C315", bgClass: "bg-[#88C315]", icon: CheckCircle2 },
-    { name: "In Progress", value: inProgress, color: "#F59E0B", bgClass: "bg-[#F59E0B]", icon: Clock },
+    { name: "Completed", value: completed, color: "#B7D600", bgClass: "bg-[#B7D600]", icon: CheckCircle2 },
+    { name: "In Progress", value: inProgress, color: "#071A49", bgClass: "bg-[#071A49]", icon: Clock },
     { name: "To Do", value: todo, color: "#7C3AED", bgClass: "bg-[#7C3AED]", icon: ListTodo },
-    { name: "In Review", value: inReview, color: "#3B82F6", bgClass: "bg-[#3B82F6]", icon: Eye },
+    { name: "In Review", value: inReview, color: "#0284C7", bgClass: "bg-[#0284C7]", icon: Eye },
   ].filter((d) => d.value > 0);
 
   const isEmpty = total === 0;
 
   return (
-    <div className="bg-white border border-[#EAEDF2] rounded-2xl p-4 sm:p-6 shadow-2xs h-full flex flex-col justify-between">
-      <h3 className="text-sm sm:text-[15px] font-bold text-[#111827] mb-2">
+    <div className="bg-white border border-[#DDE2D8] rounded-[2px] p-4 sm:p-6 shadow-xs h-full flex flex-col justify-between">
+      <h3 className="text-sm sm:text-[15px] font-bold uppercase font-display text-[#071A49] mb-2">
         My Tasks Overview
       </h3>
 
       {isEmpty ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
-          <LayoutGrid className="h-10 w-10 text-[#D1D5DB] mb-3 stroke-[1.5]" />
-          <p className="text-sm font-semibold text-[#9CA3AF]">No tasks assigned yet</p>
-          <p className="text-xs text-[#C4C9D4] mt-1">Your task breakdown will appear here</p>
+        <div className="flex-1 flex flex-col items-center justify-center text-center py-8 bg-tech-grid rounded-[2px] border border-[#DDE2D8]">
+          <LayoutGrid className="h-10 w-10 text-[#8E99A8] mb-3 stroke-[1.5]" />
+          <p className="text-sm font-bold uppercase font-display text-[#071A49]">No tasks assigned yet</p>
+          <p className="text-xs text-[#586274] mt-1">Your task breakdown will appear here</p>
         </div>
       ) : (
         <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-6 my-auto">
@@ -63,10 +63,10 @@ export function TasksOverviewChart({ stats }: TasksOverviewChartProps) {
               </PieChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-xl sm:text-2xl font-black text-[#111827] leading-none">
+              <span className="text-xl sm:text-2xl font-black font-display text-[#071A49] leading-none">
                 {total}
               </span>
-              <span className="text-[10px] sm:text-[11px] font-semibold text-[#9CA3AF] mt-0.5">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase font-bold text-[#586274] mt-0.5">
                 Total Tasks
               </span>
             </div>
@@ -79,10 +79,10 @@ export function TasksOverviewChart({ stats }: TasksOverviewChartProps) {
               return (
                 <div key={item.name} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className={`h-2.5 w-2.5 rounded-sm flex-shrink-0 ${item.bgClass}`} />
-                    <span className="font-semibold text-[#4B5563]">{item.name}</span>
+                    <span className={`h-2.5 w-2.5 rounded-[2px] flex-shrink-0 ${item.bgClass}`} />
+                    <span className="font-semibold text-[#586274]">{item.name}</span>
                   </div>
-                  <span className="font-bold text-[#111827]">
+                  <span className="font-mono font-bold text-[#071A49]">
                     {item.value} ({pct}%)
                   </span>
                 </div>

@@ -47,9 +47,9 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
   }
 
   return (
-    <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle">
-      <h3 className="text-sm font-bold text-text-primary flex items-center gap-1.5">
-        <MessageSquare className="h-4 w-4 text-text-muted" />
+    <div className="space-y-4 pt-6 mt-6 border-t border-[#DDE2D8]">
+      <h3 className="text-sm font-bold uppercase font-display text-[#071A49] flex items-center gap-1.5">
+        <MessageSquare className="h-4 w-4 text-[#8E99A8]" />
         Comments ({comments.length})
       </h3>
 
@@ -60,7 +60,7 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
           placeholder="Add a comment to this task..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="flex-1 h-9 px-3.5 text-sm rounded-lg border border-border bg-surface-alt focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-text-primary placeholder:text-text-muted transition-all"
+          className="flex-1 h-9 px-3.5 text-xs rounded-[2px] border border-[#DDE2D8] bg-[#F8F9F6] focus:outline-none focus:ring-1 focus:ring-[#071A49] focus:border-[#071A49] text-[#071A49] placeholder:text-[#8E99A8] transition-all"
         />
         <Button
           type="submit"
@@ -69,6 +69,7 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
           isLoading={posting}
           disabled={!content.trim()}
           leftIcon={<Send className="h-3.5 w-3.5" />}
+          className="rounded-[2px] font-mono text-xs uppercase"
         >
           Comment
         </Button>
@@ -77,20 +78,20 @@ export function CommentSection({ taskId, comments, onCommentAdded }: CommentSect
       {/* List */}
       <div className="space-y-3 pt-2">
         {comments.map((comment) => (
-          <div key={comment.id} className="flex items-start gap-3 bg-surface p-3.5 rounded-xl border border-border shadow-sm">
-            <Avatar name={comment.user.name} src={comment.user.avatar} size="sm" />
+          <div key={comment.id} className="flex items-start gap-3 bg-white p-3.5 rounded-[2px] border border-[#DDE2D8] shadow-xs">
+            <Avatar name={comment.user.name} src={comment.user.avatar} size="sm" className="rounded-[2px] ring-1 ring-[#DDE2D8]" />
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline justify-between mb-0.5">
-                <span className="text-sm font-bold text-text-primary">{comment.user.name}</span>
-                <span className="text-[11px] font-medium text-text-muted">{formatRelative(comment.createdAt)}</span>
+                <span className="text-sm font-bold text-[#071A49]">{comment.user.name}</span>
+                <span className="text-[10px] font-mono text-[#8E99A8]">{formatRelative(comment.createdAt)}</span>
               </div>
-              <p className="text-sm text-text-secondary mt-1 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
+              <p className="text-sm text-[#586274] mt-1 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
             </div>
           </div>
         ))}
 
         {comments.length === 0 && (
-          <p className="text-sm text-text-muted text-center py-6 bg-surface-alt rounded-xl border border-dashed border-border">No comments yet. Be the first to start the conversation.</p>
+          <p className="text-xs font-mono text-[#8E99A8] text-center py-6 bg-[#F8F9F6] rounded-[2px] border border-dashed border-[#DDE2D8]">No comments yet. Be the first to start the conversation.</p>
         )}
       </div>
     </div>
