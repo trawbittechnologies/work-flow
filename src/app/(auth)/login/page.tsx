@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -69,25 +70,40 @@ function LoginForm() {
             error={errors.email?.message}
           />
 
-          <Input
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Your password"
-            autoComplete="current-password"
-            id="login-password"
-            {...register("password")}
-            error={errors.password?.message}
-            rightAddon={
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="text-text-muted hover:text-text-secondary transition-colors cursor-pointer"
-                aria-label={showPassword ? "Hide password" : "Show password"}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label
+                htmlFor="login-password"
+                className="text-xs font-extrabold uppercase tracking-wider text-[#0A1237] dark:text-white"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
-            }
-          />
+                Password
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-xs font-bold text-text-secondary hover:text-primary transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Your password"
+              autoComplete="current-password"
+              id="login-password"
+              {...register("password")}
+              error={errors.password?.message}
+              rightAddon={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="text-text-muted hover:text-text-secondary transition-colors cursor-pointer"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              }
+            />
+          </div>
 
           {serverError && (
             <div className="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800 rounded-xl px-3.5 py-2.5">

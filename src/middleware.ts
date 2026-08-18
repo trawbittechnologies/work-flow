@@ -11,7 +11,7 @@ export default auth(async (req) => {
   }
 
   // Public paths that don't require authentication
-  const publicPaths = ["/login", "/forgot-password"];
+  const publicPaths = ["/login", "/forgot-password", "/reset-password"];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
 
   // Allow API routes to handle their own auth
