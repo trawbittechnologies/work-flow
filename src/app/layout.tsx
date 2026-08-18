@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "Trawbit FlowDesk — Modern collaborative project management platform for high-performance teams.",
   keywords: ["project management", "tasks", "team collaboration", "kanban", "productivity", "trawbit", "flowdesk"],
   authors: [{ name: "Trawbit FlowDesk" }],
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "Trawbit FlowDesk",
     description: "Modern project management for high-performance teams.",

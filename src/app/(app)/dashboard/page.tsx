@@ -44,7 +44,7 @@ export default async function DashboardPage() {
       prisma.task.count({
         where: {
           ...(admin ? {} : { assigneeId: userId }),
-          status: { in: ["DONE", "COMPLETED"] as never },
+          status: { in: ["DONE", "COMPLETED"] },
         },
       }),
       prisma.task.count({
@@ -79,13 +79,13 @@ export default async function DashboardPage() {
     prisma.task.count({
       where: {
         ...(admin ? {} : { assigneeId: userId }),
-        status: { in: ["TODO", "PENDING"] as never },
+        status: { in: ["TODO", "PENDING"] },
       },
     }),
     prisma.task.count({
       where: {
         ...(admin ? {} : { assigneeId: userId }),
-        status: { in: ["IN_REVIEW", "REVIEW"] as never },
+        status: "IN_REVIEW",
       },
     }),
   ]);
